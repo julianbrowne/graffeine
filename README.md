@@ -14,7 +14,7 @@ Requires:
 
 Install:
 
-    npm install graffeine
+    git clone https://github.com/julianbrowne/graffeine // npm install graffeine coming soon
 
 Run:
 

@@ -3,7 +3,7 @@
 
 Caffeinated Neo4J graph exploration
 
-![ScreenShot](https://raw.github.com/julianbrowne/graffeine/master/doc/config/images/screenshot-drwho.jpeg)
+![ScreenShot](https://raw.github.com/julianbrowne/graffeine-build/master/doc/config/images/screenshot-drwho.jpeg)
 
 ###TL;DR
 
@@ -52,7 +52,7 @@ Types are not critical to Graffeine though, they're just useful for applying CSS
 
 The graph.yml file in {graffeine_home}/conf has other settings to determine which fields do what.
 
-![ScreenShot](https://raw.github.com/julianbrowne/graffeine/master/doc/config/images/screenshot-draglet.jpeg)
+![ScreenShot](https://raw.github.com/julianbrowne/graffeine-build/master/doc/config/images/screenshot-draglet.jpeg)
 
 ###Ingredients
 
@@ -71,7 +71,7 @@ On the client (all bundled):
 
 Tested on latest FF and Chrome browsers. Not sure about others.
 
-![ScreenShot](https://raw.github.com/julianbrowne/graffeine/master/doc/config/images/screenshot-relationship.jpeg)
+![ScreenShot](https://raw.github.com/julianbrowne/graffeine-build/master/doc/config/images/screenshot-relationship.jpeg)
 
 ###Install and run
 
@@ -140,7 +140,7 @@ Fields to look for in Neo4J nodes to use as the "type" in the UI. Graffeine will
 
 Some graphs don't have anything approximating to a type field. There are two choices in this case (1) leave the type as 'default' or (2) tell Graffeine to use the field key used for the name as the type (as explained in the Rose Tyler example above).
 
-![ScreenShot](https://raw.github.com/julianbrowne/graffeine/master/doc/config/images/screenshot-styled.jpeg)
+![ScreenShot](https://raw.github.com/julianbrowne/graffeine-build/master/doc/config/images/screenshot-styled.jpeg)
 
 	graph.useCssStyle (true|false)
 
@@ -172,7 +172,7 @@ Connect browser to server port
 
 ###Menu Usage
 
-![ScreenShot](https://raw.github.com/julianbrowne/graffeine/master/doc/config/images/screenshot-menu.jpeg)
+![ScreenShot](https://raw.github.com/julianbrowne/graffeine-build/master/doc/config/images/screenshot-menu.jpeg)
 
 **Connect** - button fetches the first few nodes from Neo4J  
 **Start** | **Stop** - buttons start and stop the D3 force (animation) respectively  
@@ -182,7 +182,7 @@ Connect browser to server port
 **Add** - add new nodes. Only allows simple nodes right now but useful for building up graphs to play with.  
 **Update** | **Delete** | **Duplicate** - As per each button. Performs the action on the currently selected node.  
 
-![ScreenShot](https://raw.github.com/julianbrowne/graffeine/master/doc/config/images/screenshot-self.jpeg)
+![ScreenShot](https://raw.github.com/julianbrowne/graffeine-build/master/doc/config/images/screenshot-self.jpeg)
 
 ###Mouse Action
 
@@ -194,7 +194,7 @@ Connect browser to server port
 **Delete Relationships** right click on a node and select which relationship to delete  
 **Page/Follow Node** - double-click node marked with thick dotted line (nodes with thick dotted lines indicate more of the graph lies off screen)   
 
-![ScreenShot](https://raw.github.com/julianbrowne/graffeine/master/doc/config/images/screenshot-help.jpeg)
+![ScreenShot](https://raw.github.com/julianbrowne/graffeine-build/master/doc/config/images/screenshot-help.jpeg)
 
 ###Help?
 

@@ -38,7 +38,7 @@ Nodes can be added, updated, and removed. New relationships can be made using dr
 
 It's by no means phpmyadmin for Neo4J yet, but one day it could be (maybe).
 
-![ScreenShot](https://raw.github.com/julianbrowne/graffeine/master/doc/config/images/screenshot-alice-bob.jpeg)
+![ScreenShot](https://raw.github.com/julianbrowne/graffeine-build/master/doc/config/images/screenshot-alice-bob.jpeg)
 
 ###Catches?
 

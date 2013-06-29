@@ -1,0 +1,32 @@
+
+/**
+ *  Dr Who Stylesheet
+ *
+ *  From the colours in Tom Baker's scarf
+ *  in 'Robot' and 'The Sontaran Experiment'
+ *
+**/
+
+.character {
+  fill: #6A6626;
+}
+
+.actor {
+  fill: #C74038;
+}
+
+.planet {
+  fill: #E9A61D;
+}
+
+.prop {
+  fill: #6C1846;
+}
+
+.species {
+  fill: #5D5C6B;
+}
+
+.title {
+  fill: #A0672C;
+}

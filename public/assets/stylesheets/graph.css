@@ -1,0 +1,111 @@
+
+path.link {
+  fill: none;
+  stroke: #666;
+  stroke-width: 2px;
+}
+
+path.connector {
+  fill: none;
+  stroke: #666;
+  stroke-width: 4px;
+  stroke-dasharray: 5,5;
+}
+
+div.tooltip, div.linkMenu {
+  position: absolute;
+  text-align: left;
+  padding: 5px;
+  font: 12px sans-serif;
+  background: lightsteelblue;
+  border: 0px;
+  border-radius: 8px;
+  pointer-events: none;
+}
+
+/**
+ *  Nodes (styles override those set server side for UI purposes)
+**/
+
+circle.node {
+  fill: #067195;
+  stroke-width: 2px;
+  stroke: #FFFFFF;
+}
+
+circle.node.edge {
+  stroke-width: 3px !important;
+  stroke: #57B22A !important;
+  stroke-dasharray: 10,5;
+}
+
+circle.node.edge:hover {
+  stroke: #003345 !important;
+  stroke-width: 3px !important;
+}
+
+circle.node.selected {
+  fill: #CC0023 !important;
+}
+
+circle.node:hover {
+  stroke: #003345 !important;
+  stroke-width: 3px !important;
+  stroke-dasharray: 2,2 !important;
+}
+
+circle.node.joiner {
+  stroke: #FF0000 !important;
+  stroke-width: 2px !important;
+}
+
+/**
+ *  Arrows
+**/
+
+polygon.arrowhead {
+
+}
+
+/**
+ *  Draglets
+**/
+
+circle.draglet {
+  fill: #003345;
+  stroke-width: 0;
+}
+
+circle.draglet:hover {
+  fill: #4EAE44;
+  stroke: #003345;
+  stroke-width: 4px;
+  stroke-dasharray: none;
+}
+
+text {
+  font: 10px sans-serif;
+  pointer-events: none;
+}
+
+text.node-label {
+  font: 12px sans-serif;
+  pointer-events: none;
+}
+
+text.node-icon {
+  font-family: FontAwesome;
+  font-size: 11px;
+  pointer-events: none;
+}
+
+span.rel-icon {
+  font-family: FontAwesome;
+  font-size: 14px;
+}
+
+text.shadow {
+  stroke: #fff;
+  stroke-width: 3px;
+  stroke-opacity: .8;
+}

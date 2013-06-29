@@ -1,0 +1,41 @@
+{
+  "name": "graffeine",
+  "version": "0.0.2",
+  "description": "Caffeinated Neo4J Graph Exploration",
+  "contributors": [
+    "Julian Browne"
+  ],
+  "homepage": [
+    "https://github.com/julianbrowne/graffeine"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/julianbrowne/graffeine.git"
+  },
+  "keywords": [
+    "neo4j",
+    "d3",
+    "admin",
+    "graph"
+  ],
+  "author": "Julian Browne",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "gitHead": "bf98fc30e71141fc4a07bce1714f14c912a6ef4e",
+  "readmeFilename": "README.md",
+  "main": "server.js",
+  "directories": {
+    "doc": "doc",
+    "test": "test"
+  },
+  "dependencies": {
+    "d3": "~3.1.6",
+    "js-yaml": "~2.1.0",
+    "neo4j": "~0.2.20",
+    "node-static": "~0.6.9",
+    "socket.io": "~0.9.14"
+  },
+  "devDependencies": {},
+  "license": "LGPL-3.0"
+}

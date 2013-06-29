@@ -1,0 +1,64 @@
+
+graph:
+
+    nameFields:                     # neo4j fields to use as node 'name' in priority order
+        - name
+        - title
+        - character
+        - actor
+        - thing
+        - planet
+        - part
+        - species
+        - props
+        - prop
+
+    typeFields:
+        - type
+        - __type__                  # used in the cineasts example db on neo4j site
+
+    useNameAsType: true             # use a matched name from above as the 'type' field for styling
+    useCssStyle: true               # use CSS client styling instead of server side
+
+nodes:                              # nodes on the graph, sections are content of type field (from above)
+
+    default:                        # these settings apply to all nodes unless over-ridden below
+        icon: ''                  # textual icon to use for node
+        style:                      # all fields in style map to css (camelCase to camel-case format)
+            fill: '#37FFA9'         # background color of this node type
+            strokeWidth: '1px'      # width of the line around svg circle
+            stroke: '#002636'       # color of the line around the svg circle
+        label:
+            fill: '#000000'         # font color of the text label for this node
+
+    org.neo4j.cineasts.domain.Movie:
+        icon: ''
+        style:
+            fill: '#FFFFFF'
+            stroke: '#000000'
+
+    org.neo4j.cineasts.domain.Person:
+        icon: ''
+        style:
+            fill: '#CCCCCC'
+
+    home:
+        icon: ''                  # house icon
+        style:
+            fill: '#9b59b6'         # amethyst
+
+    person:
+        icon: ''                  # person icon
+        style:
+            fill: '#16a085'         # green sea
+
+    room:
+        style:
+            fill: '#f39c12'          # orange
+
+rels:                                # relationships in the graph
+
+    default:
+        style:
+            strokeWidth: '3px'
+            stroke: '#002636'

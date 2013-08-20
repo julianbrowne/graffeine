@@ -1,6 +1,6 @@
 {
   "name": "graffeine",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "Caffeinated Neo4J Graph Exploration",
   "contributors": [
     "Julian Browne"
@@ -44,5 +44,5 @@
     "socket.io"
   ],
   "devDependencies": {},
-  "license": "LGPL-3.0"
+  "license": "OSL-3.0"
 }

@@ -1,13 +1,11 @@
 {
   "name": "graffeine",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Caffeinated Neo4J Graph Exploration",
   "contributors": [
     "Julian Browne"
   ],
-  "homepage": [
-    "https://github.com/julianbrowne/graffeine"
-  ],
+  "homepage": "https://github.com/julianbrowne/graffeine",
   "repository": {
     "type": "git",
     "url": "https://github.com/julianbrowne/graffeine.git"
@@ -44,5 +42,5 @@
     "socket.io"
   ],
   "devDependencies": {},
-  "license": "OSL-3.0"
+  "license": "LGPL-3.0"
 }

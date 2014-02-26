@@ -9,11 +9,20 @@ g.log('Starting Graffeine server');
 
 var file = new(content.Server)('public');
 
-var handler = function (request, response) {
-    request.addListener('end', function () {
-        file.serve(request, response);
+// changed handler not to hang with later versions of node.js
+
+var handler = function(request, response) { 
+    file.serve(request, response, function (err, res) { 
+        if (err) { 
+            console.error("ERROR: Problem serving " + request.url + " - " + err.message);
+            response.writeHead(err.status, err.headers);
+            response.end();
+        }
+        else {
+            // console.log("> " + request.url + " - " + res.message);
+        }
     });
-}
+};
 
 var srv = http.createServer(handler);
 

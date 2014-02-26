@@ -1,0 +1,27 @@
+0 info it worked if it ends with ok
+1 verbose cli [ '/usr/local/bin/node', '/usr/local/bin/npm', 'shrinkwrap' ]
+2 info using npm@1.3.14
+3 info using node@v0.10.22
+4 error Error: Problems were encountered
+4 error Please correct and try again.
+4 error invalid: colors@0.6.0-1 /usr/local/personal/graffeine/node_modules/node-static/node_modules/colors
+4 error     at shrinkwrap_ (/usr/local/lib/node_modules/npm/lib/shrinkwrap.js:29:15)
+4 error     at /usr/local/lib/node_modules/npm/lib/shrinkwrap.js:23:5
+4 error     at /usr/local/lib/node_modules/npm/lib/ls.js:43:30
+4 error     at /usr/local/lib/node_modules/npm/node_modules/read-installed/read-installed.js:119:5
+4 error     at /usr/local/lib/node_modules/npm/node_modules/read-installed/read-installed.js:233:14
+4 error     at cb (/usr/local/lib/node_modules/npm/node_modules/slide/lib/async-map.js:48:11)
+4 error     at /usr/local/lib/node_modules/npm/node_modules/read-installed/read-installed.js:233:14
+4 error     at cb (/usr/local/lib/node_modules/npm/node_modules/slide/lib/async-map.js:48:11)
+4 error     at /usr/local/lib/node_modules/npm/node_modules/read-installed/read-installed.js:233:14
+4 error     at cb (/usr/local/lib/node_modules/npm/node_modules/slide/lib/async-map.js:48:11)
+5 error If you need help, you may report this log at:
+5 error     <http://github.com/isaacs/npm/issues>
+5 error or email it to:
+5 error     <npm-@googlegroups.com>
+6 error System Darwin 13.0.0
+7 error command "/usr/local/bin/node" "/usr/local/bin/npm" "shrinkwrap"
+8 error cwd /usr/local/personal/graffeine
+9 error node -v v0.10.22
+10 error npm -v 1.3.14
+11 verbose exit [ 1, true ]

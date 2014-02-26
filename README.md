@@ -9,12 +9,16 @@ Caffeinated Neo4J graph exploration
 
 Requires:
 
-    node.js     v0.8.25
+    node.js     v0.10.* (also tested on 0.8.*, 0.9.*)
     neo4j       V1.9 | v2.0
 
 Install:
 
-    git clone https://github.com/julianbrowne/graffeine        // npm install graffeine (coming soon)
+    git clone https://github.com/julianbrowne/graffeine
+
+    or 
+
+    npm install graffeine
 
 Run:
 

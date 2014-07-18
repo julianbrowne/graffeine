@@ -31,7 +31,7 @@ from npm:
 
     npm install graffeine
 
-starting up (in ```node_modules``` directory):
+starting up (in ```node_modules/graffeine``` directory):
 
     node server
 

@@ -1,207 +1,98 @@
 
-#Graffeine
+# Graffeine
 
-Caffeinated Neo4J graph exploration
+Caffeinated Graph Exploration for Neo4J
 
-![ScreenShot](https://raw.github.com/julianbrowne/graffeine-build/master/doc/config/images/screenshot-drwho.jpeg)
+Graffeine is both a useful interactive demonstrator of graph capability and a simple visual administration
+interface for small graph databases.
 
-###TL;DR
+Here it is with the, now canonical, Dr Who graph loaded up:
 
-Requires:
+![ScreenShot](https://raw.github.com/julianbrowne/graffeine/client/images/screenshot-drwho.jpeg)
 
-    node.js     v0.10.* (also tested on 0.8.*, 0.9.*)
-    neo4j       V1.9 | v2.0
+## Dependencies
 
-Install:
+-   node.js: v0.10.\* (also tested on 0.8.\*, 0.9.\*)
+-   neo4j: v2.0, V2.1
+-   a modern browser that is happy with:  
+    D3                  (on screen animation and interactions)  
+    JQuery              (UI management)  
+    JQuery UI           (primarily for on screen dialogues)  
+    Underscore.JS       (condenses some of the tedious operations into readable code)  
+    Font Awesome        (icons for each 'type' of node, defaults to a tag icon)  
+
+## Installation
+
+from github:
 
     git clone https://github.com/julianbrowne/graffeine
 
-    or 
+from npm:
 
     npm install graffeine
 
-Run:
+starting up (in ```node_modules``` directory):
 
-	node server                                                // npm start graffeine (coming soon)
+	node server
 
-Use:
+point a browser at:
 
     http://localhost:8004
 	
-###Background
+### Background
 
-Graph databases are amazing things. They should be the easiest of all persistence technologies to understand because they think like us - concepts connected together (Alice knows Bob) where the connections themselves can have meaning (Alice has known Bob since Tuesday) and yet in my experience that's actually not always the case. Graffeine was born because I didn't feel any of the other visualisation tools for Neo4J were quite simple enough. They got in the way when all I wanted to do was add a node (Alice), then another (Bob), and then feel all that graph loveliness coming through when I connected them and extended their relationships. I felt there was a missing tool that allows the easy explaining of graphs, exploring of graphs, and above all seeing them. Graffeine is an initial attempt at this. It won't ever be a suitable tool for admin tasks on production systems but it could work for small systems, spikes, demos, and generally helping spread the graph awesomeness.
+Graph databases are amazing things.
 
-###What is it?
+They should be the easiest of all persistence technologies to understand because graphs think like us - human concepts connect together (Alice _knows_ Bob) and these connections have meaning (Alice knows Bob _since Tuesday_).
 
-Graffeine plugs into Neo4J and renders nodes and relationships as an interactive D3 SVG graph so you can add, edit, delete and connect nodes. It's not quite as easy as a whiteboard and a pen but it's close and all interactions are persisted in Neo4J.
+Could you get more human than that? And yet, for reasons that are hard to fathom, graphs have taken a back seat to all the other nosql products.
+
+Graffeine was born because I wanted to show people how great graph thinking is and how close to the way we model things in our heads graphs like their data. Neo4J is the best graph tool I know of and despite there being plenty of complimentary tools out there all the ones I played with got in the way a bit when all I wanted to do was add a node (Alice), then another (Bob), and then **feel** all that graph loveliness coming through when I connected them and extended their relationships.
+
+![ScreenShot](https://raw.github.com/julianbrowne/graffeine/client/images/screenshot-alice-bob.jpeg)
+
+I felt there was a tool missing. One that promotes the explaining of graphs, exploring of graphs, and above all the seeing of graphs. . Graffeine is an initial attempt at this. It won't ever be a suitable tool for hard core admin tasks on large production systems but it could work for small systems, spikes, demos, and generally helping spread the graph awesomeness.
+
+### What is it?
+
+Graffeine plugs into Neo4J and renders nodes and relationships as an interactive D3 SVG graph so you can add, edit, delete and connect nodes. It's not quite as easy as a whiteboard and a pen, but it's close, and all interactions are persisted in Neo4J.
 
 You can either make a graph from scratch or browse an existing one using search and paging. You can even "fold" your graph to bring different aspects of it together on the same screen.
 
 Nodes can be added, updated, and removed. New relationships can be made using drag and drop and existing relationships broken.
 
-It's by no means phpmyadmin for Neo4J yet, but one day it could be (maybe).
+It's by no means phpmyadmin for Neo4J, but one day it could be (maybe).
 
-![ScreenShot](https://raw.github.com/julianbrowne/graffeine-build/master/doc/config/images/screenshot-alice-bob.jpeg)
+![ScreenShot](https://raw.github.com/julianbrowne/graffeine/client/images/screenshot-draglet.jpeg)
 
-###Catches?
+### More Detail?
 
-The schema-less nature of nodes and relationships in Neo4J makes it harder to model them visually without prior knowledge. Graffeine turns neo4j nodes and relationships into "GraffNodes" which have a name and a type. These fields are either from a name and type fields in the source graph or inferred from other fields. For example, Jim Webber's famous [Dr Who](https://github.com/jimwebber/neo4j-tutorial) graph does not use 'type' fields instead nodes are of the form:
+The schema-less nature of nodes and relationships in Neo4J makes them slightly problematic to model visually without some prior knowledge. Graffeine turns Neo4J nodes and relationships into ```GraffNodes``` which have name and type fields.
+
+These fields are either from the actual name and type fields in the source graph, or inferred from other fields.
+
+For example, Jim Webber's famous [Dr Who](https://github.com/jimwebber/neo4j-tutorial) graph does not use 'type' fields instead nodes are of the form:
 
 	{ character: "Rose Tyler" }
 
-This is a common situation. In fact for many graph applications using types and rigid schemas can be a bit on an anti-pattern or a smell that the model is trying to be relational in the tables and SQL sense. In this example Graffeine uses the field 'character' as the 'type' and the contents ("Rose Tyler") as the display name. To do this there's a graph.yml configuration file in the conf directory with a nameFields setting of 'character' and a swictch called useNameAsType set to true.
+This is a common situation. In fact for many graph applications using types and rigid schemas can be a bit of an anti-pattern (or a smell that the model is trying to be too rdbms-like). In the case of Dr Who, Graffeine uses the field 'character' as the 'type' and the contents ("Rose Tyler") as the display name.
 
-Types are not critical to Graffeine though, they're just useful for applying CSS to make the visualisation looks nice. Names are only important because they're used to label the SVG circles on screen.
+Node-to-GraffNode mappings are done in the ```graph.json``` file in ```{graffeine_home}/conf```. In this case by adding ```character``` to the list of ```nameFields``` (used in priority order to determine names of nodes) and a also setting ```useNameAsType``` to ```true```.
 
-The graph.yml file in {graffeine_home}/conf has other settings to determine which fields do what.
+Types are not critical to Graffeine though, they're just useful for applying CSS to make the visualisation look nice. Similarly, names are only important because they're used to label the SVG circles in the UI.
 
-![ScreenShot](https://raw.github.com/julianbrowne/graffeine-build/master/doc/config/images/screenshot-draglet.jpeg)
+The ```graph.json``` file has a few other visualisation settings to determine which fields do what. These should be self-explanatory.
 
-###Ingredients
+![ScreenShot](https://raw.github.com/julianbrowne/graffeine/client/images/screenshot-relationship.jpeg)
 
-On the server:
+Check out the [configuration.md](configuration.md) file for more technical detail.
 
-	neo4j				(built with v1.9 and v2.0)
-	node.js				(built with v0.8.25)
+And check out the [guide.md](guide.md) file for a basic user guide.
 
-On the client (all bundled):
+### Help?
 
-	D3					(on screen animation and interactions)
-	JQuery				(ui management)
-	JQuery UI			(primary for on screen dialogs)
-	Underscore.JS		(condenses some of the tedious operations into readable code)
-	Font Awesome 		(icons for each 'type' of node, defaults to a tag icon)
+Yes please.
 
-Tested on latest FF and Chrome browsers. Not sure about others.
+This started as a lunchtime play and grew fast. I've cleaned it up in phases but the code is still a bit untidy. Plus, there's always scope for new features.
 
-![ScreenShot](https://raw.github.com/julianbrowne/graffeine-build/master/doc/config/images/screenshot-relationship.jpeg)
-
-###Install and run
-
-Fetch source off github
-
-    git clone https://github.com/julianbrowne/graffeine.git
-
-or  
-
-
-	npm install graffeine
-
-###Configure
-
-(proper write-up coming soon - most of it is obvious if you rummage around the source)
-
-Although there are a few configuration options all config files contain useful defaults to get started.
-
-As far as client-side configuration goes there's not much that can be done. These are the files of interest:
-
-	{graffeine_home}/public/assets/javascripts/graffeine.conf.js
-
-Holds a few basic variables controlling the with of the graph nodes, the forces that repel them, length os relationship markers etc. The width and height of the svg graph area is also in here.
-	
-	{graffeine_home}/public/assets/stylesheets/graffeine.css
-
-Styling for UI features
-
-	{graffeine_home}/public/assets/javascripts/graph.css
-
-Styling for graph features (circles, labels, relationships etc). Note that it's possible to configure the look and feel of graph nodes on the server side as they are extracted from Neo4J. If this is enabled in the server config file then graph.css will be ignored unless an !important is placed after each setting. It's better though to use one or the other. A rendered graph node appears in the svg as a
-
-	circle.node
-
-element with the node 'type' (person, car, of the name tag used for the node: actor, title, prop in the case of the Dr Who example) as a CSS class. e.g.
-
-	circle.node.person
-
-On the server side all configuration is in the directory
-
-	{graffeine_home}/conf
-	
-There are just 3 important files here:
-
-	{graffeine_home}/conf/server.yml
-
-Holds the node.js server info (just port, default 8004, for now). This is where the browser needs to connect to.
-
-	{graffeine_home}/conf/neo4j.yml
-
-Holds the host and port for connecting to the appropriate Neo4J instance
-
-	{graffeine_home}/conf/graph.yml
-
-Has three main sections: graph, nodes and rels
-
-	graph.nameFields (list)
-
-Fields to look for in Neo4J nodes to use as text labels in the UI. Graffeine will search for all those specified until it finds a match.
-	
-	graph.typeFields (list)
-
-Fields to look for in Neo4J nodes to use as the "type" in the UI. Graffeine will search for all those specified until it finds a match. Types are not important other than for styling - as nodes are marked with a CSS class containing the type it means all nodes denoting people, for example, can be coloured differently to those of cars. By default all nodes have a type of 'default'.
-	
-	graph.useNameAsType (true|false)
-
-Some graphs don't have anything approximating to a type field. There are two choices in this case (1) leave the type as 'default' or (2) tell Graffeine to use the field key used for the name as the type (as explained in the Rose Tyler example above).
-
-![ScreenShot](https://raw.github.com/julianbrowne/graffeine-build/master/doc/config/images/screenshot-styled.jpeg)
-
-	graph.useCssStyle (true|false)
-
-Style can either be set on the server side (false) or on the client using CSS (true). If using CSS then the rest of the config file can be ignored. For server side config then the following settings are relevant:
-
-	nodes:
-	    default:                    # these settings apply to all nodes unless over-ridden below
-        icon: ''            		# textual icon to use for node
-        style:                      # all fields in style map to css (camelCase to camel-case format)
-            fill: '#37FFA9'         # background colour of this node type
-            strokeWidth: '1px'      # width of the line around svg circle
-            stroke: '#002636'       # colour of the line around the svg circle
-        label:
-            fill: '#000000'         # font colour of the text label for this node
-
-Then any of these can be overridden, for example:
-
-	    person:
-    	    icon: ''        		# icon for nodes/person
-        	style:
-            	fill: '#16a085'
-
-###Start
-
-    node server
-
-Connect browser to server port
-
-
-###Menu Usage
-
-![ScreenShot](https://raw.github.com/julianbrowne/graffeine-build/master/doc/config/images/screenshot-menu.jpeg)
-
-**Connect** - button fetches the first few nodes from Neo4J  
-**Start** | **Stop** - buttons start and stop the D3 force (animation) respectively  
-**Replace** | **Update** - button toggles mode of the UI. Replace clears the UI and adds new nodes in their place. Update adds nodes from subsequent queries to the nodes already on screen. With Update you can 'fold' a graph by running two queries and bringing their results together on screen. Note that to prevent CPU melt-down there's a nodeLimit setting in graffeine.conf.js that limits how many nodes will be displayed in total. For large graphs this will be a problem. I think for later versions I'll add better paging features (follow relationships from one node in one direction).  
-**Fetch** - Retrieves a node (and relations) by id or by 'feature' (right now 'orphans': nodes with no relations).  
-**Find** - Retrieves a node by field (only name right now) and type (if there is one)  
-**Add** - add new nodes. Only allows simple nodes right now but useful for building up graphs to play with.  
-**Update** | **Delete** | **Duplicate** - As per each button. Performs the action on the currently selected node.  
-
-![ScreenShot](https://raw.github.com/julianbrowne/graffeine-build/master/doc/config/images/screenshot-self.jpeg)
-
-###Mouse Action
-
-**Select Node** - click it  
-**Unselect Node** - click another or anywhere in the SVG area  
-**Drag Node** - click node, hold and drag about  
-**See Node Relationships** - hover over node for a few seconds  
-**Add relationships** - Drag the 'draglet' (small circle at the bottom of each node) onto either another node or itself (nodes can have relationships to themselves)  
-**Delete Relationships** right click on a node and select which relationship to delete  
-**Page/Follow Node** - double-click node marked with thick dotted line (nodes with thick dotted lines indicate more of the graph lies off screen)   
-
-![ScreenShot](https://raw.github.com/julianbrowne/graffeine-build/master/doc/config/images/screenshot-help.jpeg)
-
-###Help?
-
-Yes please. This started as a lunchtime play and then grew too fast and then swamped me. I've cleaned it up in phases but the code is still really quite messy (very in some places). It needs tests, some serious refactoring (marked in a few places in the code) and quite a bit of elegance added. But it will get there eventually.
-
-Feel free to drop me a line via julianbrowne.com with questions, features requests, suggestions, offers of help etc.
+Feel free to drop me a line via julianbrowne.com or via Github with bugs, questions, features requests, suggestions, offers of help etc.

@@ -27,13 +27,17 @@ from github:
 
     git clone https://github.com/julianbrowne/graffeine
 
+    cd graffeine
+
+    node server
+
 from npm:
 
     npm install graffeine
 
-starting up (in ```node_modules/graffeine``` directory):
+    cd node_modules/graffeine
 
-    node server
+    npm start
 
 point a browser at:
 

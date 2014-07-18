@@ -8,7 +8,7 @@ interface for small graph databases.
 
 Here it is with the, now canonical, Dr Who graph loaded up:
 
-![ScreenShot](https://raw.github.com/julianbrowne/graffeine/client/images/screenshot-drwho.jpeg)
+![ScreenShot](https://raw.githubusercontent.com/julianbrowne/graffeine/master/public/assets/images/screenshot-drwho.jpeg)
 
 ## Dependencies
 
@@ -33,12 +33,12 @@ from npm:
 
 starting up (in ```node_modules``` directory):
 
-	node server
+    node server
 
 point a browser at:
 
     http://localhost:8004
-	
+    
 ### Background
 
 Graph databases are amazing things.
@@ -49,7 +49,7 @@ Could you get more human than that? And yet, for reasons that are hard to fathom
 
 Graffeine was born because I wanted to show people how great graph thinking is and how close to the way we model things in our heads graphs like their data. Neo4J is the best graph tool I know of and despite there being plenty of complimentary tools out there all the ones I played with got in the way a bit when all I wanted to do was add a node (Alice), then another (Bob), and then **feel** all that graph loveliness coming through when I connected them and extended their relationships.
 
-![ScreenShot](https://raw.github.com/julianbrowne/graffeine/client/images/screenshot-alice-bob.jpeg)
+![ScreenShot](https://raw.githubusercontent.com/julianbrowne/graffeine/master/public/assets/images/screenshot-alice-bob.jpeg)
 
 I felt there was a tool missing. One that promotes the explaining of graphs, exploring of graphs, and above all the seeing of graphs. . Graffeine is an initial attempt at this. It won't ever be a suitable tool for hard core admin tasks on large production systems but it could work for small systems, spikes, demos, and generally helping spread the graph awesomeness.
 
@@ -63,7 +63,7 @@ Nodes can be added, updated, and removed. New relationships can be made using dr
 
 It's by no means phpmyadmin for Neo4J, but one day it could be (maybe).
 
-![ScreenShot](https://raw.github.com/julianbrowne/graffeine/client/images/screenshot-draglet.jpeg)
+![ScreenShot](https://raw.githubusercontent.com/julianbrowne/graffeine/master/public/assets/images/screenshot-draglet.jpeg)
 
 ### More Detail?
 
@@ -73,7 +73,7 @@ These fields are either from the actual name and type fields in the source graph
 
 For example, Jim Webber's famous [Dr Who](https://github.com/jimwebber/neo4j-tutorial) graph does not use 'type' fields instead nodes are of the form:
 
-	{ character: "Rose Tyler" }
+    { character: "Rose Tyler" }
 
 This is a common situation. In fact for many graph applications using types and rigid schemas can be a bit of an anti-pattern (or a smell that the model is trying to be too rdbms-like). In the case of Dr Who, Graffeine uses the field 'character' as the 'type' and the contents ("Rose Tyler") as the display name.
 
@@ -83,7 +83,7 @@ Types are not critical to Graffeine though, they're just useful for applying CSS
 
 The ```graph.json``` file has a few other visualisation settings to determine which fields do what. These should be self-explanatory.
 
-![ScreenShot](https://raw.github.com/julianbrowne/graffeine/client/images/screenshot-relationship.jpeg)
+![ScreenShot](https://raw.githubusercontent.com/julianbrowne/graffeine/master/public/assets/images/screenshot-relationship.jpeg)
 
 Check out the [configuration.md](configuration.md) file for more technical detail.
 

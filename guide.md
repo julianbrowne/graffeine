@@ -1,6 +1,6 @@
 ### User Guide
 
-![ScreenShot](https://raw.github.com/julianbrowne/graffeine/client/images/screenshot-menu.jpeg)
+![ScreenShot](https://raw.githubusercontent.com/julianbrowne/graffeine/master/public/assets/images/screenshot-menu.jpeg)
 
 **Connect** - button fetches the first few nodes from Neo4J  
 **Start** | **Stop** - buttons start and stop the D3 force (animation) respectively  
@@ -10,7 +10,7 @@
 **Add** - add new nodes. Only allows simple nodes right now but useful for building up graphs to play with.  
 **Update** | **Delete** | **Duplicate** - As per each button. Performs the action on the currently selected node.  
 
-![ScreenShot](https://raw.github.com/julianbrowne/graffeine/client/images/screenshot-self.jpeg)
+![ScreenShot](https://raw.githubusercontent.com/julianbrowne/graffeine/master/public/assets/images/screenshot-self.jpeg)
 
 ### Mouse Action
 
@@ -22,4 +22,4 @@
 **Delete Relationships** right click on a node and select which relationship to delete  
 **Page/Follow Node** - double-click node marked with thick dotted line (nodes with thick dotted lines indicate more of the graph lies off screen)   
 
-![ScreenShot](https://raw.github.com/julianbrowne/graffeine/client/images/screenshot-help.jpeg)
+![ScreenShot](https://raw.githubusercontent.com/julianbrowne/graffeine/master/public/assets/images/screenshot-help.jpeg)

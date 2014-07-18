@@ -46,7 +46,7 @@ Fields to look for in Neo4J nodes to use as the "type" in the UI. Graffeine will
 
 Some graphs don't have anything approximating to a type field. There are two choices in this case (1) leave the type as 'default' or (2) tell Graffeine to use the field key used for the name as the type (as explained in the Rose Tyler example above).
 
-![ScreenShot](https://raw.github.com/julianbrowne/graffeine/client/images/screenshot-styled.jpeg)
+![ScreenShot](https://raw.githubusercontent.com/julianbrowne/graffeine/master/public/assets/images/screenshot-styled.jpeg)
 
     graph.useCssStyle (true|false)
 

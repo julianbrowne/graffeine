@@ -7,6 +7,7 @@
 - websocket channel for new nodes renamed to node-add to keep client and server consistent
 - bumped up all npm dependencies to latest versions: d3 (3.1.10), neo4j (1.1.0), node-static (0.6.9), socket.io (0.9.17)
 - server doesn't stop just because a cypher query returned an error
+- server errors can now be seen in the web client
 
 ### 2014-07-18  V0.0.3
 

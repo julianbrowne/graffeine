@@ -1,44 +1,28 @@
 
-var sio     = require('socket.io');
-var http    = require('http');
-var content = require('node-static');
-var cmd     = require('./lib/command').cmd;
-var g       = require('./lib/common');
+var sio        = require('socket.io');
+var http       = require('http');
+var content    = require('node-static');
+var commServer = require('./lib/command');
+var graffeine  = require('./lib/common');
 
-g.log('Starting Graffeine server');
+graffeine.log('Starting Graffeine server');
 
-var file = new(content.Server)('public');
+var www = new(content.Server)('public');
+var srv = http.createServer(graffeine.handler(www));
 
-// changed handler not to hang with later versions of node.js
+srv.listen(graffeine.config.server.port);
 
-var handler = function(request, response) { 
-    file.serve(request, response, function (err, res) { 
-        if (err) { 
-            console.error("ERROR: Problem serving " + request.url + " - " + err.message);
-            response.writeHead(err.status, err.headers);
-            response.end();
-        }
-        else {
-            // console.log("> " + request.url + " - " + res.message);
-        }
-    });
-};
+graffeine.log('Open browser to http://127.0.0.1:' + graffeine.config.server.port);
+graffeine.log('Starting WS server on ' + graffeine.config.server.port);
 
-var srv = http.createServer(handler);
-
-srv.listen(g.config.server.port);
-
-g.log('Open browser to http://127.0.0.1:' + g.config.server.port);
-g.log('Starting WS server on ' + g.config.server.port);
-
-var ws = srv.listen(g.config.server.port);
+var ws = srv.listen(graffeine.config.server.port);
 var conn = sio.listen(ws, { log: false });
 
-conn.sockets.on('connection', function (socket) {
+conn.sockets.on('connection', function (socket) { 
 
-    var command = new cmd.Server(socket);
-    
-    g.log('Got connection');
+    var command = new commServer(socket);
+    global.graffeineClientSocket = socket;
+    graffeine.log('Got connection');
 
     socket.on('graph-init',    command.graphInitialise);
     socket.on('graph-stats',   command.graphStatistics);

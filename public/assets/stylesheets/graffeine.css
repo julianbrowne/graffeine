@@ -26,6 +26,16 @@ body {
     font-size: 2em;
 }
 
+#flash { 
+    background: #DEDEDE;
+    color: #FF0000;
+    border: 1px solid #FFFFFF;
+    font-family: courier;
+    font-size: 20px;
+    padding: 10px;
+    margin: 10px 50px;
+}
+
 #console {
     width: 1520px;
     margin: 20px 100px;

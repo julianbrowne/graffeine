@@ -77,7 +77,7 @@ Graffeine.command = function(graph) {
 
         // delete existing node
 
-        this.recv('node-delete', function (data) {
+        this.recv('node-delete', function (data) { 
             graph.debugMesg("(node-delete) processing");
             graph.removeNode(data.id);
             graph.ui.clearNodeMenuData();
@@ -86,7 +86,7 @@ Graffeine.command = function(graph) {
 
         // update existing node
 
-        this.recv('node-update', function (node) {
+        this.recv('node-update', function (node) { 
             graph.debugMesg("(node-update) processing");
             graph.addNode(node.data);
             graph.resetLinks();
@@ -95,11 +95,18 @@ Graffeine.command = function(graph) {
 
         // delete existing rel
 
-        this.recv('rel-delete', function (data) {
+        this.recv('rel-delete', function (data) { 
             graph.debugMesg("(rel-delete) processing");
             graph.removeLink(data.source, data.target, data.rel);
             graph.refresh();
         }, true);
+
+        // errors
+
+        this.recv('server-error', function (data) { 
+            $('#flash').html(data.message);
+            $('#flash').slideDown(function() { setTimeout(function() { $('#flash').slideUp(); }, 5000); });
+        });
 
     };
 };
@@ -1556,6 +1563,7 @@ Graffeine.ui.prototype.clearDrag = function() {
 
 Graffeine.ui.prototype.hideDialogs = function() {
     $(".dialog").hide();
+    $('#flash').hide();
 }
 /**
  *  register event handlers for various button clicks in ui

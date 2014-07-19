@@ -12,14 +12,9 @@ Here it is with the, now canonical, Dr Who graph loaded up:
 
 ## Dependencies
 
--   node.js: v0.10.\* (also tested on 0.8.\*, 0.9.\*)
--   neo4j: v2.0, V2.1
--   a modern browser that is happy with:  
-    D3                  (on screen animation and interactions)  
-    JQuery              (UI management)  
-    JQuery UI           (primarily for on screen dialogues)  
-    Underscore.JS       (condenses some of the tedious operations into readable code)  
-    Font Awesome        (icons for each 'type' of node, defaults to a tag icon)  
+-   **node.js** v0.10+
+-   **neo4j** v2.0, V2.1
+-   a **modern browser** that is happy with [D3](http://d3js.org/) v2, [JQuery](http://jquery.com/) v1.9.1, JQuery UI, Underscore.JS, Font Awesome
 
 ## Installation
 

@@ -51,15 +51,19 @@ They should be the easiest of all persistence technologies to understand because
 
 Could you get more human than that? And yet, for reasons that are hard to fathom, graphs have taken a back seat to all the other nosql products.
 
+![ScreenShot](https://raw.githubusercontent.com/julianbrowne/graffeine/master/public/assets/images/screenshot-alice-bob.jpeg)
+
 Graffeine was born because I wanted to show people how great graph thinking is and how close to the way we model things in our heads graphs like their data. Neo4J is the best graph tool I know of and despite there being plenty of complimentary tools out there all the ones I played with got in the way a bit when all I wanted to do was add a node (Alice), then another (Bob), and then **feel** all that graph loveliness coming through when I connected them and extended their relationships.
 
-![ScreenShot](https://raw.githubusercontent.com/julianbrowne/graffeine/master/public/assets/images/screenshot-alice-bob.jpeg)
+![ScreenShot](https://raw.githubusercontent.com/julianbrowne/graffeine/master/public/assets/images/screenshot-help.jpeg)
 
 I felt there was a tool missing. One that promotes the explaining of graphs, exploring of graphs, and above all the seeing of graphs. . Graffeine is an initial attempt at this. It won't ever be a suitable tool for hard core admin tasks on large production systems but it could work for small systems, spikes, demos, and generally helping spread the graph awesomeness.
 
 ### What is it?
 
 Graffeine plugs into Neo4J and renders nodes and relationships as an interactive D3 SVG graph so you can add, edit, delete and connect nodes. It's not quite as easy as a whiteboard and a pen, but it's close, and all interactions are persisted in Neo4J.
+
+![ScreenShot](https://raw.githubusercontent.com/julianbrowne/graffeine/master/public/assets/images/screenshot-self.jpeg)
 
 You can either make a graph from scratch or browse an existing one using search and paging. You can even "fold" your graph to bring different aspects of it together on the same screen.
 
@@ -79,6 +83,8 @@ For example, Jim Webber's famous [Dr Who](https://github.com/jimwebber/neo4j-tut
 
     { character: "Rose Tyler" }
 
+![ScreenShot](https://raw.githubusercontent.com/julianbrowne/graffeine/master/public/assets/images/screenshot-styled.jpeg)
+
 This is a common situation. In fact for many graph applications using types and rigid schemas can be a bit of an anti-pattern (or a smell that the model is trying to be too rdbms-like). In the case of Dr Who, Graffeine uses the field 'character' as the 'type' and the contents ("Rose Tyler") as the display name.
 
 Node-to-GraffNode mappings are done in the ```graph.json``` file in ```{graffeine_home}/conf```. In this case by adding ```character``` to the list of ```nameFields``` (used in priority order to determine names of nodes) and a also setting ```useNameAsType``` to ```true```.
@@ -92,6 +98,8 @@ The ```graph.json``` file has a few other visualisation settings to determine wh
 * Check out the [configuration.md](configuration.md) file for more technical detail
 * Check out the [guide.md](guide.md) file for a basic user guide
 * Check out the [change log](changelog.md) for recent updates
+
+![ScreenShot](https://raw.githubusercontent.com/julianbrowne/graffeine/master/public/assets/images/screenshot-menu.jpeg)
 
 ### Help?
 

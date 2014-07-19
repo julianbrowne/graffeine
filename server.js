@@ -9,7 +9,6 @@ graffeine.log('Starting Graffeine server');
 
 var www = new(content.Server)('public');
 var srv = http.createServer(graffeine.handler(www));
-
 srv.listen(graffeine.config.server.port);
 
 graffeine.log('Open browser to http://127.0.0.1:' + graffeine.config.server.port);
@@ -21,7 +20,6 @@ var conn = sio.listen(ws, { log: false });
 conn.sockets.on('connection', function (socket) { 
 
     var command = new commServer(socket);
-    global.graffeineClientSocket = socket;
     graffeine.log('Got connection');
 
     socket.on('graph-init',    command.graphInitialise);

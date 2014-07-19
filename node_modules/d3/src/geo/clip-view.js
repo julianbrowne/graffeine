@@ -49,7 +49,7 @@ function d3_geo_clipView(x0, y0, x1, y1) {
           y = p[1];
 
       for (var i = 0; i < n; ++i) {
-        for (var j = 1, v = polygon[i], m = v.length, a = v[0]; j < m; ++j) {
+        for (var j = 1, v = polygon[i], m = v.length, a = v[0], b; j < m; ++j) {
           b = v[j];
           if (a[1] <= y) {
             if (b[1] >  y && isLeft(a, b, p) > 0) ++wn;
@@ -136,7 +136,7 @@ function d3_geo_clipView(x0, y0, x1, y1) {
             }
             listener.point(b[0], b[1]);
             if (!v) listener.lineEnd();
-          } else {
+          } else if (v) {
             listener.lineStart();
             listener.point(x, y);
           }

@@ -1,5 +1,6 @@
 {
     "nodejs": { 
         "port": 8004
-    }
+    },
+    "debug": false
 }

@@ -89,9 +89,9 @@ The ```graph.json``` file has a few other visualisation settings to determine wh
 
 ![ScreenShot](https://raw.githubusercontent.com/julianbrowne/graffeine/master/public/assets/images/screenshot-relationship.jpeg)
 
-Check out the [configuration.md](configuration.md) file for more technical detail.
-
-And check out the [guide.md](guide.md) file for a basic user guide.
+* Check out the [configuration.md](configuration.md) file for more technical detail
+* Check out the [guide.md](guide.md) file for a basic user guide
+* Check out the [change log](changelog.md) for recent updates
 
 ### Help?
 

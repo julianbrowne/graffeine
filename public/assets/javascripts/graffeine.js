@@ -48,8 +48,8 @@ Graffeine.command = function(graph) {
 
         // add new node
 
-        this.recv('node-new', function (data) {
-            graph.debugMesg("(node-new) processing");
+        this.recv('node-add', function (data) { 
+            graph.debugMesg("(node-add) processing: " + JSON.stringify(data.node));
             graph.addNode(data.node);
             graph.refresh();
         }, true);
@@ -236,7 +236,7 @@ Graffeine.graph = function(config) {
     this.handler     = new Graffeine.eventHandler(this);
 
     this.settings    = Graffeine.conf.graphSettings;
-    this.debug       = false;
+    this.debug       = true;
     this.refs.div    = this.ui.identifiers.graphPlaceholder;
     this.updateMode  = 'replace';           // {'update'|'replace'} for new svg data
 
@@ -251,9 +251,9 @@ Graffeine.graph = function(config) {
         return size;
     };
 
-    this.debugMesg = function(mesg) {
+    this.debugMesg = function(mesg) { 
         if(this.debug)
-            console.log("DEBUG : " + mesg);
+            console.log("DEBUG : %s", mesg);
     };
 
 
@@ -351,10 +351,11 @@ Graffeine.graph.prototype.addNode = function(node) {
         return;
     }
 
-    this.debugMesg("(addNode) Adding node " + node.id);
+    this.debugMesg("(addNode) Adding node " + JSON.stringify(node.data));
     var n = new Graffeine.Node(node);
     if(this.data.nodes[n.id] !== undefined) n.transferD3Data(this.data.nodes[n.id]);
     this.data.nodes[n.id] = n;
+    console.log(n);
     this.addNodeType(n.type);
 };
 
@@ -493,8 +494,9 @@ Graffeine.graph.prototype.checkLinks = function() {
  *  @param {string} nodeType string defining the type of node
 **/
 
-Graffeine.graph.prototype.addNodeType = function(nodeType) {
+Graffeine.graph.prototype.addNodeType = function(nodeType) { 
 
+    this.debugMesg("(addNodeType) Adding node type of " + nodeType);
     this.data.nodeTypes.push(nodeType);
     this.data.nodeTypes = this.data.nodeTypes.sort().filter(function(el,i,a) {
         if(i===a.indexOf(el)) return 1;
@@ -580,8 +582,9 @@ Graffeine.Link = function(source, target, rel) {
 Graffeine.Node = function(graffnode) {
 
     var node = this;
-
     this.data = graffnode.data;
+
+    console.log(graffnode);
 
     Object.keys(graffnode).forEach(function(key){
         node[key] = graffnode[key];
@@ -593,7 +596,7 @@ Graffeine.Node = function(graffnode) {
         return this.name;
     };
 
-    this.getIcon = function() {
+    this.getIcon = function() { 
         if(this.type === undefined)
             return "?";
         if(Graffeine.conf && Graffeine.conf.nodeIconFor) {

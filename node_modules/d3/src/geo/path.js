@@ -6,6 +6,7 @@ import "bounds";
 import "centroid";
 import "geo";
 import "path-area";
+import "path-bounds";
 import "path-buffer";
 import "path-centroid";
 import "path-context";
@@ -41,7 +42,9 @@ d3.geo.path = function() {
   };
 
   path.bounds = function(object) {
-    return d3_geo_bounds(projectStream)(object);
+    d3_geo_pathBoundsX1 = d3_geo_pathBoundsY1 = -(d3_geo_pathBoundsX0 = d3_geo_pathBoundsY0 = Infinity);
+    d3.geo.stream(object, projectStream(d3_geo_pathBounds));
+    return [[d3_geo_pathBoundsX0, d3_geo_pathBoundsY0], [d3_geo_pathBoundsX1, d3_geo_pathBoundsY1]];
   };
 
   path.projection = function(_) {
@@ -64,13 +67,6 @@ d3.geo.path = function() {
 
   return path.projection(d3.geo.albersUsa()).context(null);
 };
-
-function d3_geo_pathCircle(radius) {
-  return "m0," + radius
-      + "a" + radius + "," + radius + " 0 1,1 0," + (-2 * radius)
-      + "a" + radius + "," + radius + " 0 1,1 0," + (+2 * radius)
-      + "z";
-}
 
 function d3_geo_pathProjectStream(project) {
   var resample = d3_geo_resample(function(λ, φ) { return project([λ * d3_degrees, φ * d3_degrees]); });

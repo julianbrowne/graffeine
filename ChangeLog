@@ -1,7 +1,0 @@
-## ChangeLog
-
-### 2014-07-18  V0.0.3
-
-- removed dependency on 'js-yaml', reverting to json only for config files to keep it simpler and more 'nodey'
-- included pull request from Ron Koren (with thanks) to update query syntax to neo4j 2.0+
-- fixed css image reference error that appeared in the console log

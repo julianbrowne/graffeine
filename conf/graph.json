@@ -1,6 +1,6 @@
 { 
     "graph": { 
-        "useNameAsType": true,
+        "useNameAsType": false,
         "useCssStyle": true,
         "nameFields": [ 
             "name",

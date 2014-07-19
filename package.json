@@ -27,11 +27,11 @@
     "doc": "doc",
     "test": "test"
   },
-  "dependencies": {
-    "d3": "~3.1.6",
-    "neo4j": "~0.2.20",
-    "node-static": "~0.6.9",
-    "socket.io": "~0.9.14"
+  "dependencies": { 
+    "d3": "3.1.10",
+    "neo4j": "1.1.0",
+    "node-static": "0.6.9",
+    "socket.io": "0.9.17"
   },
   "bundledDependencies": [
     "d3",

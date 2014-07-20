@@ -1,8 +1,8 @@
 {
   "name": "graffeine",
-  "version": "0.0.3",
-  "description": "Caffeinated Neo4J Graph Exploration",
-  "contributors": [
+  "version": "0.0.4",
+  "description": "Caffeinated Neo4J Graph Admin",
+  "contributors": [ 
     "Julian Browne"
   ],
   "homepage": "https://github.com/julianbrowne/graffeine",
@@ -21,7 +21,7 @@
     "start": "node server.js"
   },
   "gitHead": "bf98fc30e71141fc4a07bce1714f14c912a6ef4e",
-  "readmeFilename": "README.md",
+  "readmeFilename": "readme.md",
   "main": "server.js",
   "directories": {
     "doc": "doc",

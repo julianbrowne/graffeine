@@ -1,6 +1,6 @@
 ## ChangeLog
 
-### 2014-07-22  V0.0.4
+### 2014-07-20  V0.0.4
 
 - fixed bug in model that prevented node from being deleted properly with cypher V2.0+
 - fixed bug in model that couldn't find orhan nodes with cypher V2.0+
@@ -9,6 +9,7 @@
 - server doesn't stop just because a cypher query returned an error
 - server errors can now be seen in the web client
 - the 'find' button in the UI now wildcards to 'all' when the name field is empty
+- minor css tidy
 
 ### 2014-07-18  V0.0.3
 

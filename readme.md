@@ -14,7 +14,7 @@ Here it is with the, now canonical, Dr Who graph loaded up:
 
 -   **node.js** v0.10+
 -   **neo4j** v2.0, V2.1
--   a **modern browser** that is happy with [D3](http://d3js.org/) v2, [JQuery](http://jquery.com/) v1.9.1, JQuery UI, Underscore.JS, Font Awesome
+-   a **modern browser** that is happy with [D3](http://d3js.org/) v2, [JQuery](http://jquery.com/) v1.9.1, JQuery UI, Underscore.JS and Font Awesome
 
 ## Installation
 

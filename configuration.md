@@ -12,7 +12,7 @@ This file holds a few basic variables controlling the width of the graph nodes, 
 
 Contains styling for general UI features.
 
-    {graffeine_home}/public/assets/javascripts/graph.css
+    {graffeine_home}/public/assets/stylesheets/graph.css
 
 Contains styling for graph-specific features (circles, labels, relationships etc).
 
@@ -24,7 +24,7 @@ On the server side all configuration is in the directory ```{graffeine_home}/con
 
     {graffeine_home}/conf/server.json
 
-Holds the node.js server info (just port, default 8004, for now). This is where the browser needs to connect to.
+Holds the node.js server info (port for http server, default 8004 and option to increase debug output).
 
     {graffeine_home}/conf/neo4j.json
 
@@ -52,7 +52,7 @@ Style can either be set on the server side (false) or on the client using CSS (t
 
     nodes:
         default:                    # these settings apply to all nodes unless over-ridden below
-        icon: ''                   # textual icon to use for node
+        icon: '@'                   # textual icon to use for node
         style:                      # all fields in style map to css (camelCase to camel-case format)
             fill: '#37FFA9'         # background colour of this node type
             strokeWidth: '1px'      # width of the line around svg circle
@@ -63,6 +63,6 @@ Style can either be set on the server side (false) or on the client using CSS (t
 Then any of these can be overridden, for example:
 
         person:
-            icon: ''               # icon for nodes/person
+            icon: 'X'               # icon for nodes/person
             style:
                 fill: '#16a085'

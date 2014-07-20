@@ -5,6 +5,14 @@ body {
     padding: 0;
 }
 
+sub { 
+    font-size: 8px;
+    vertical-align: bottom;
+    line-height: 0;
+    position: relative;
+    top: -5px;
+}
+
 #container {
     margin: 0;
     padding: 0;
@@ -27,13 +35,16 @@ body {
 }
 
 #flash { 
+    position: absolute;
+    top: 0;
+    left: 0;
     background: #DEDEDE;
     color: #FF0000;
     border: 1px solid #FFFFFF;
     font-family: courier;
     font-size: 20px;
     padding: 10px;
-    margin: 10px 50px;
+    margin: 200px 150px;
 }
 
 #console {
@@ -41,10 +52,11 @@ body {
     margin: 20px 100px;
 }
 
-#console .stats {
-    background: #34495e;
+#console .stats { 
+    line-height: 25px;
+    font-family: courier;
     margin: 5px;
-    padding: 5px;
+    padding: 0;
 }
 
 #graph {
@@ -81,39 +93,37 @@ svg {
 .section-label {
     color: #ecf0f1;
     background: #2c3e50;
-    font-family: courier;
     font-size: 14px;
-    padding: 5px;
 }
 
 .subsection {
     position: relative;
+    line-height: 25px;
 }
 
 .subsection-label {
     color: #34495e;
     background: #7f8c8d;
-    font-family: courier;
     font-size: 12px;
-    padding: 5px;
 }
 
 .item-label {
     color: #2c3e50;
     background: #95a5a6;
-    font-family: courier;
     font-size: 12px;
-    padding: 5px 10px;
-    margin: 2px 0 2px 2px;
 }
 
-.item-value, input, select {
+.item-value, input, select { 
     color: #000000;
     background: #FFFFFF;
-    font-family: courier;
     font-size: 12px;
+}
+
+.section-label, .subsection-label, .item-label, .item-value, input, select { 
+    line-height: 25px;
     padding: 5px 10px;
-    margin: 2px 2px 2px 0;
+    margin: 2px;
+    border: none;
 }
 
 .width-20 {
@@ -171,9 +181,11 @@ svg {
 .form-button {
     color: #FFFFFF;
     background: #d35400;
+    border-radius: 5px;
     font-family: courier;
     font-size: 12px;
     padding: 5px 10px;
+    margin: 5px;
     border: none;
 }
 

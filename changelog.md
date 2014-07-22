@@ -1,5 +1,9 @@
 ## ChangeLog
 
+### TBD  V0.0.5
+
+- node labels are now returned from neo4j and displayed on the node info menu
+
 ### 2014-07-20  V0.0.4
 
 - fixed bug in model that prevented node from being deleted properly with cypher V2.0+

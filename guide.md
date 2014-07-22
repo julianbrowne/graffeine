@@ -13,7 +13,7 @@
 **Select Node** - click it  
 **Unselect Node** - click another or anywhere in the SVG area  
 **Drag Node** - click node, hold and drag about  
-**See Node Relationships** - hover over node for a few seconds  
+**See Node Information** - hover over node for a few seconds to reveal node relationships and labels
 **Add relationships** - Drag the 'draglet' (small circle at the bottom of each node) onto either another node or itself (nodes can have relationships to themselves)  
 **Delete Relationships** right click on a node and select which relationship to delete  
 **Page/Follow Node** - double-click node marked with thick dotted line (nodes with thick dotted lines indicate more of the graph lies off screen)   

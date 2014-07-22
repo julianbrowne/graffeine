@@ -54,6 +54,14 @@ Graffeine.command = function(graph) {
             graph.refresh();
         }, true);
 
+        // found node labels
+
+        this.recv('node-labels', function (data) { 
+            graph.debugMesg("(node-labels) processing: " + JSON.stringify(data));
+            graph.data.nodes[data.id].addLabels(data.labels);
+            graph.refresh();
+        });
+
         // join nodes
 
         this.recv('node-join', function (data) {
@@ -362,8 +370,9 @@ Graffeine.graph.prototype.addNode = function(node) {
     var n = new Graffeine.Node(node);
     if(this.data.nodes[n.id] !== undefined) n.transferD3Data(this.data.nodes[n.id]);
     this.data.nodes[n.id] = n;
-    console.log(n);
     this.addNodeType(n.type);
+    this.debugMesg("(addNode) Fetching labels for node " + n.id);
+    this.command.send('node-labels', { id: n.id });
 };
 
 /**
@@ -590,6 +599,7 @@ Graffeine.Node = function(graffnode) {
 
     var node = this;
     this.data = graffnode.data;
+    this.labels = [];
 
     console.log(graffnode);
 
@@ -601,6 +611,10 @@ Graffeine.Node = function(graffnode) {
 
     this.getName = function() {
         return this.name;
+    };
+
+    this.addLabels = function(labelsArray) { 
+        this.labels = labelsArray;
     };
 
     this.getIcon = function() { 
@@ -1447,11 +1461,14 @@ Graffeine.ui.prototype.clearNodeMenuData = function() {
  *  @param {d3node} node the associated data node in d3
 **/
 
-Graffeine.ui.prototype.showNodeInformation = function(node) {
-    graph.debugMesg("(showNodeInformation) for node   " + node.id);
-    graph.debugMesg("(showNodeInformation) rels found " + node.getRels(graph).length);
+Graffeine.ui.prototype.showNodeInformation = function(node) { 
+    graph.debugMesg("(showNodeInformation) for node: " + node.id);
+    graph.debugMesg("(showNodeInformation) rels found: " + node.getRels(graph).length);
+    graph.debugMesg("(showNodeInformation) node data: " + JSON.stringify(node));
     var rels = Graffeine.util.relsArrayToHTML(node.id, node.getRels(graph));
     $(this.identifiers.nodeInfoRels).html(rels);
+    var labels = node.labels.join(', ');
+    $(this.identifiers.nodeInfoLabels).html(labels);
     var left  = node.x + (Graffeine.conf.graphSettings.circleRadius * 2) - 5;
     var right = node.y + 40;
     graph.debugMesg("(showNodeInformation) pos left  " + left);
@@ -1658,6 +1675,7 @@ Graffeine.ui.prototype.identifiers = {
     nodeEditableData: '#node-data',                             // html form section for managing node data
     nodeInfo:         '#node-info',                             // html float, shown on mouseover, for node information
     nodeInfoRels:     '#node-rels',                             // --> rels info inside nodeInfo html floater
+    nodeInfoLabels:   '#node-labels',                           // --> labels info inside nodeInfo html floater
     relDialog:        '#new-relationship-dialog-form',          // new rel dialog
     nodeMenu:         '#node-menu',                             // html float, shown on right click, for node editing
     notThere:         '#not-there'

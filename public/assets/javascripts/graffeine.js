@@ -1,8 +1,10 @@
 /**
- *  Graph command manager 
+ *  Client-side graph command manager
 **/
 
 Graffeine = Graffeine || {};
+
+
 
 Graffeine.command = function(graph) {
 
@@ -27,7 +29,7 @@ Graffeine.command = function(graph) {
 
     this.recv = function(command, callback, visUpdate) {
         graph.socket.on(command, function(data) {
-            if(visUpdate) graph.socket.emit('graph-stats', {});
+            if (visUpdate) graph.socket.emit('graph-stats', {});
             callback(data);
         });
         graph.debugMesg("(command.recv) registered receiver for > " + command);
@@ -232,7 +234,7 @@ Graffeine.graph = function(config) {
         text:     null,         // ref to svg text (node label) elems
         icon:     null,         // ref to svg text (node icon) elems
         tooltip:  null,         // ref to tooltip for paths/rels
-        linkMenu: null,         // TODO: investigate use then maybe delete?
+        linkMenu: null          // TODO: investigate use then maybe delete?
     };
 
     this.state = {
@@ -655,7 +657,7 @@ Graffeine.Node = function(graffnode) {
     **/
 
     this.transferD3Data = function(oldNode) {
-        fields = [ 'x', 'y', 'px', 'py', 'weight', 'index']
+        var fields = [ 'x', 'y', 'px', 'py', 'weight', 'index']
         var node = this;
         fields.forEach(function(field) {
             node[field] = oldNode[field];
@@ -1429,7 +1431,16 @@ Graffeine.ui.prototype.forceStop = function() {
 
 Graffeine.ui.prototype.showNodeEditForm = function(node) {
     graph.debugMesg("(showNodeEditForm) showing form for node " + node.id);
-    $(this.identifiers.nodeEditableData).html(Graffeine.util.objectToForm(node.data, { type: { data: graph.data.nodeTypes, user: true, selected: node.type }}));
+
+    for (var i=0;i<Graffeine.conf.editFields.length;i++)
+    {
+     if (node.data[Graffeine.conf.editFields[i]]==null)
+         node.data[Graffeine.conf.editFields[i]]="";
+    }
+    var html = Graffeine.util.objectToForm(node.data, { type: { data: graph.data.nodeTypes, user: true, selected: node.type }});
+
+
+    $(this.identifiers.nodeEditableData).html(html);
     this.disableActionButtons(false);
 };
 
@@ -1615,9 +1626,13 @@ Graffeine.ui.prototype.registerButtonClicks = function() {
         graph.command.send('node-find', { name: name, type: type });
     });
 
+    /**
+     * When the user clicks "update".
+     * TODO: Accept empty properties
+     */
     $("#node-edit-update").click(function(e) {
         var newObj = Graffeine.util.formToObject('node-data');
-        var nodeId = graph.state.selectedNode.data.id;
+          var nodeId = graph.state.selectedNode.data.id;
         graph.command.send('node-update', { id: nodeId, data: newObj });
     });
 

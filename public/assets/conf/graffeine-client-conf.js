@@ -27,3 +27,10 @@ Graffeine.conf.graphSettings = {
 Graffeine.conf.core = {
     host: 'http://127.0.0.1'    // where the node.js server be at
 };
+
+/**
+ * List of fields that will always be displayed when an object is selected
+ */
+Graffeine.conf.editFields=["name"];
+
+

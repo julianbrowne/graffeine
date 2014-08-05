@@ -30,9 +30,7 @@ from npm:
 
     npm install graffeine
 
-    cd node_modules/graffeine
-
-    npm start
+    npm start graffeine
 
 point a browser at:
 

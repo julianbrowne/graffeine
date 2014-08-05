@@ -1,6 +1,6 @@
 {
   "name": "graffeine",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "Caffeinated Neo4J Graph Admin",
   "contributors": [ 
     "Julian Browne"

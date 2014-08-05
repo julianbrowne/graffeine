@@ -1,6 +1,6 @@
 ## ChangeLog
 
-### TBD  V0.0.5
+### 2014-08-05  V0.0.5
 
 - node labels are now returned from neo4j and displayed on the node info menu
 

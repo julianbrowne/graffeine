@@ -1,0 +1,7 @@
+{
+    "http": { 
+        "port": 8004,
+        "docRoot": "client"
+    },
+    "debug": false
+}

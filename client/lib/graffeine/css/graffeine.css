@@ -1,0 +1,64 @@
+
+@import url("graph.css");
+
+.popover { 
+  max-width: none;
+}
+
+.separator {
+
+  height: 1px;
+  margin: 9px 0;
+  overflow: hidden;
+  background-color: #e5e5e5;
+}
+
+.node-info-panel { 
+    display: inline-block;
+    position: absolute;
+}
+
+#node-info-content > div.arrow { 
+    top: 55px;
+}
+
+#node-info-content > div.panel-heading { 
+    border-top-left-radius: 6px;
+    border-top-right-radius: 6px;
+}
+
+#node-context-paths td { 
+    vertical-align: middle;
+    padding: 2px;
+    border: none;
+}
+
+input {
+    margin: 2px;
+    padding-left: 2px !important;
+    padding-right: 2px !important;
+}
+
+.table>tbody>tr>td, .table>tbody>tr>th, .table>tfoot>tr>td, .table>tfoot>tr>th, .table>thead>tr>td, .table>thead>tr>th { 
+    padding: 2px;
+    vertical-align: middle;
+    border: none;
+}
+
+.relationship { 
+  color: #31708f;
+}
+
+.brand { 
+  font-family: courier;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+button { 
+  outline:0 !important;
+}
+
+svg { 
+  border: 1px solid #DDDDDD;
+}

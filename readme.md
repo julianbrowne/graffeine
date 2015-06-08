@@ -1,6 +1,18 @@
 
 # Graffeine
 
+## Update June 2015
+
+Graffeine has been (almost) completely re-written. Some of the major changes include:
+
+*   Styling. Swapped out all the JQuery UI styling and replaced with Bootstrap. This gives a much cleaner interface that is clear in HTML terms and also more extendible.
+*   Tests. The original suffered from a lack of them. The new version has far more.
+*   Redesigned. There are now two directories: a server-side component and a client side GUI. The client can be run on it's own, which means it's easy to replace the server with another (ruby, java) version.
+*   Cleaned. All UI components are now self-contained and follow a similar (JavaScript [Module](http://www.adequatelygood.com/JavaScript-Module-Pattern-In-Depth.html)) pattern.
+*   Functionality. Everything that came up in new feature requests has been added.
+
+## Introduction
+
 Caffeinated Graph Exploration for Neo4J
 
 Graffeine is both a useful interactive demonstrator of graph capability and a simple visual administration
@@ -85,9 +97,10 @@ Types are not critical to Graffeine though, they're just useful for applying CSS
 
 The ```graph.json``` file has a few other visualisation settings to determine which fields do what. These should be self-explanatory.
 
-* Check out the [configuration.md](configuration.md) file for more technical detail
-* Check out the [guide.md](guide.md) file for a basic user guide
-* Check out the [change log](changelog.md) for recent updates
+* Check out the [configuration.md](docs/configuration.md) file for more technical detail
+* Check out the [guide.md](docs/guide.md) file for a basic user guide
+* Check out the [change log](docs/changelog.md) for recent updates
+* Check out the [windows install guide](docs/windows.md) for from-scratch windows installation notes
 
 ### Help?
 

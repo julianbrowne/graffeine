@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" href="assets/images/favicon.ico" type="image/x-icon">
+
+    <link rel="stylesheet" media="all" href="../lib/bootstrap/css/bootstrap.min.css" >
+    <link rel="stylesheet" media="all" href="../lib/highlight/styles/default.css">
+
+    <script type="text/javascript" src="../lib/jquery/jquery-1.9.1.js"></script>
+    <script type="text/javascript" src="../lib/bootstrap/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="../lib/pagedown/Markdown.Converter.js"></script>
+    <script type="text/javascript" src="../lib/pagedown/Markdown.Sanitizer.js"></script>
+    <script type="text/javascript" src="../lib/highlight/highlight.pack.js"></script>
+</head>
+<body>
+    <div id="container">
+        <div id="toolbar"></div>
+    </div>
+    <div class="panel panel-default">
+        <div id="doc" class="panel-body"></div>
+    </div>
+    <script>
+        $(function() { 
+
+            var menu = $.ajax({ url: "/lib/graffeine/html/logo-menu.html", cache: false, method: "get" });
+            menu.done(function(html) { $("#toolbar").html(html); });
+            var docRoot = window.location.pathname + "/source/";
+            var cnv = new Markdown.Converter();
+            cnv.hooks.chain("postConversion", function(html) { return html; });
+            var param = function(name) { return decodeURIComponent((new RegExp('[?|&]' + name + '=' + '([^&;]+?)(&|#|;|$)').exec(location.search)||[,""])[1].replace(/\+/g, '%20'))||undefined };
+            var page = (param("page")===undefined) ? "index.md" : param("page");
+            var xhr = $.ajax({ url: docRoot + "/" + page, cache: false, method: "get" });
+
+            xhr.done(function(markdown) { 
+                var html = cnv.makeHtml(markdown);
+                $("#doc").html(html);
+                $("#doc a").each(function() { 
+                    var href = $(this).attr("href");
+                    $(this).attr("href", "?page=" + href);
+                });
+            });
+
+            xhr.fail(function(error) { 
+                var title = $("<h1>").html(error.status + ": " + error.statusText);
+                $("#doc").html(title);
+            });
+
+            hljs.initHighlightingOnLoad();
+
+        });
+    </script>
+</body>
+</html>

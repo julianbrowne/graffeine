@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8">
+    <title>Graffeine: Tests</title>
+    <link rel="shortcut icon" type="image/png" href="lib/jasmine-2.3.4/jasmine_favicon.png">
+    <link rel="stylesheet" href="lib/jasmine-2.3.4/jasmine.css">
+    <link rel="stylesheet" media="all" href="../lib/bootstrap/css/bootstrap.min.css" >
+    <link rel="stylesheet" media="all" href="css/style.css" >
+    <script src="lib/jasmine-2.3.4/jasmine.js"></script>
+    <script src="lib/jasmine-2.3.4/jasmine-html.js"></script>
+    <script src="lib/jasmine-2.3.4/boot.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="../lib/jquery/jquery-1.9.1.js"></script>
+    <script src="../lib/d3/d3.v2.js"></script>
+    <script src="../lib/bootstrap/js/bootstrap.min.js"></script>
+    <script src="../lib/selectize/dist/js/standalone/selectize.js"></script>
+    <script src="../lib/require/require.js"></script>
+    <script src="../lib/underscore/underscore.min.js"></script>
+
+    <script src="helper/helper.js"></script>
+    <script src="helper/data.js"></script>
+
+    <script src="spec/graffeine/graffeine.js"></script>
+    <script src="spec/graffeine/config.js"></script>
+    <script src="spec/util/util.js"></script>
+    <script src="spec/ui/util.js"></script>
+    <script src="spec/ui/graph/state.js"></script>
+    <script src="spec/ui/graph/stats.js"></script>
+    <script src="spec/ui/path/edit.js"></script>
+    <script src="spec/graph/graph.js"></script>
+    <script src="spec/util/command.js"></script>
+
+</head>
+<body>
+    <div id="container">
+        <div id="toolbar"></div>
+    </div>
+    <script>
+        $(function() { 
+            var menu = $.ajax({ url: "/lib/graffeine/html/logo-menu.html", cache: false, method: "get" });
+            menu.done(function(html) { $("#toolbar").html(html); });
+        });
+    </script>
+</body>
+</html>

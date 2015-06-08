@@ -1,0 +1,14 @@
+
+
+// fetch labels
+
+MATCH (n) OPTIONAL MATCH (n)-[r]->() RETURN distinct n, labels(n) AS labels, r LIMIT 200
+
+// delete relationship
+
+MATCH (n) OPTIONAL MATCH (n)-[r]-() DELETE r
+
+// delete label(s)
+
+MATCH (n { name: 'Peter' }) REMOVE n:German:Swedish RETURN n
+

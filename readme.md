@@ -1,24 +1,24 @@
 
 # Graffeine
 
+Caffeinated Graph Exploration for Neo4J
+
+
 ## Update June 2015
 
 Graffeine has been (almost) completely re-written. Some of the major changes include:
 
 *   Styling. Swapped out all the JQuery UI styling and replaced with Bootstrap. This gives a much cleaner interface that is clear in HTML terms and also more extendible.
 *   Tests. The original suffered from a lack of them. The new version has far more.
-*   Redesigned. There are now two directories: a server-side component and a client side GUI. The client can be run on it's own, which means it's easy to replace the server with another (ruby, java) version.
+*   Redesigned. There are now two directories: a server-side component (server) and a client side GUI (client). The client can be run on it's own, which means it's easy to replace the server with another (Ruby, Java) version.
 *   Cleaned. All UI components are now self-contained and follow a similar (JavaScript [Module](http://www.adequatelygood.com/JavaScript-Module-Pattern-In-Depth.html)) pattern.
 *   Functionality. Everything that came up in new feature requests has been added.
 
 ## Introduction
 
-Caffeinated Graph Exploration for Neo4J
+Graffeine is a visually interactive client for small [Neo4J](http://neo4j.com/) graph databases.
 
-Graffeine is both a useful interactive demonstrator of graph capability and a simple visual administration
-interface for small graph databases.
-
-Here it is with the, now canonical, Dr Who graph loaded up:
+Here's a screenshot with the, now canonical, Dr Who graph:
 
 ![ScreenShot](https://raw.githubusercontent.com/julianbrowne/graffeine/master/public/assets/images/screenshot-drwho.jpeg)
 

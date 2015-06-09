@@ -10,15 +10,23 @@ var Command = {
 
         global.graffeineClientSocket = socket;
 
-        this.graphInitialise = function(data) { 
-            graffeine.log('RECV: graph-init -> : ' + util.inspect(data));
-            model.graph.all(function(nodes) {
+        this.graphInitialise = function() { 
+            graffeine.log("RECV: graph-init");
+            model.graph.all(function(nodes) { 
                 graffeine.log('SEND: graph-init -> : ' + nodes.length + ' nodes sent');
                 socket.emit('data-nodes', {
                     nodes: nodes,
                     count: nodes.length,
                     updatedAt: new Date().getTime()
                 });
+            });
+        },
+
+        this.graphDelete = function() { 
+            graffeine.log("RECV: graph-delete");
+            model.graph.delete(function(result) { 
+                graffeine.log("SEND: graph-delete");
+                socket.emit('graph-delete', { result: result, updatedAt: graffeine.timestamp() } );
             });
         },
 

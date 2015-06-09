@@ -48,10 +48,11 @@ Graffeine.ui.graphStats = (function(G) {
             $(data.selectors.fields[key]).html(value);
         },
         refresh: function() { 
-            $('#graph-node-count').html(Object.keys(graph.data.nodes).length);      // nodes in the current data payload
-            $('#graph-node-max').html(graph.settings.nodeLimit);                    // max nodes allowed on screen
-            $('#graph-link-count').html(graph.data.paths.length);                   // paths in the current data payload
-            $('#graph-path-types-count').html(graph.data.pathTypes.length);         // distinct relationship types
+            var graph = G.graph;
+            $('#graph-node-count').html(Object.keys(graph.nodes()).length);
+            $('#graph-node-max').html(G.config.graphSettings.nodeLimit);
+            $('#graph-link-count').html(graph.paths().length);
+            $('#graph-path-types-count').html(graph.pathTypes().length);
         }
 
     };

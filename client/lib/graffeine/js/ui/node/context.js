@@ -43,16 +43,15 @@ Graffeine.ui.nodeContext = (function(G) {
         $(data.selectors.content).modal({ keyboard: true, show: false });
 
         ui.util.event(data.selectors.buttons.erase, 'click', function(e) { 
-            console.log(graph.state.selectedNode); // @todo: global
-            if(!graph.nodeSelected()) { 
+            if(!ui.state.nodeSelected()) { 
                 console.log("node delete called but no node on the graph selected");
                 return;
             }
-            var nodeId = graph.getSelectedNode().id;
-            console.log(graph.getSelectedNode());
-            console.log("deleting node id %s %s", nodeId, graph.getSelectedNode().getName());
+            var nodeId = ui.state.getSelectedNode().id;
+            console.log(ui.state.getSelectedNode());
+            console.log("deleting node id %s %s", nodeId, ui.state.getSelectedNode().getName());
             Graffeine.command.send('node-delete', { id: nodeId });
-            graph.unselectNode();
+            ui.state.unselectNode();
             ui.nodeContext.hide();
         });
 
@@ -145,7 +144,7 @@ Graffeine.ui.nodeContext = (function(G) {
 
     return { 
         show: function(node, element) { 
-            graph.selectNode(node, element);
+            ui.state.selectNode(node, element);
             $(data.selectors.fields.data).html(renderData(node));
             $(data.selectors.fields.labels).html(renderLabels(node));
             $(data.selectors.fields.paths).html(renderPaths(node));

@@ -24,6 +24,15 @@ var Graph = {
 
         util.runQuery(cypher, callback, [ "n", "labels", "r" ]);
 
+    },
+
+    delete: function(callback) { 
+        var cypher = [ 
+            "MATCH (n)",
+            "OPTIONAL MATCH (n)-[r]-()",
+            "DELETE n,r"
+        ].join("\n");
+        util.runQuery(cypher, callback);
     }
 
 };

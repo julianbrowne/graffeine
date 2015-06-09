@@ -73,10 +73,11 @@ Graffeine.ui.nodeEdit = (function(G) {
     return { 
 
         show: function(node) { 
+            var graph = G.graph;
             if(!node) node = new Graffeine.model.Node();
             $(data.selectors.fields.form).html(
                 Graffeine.util.objToForm(node.data, { type: { 
-                    data: graph.data.nodeTypes, 
+                    data: graph.nodeTypes(), 
                     user: true, selected: node.type 
                 }})
             );
@@ -90,8 +91,9 @@ Graffeine.ui.nodeEdit = (function(G) {
         },
 
         updateNodeTypes: function() { 
+            var graph = G.graph;
             $(data.selectors.fields.nodeTypeSelect).empty();
-            $.each(graph.data.nodeTypes, function(key, value) { 
+            $.each(graph.nodeTypes(), function(key, value) { 
                 addUniqueSelectOption(data.selectors.fields.nodeTypeSelect, key, value);
             });
         }

@@ -73,7 +73,7 @@ Graffeine.util = (function() {
 
         warning: function(text) { 
             var caller = (arguments.callee.caller.name) ? arguments.callee.caller.name+":" : "";
-            console.log("** %c warning: " + caller + text, "color: #C62C17");
+            console.warn("%c warning: " + caller + text, "color: #C62C17");
         },
 
         debug: function(text) { 

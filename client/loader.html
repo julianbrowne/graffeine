@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8">
+    <link rel="icon" href="assets/images/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" media="all" href="lib/bootstrap/css/bootstrap.min.css" >
+    <link rel="stylesheet" media="all" href="lib/selectize/dist/css/selectize.bootstrap3.css" >
+    <link rel="stylesheet" media="all" href="lib/graffeine/css/graffeine.css" />
+    <script src="lib/jquery/jquery-1.9.1.js"></script>
+    <script src="lib/bootstrap/js/bootstrap.min.js"></script>
+    <script src="lib/selectize/dist/js/standalone/selectize.js"></script>
+    <script src="lib/d3/d3.v2.js"></script>
+    <script src="lib/jquery/jquery.svg.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="lib/require/require.js"></script>
+    <script>
+        require(['/lib/graffeine/loader.js'], function(Graffeine) { 
+            console.log(Graffeine);
+            Graffeine.init();
+        });
+    </script>
+</head>
+<body>
+</body>
+</html>

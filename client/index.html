@@ -25,7 +25,6 @@
     <script src="lib/bootstrap/js/bootstrap.min.js"></script>
     <script src="lib/selectize/dist/js/standalone/selectize.js"></script>
     <script src="lib/d3/d3.v2.js"></script>
-    <script src="lib/underscore/underscore.min.js"></script>
     <script src="lib/jquery/jquery.svg.js"></script>
     <!--[if lt IE 9]>
         <script src="lib/javascripts/html5shiv.min.js"></script>
@@ -35,13 +34,8 @@
     <script src="/socket.io/socket.io.js"></script>
     <script src="lib/require/require.js"></script>
     <script>
-        var graph;
-        require(['/lib/graffeine/loader.js'], function() { 
-            graph  = new Graffeine.graph();
-            //graph.debug = false;
-            //graph.command.init();
-            //Graffeine.init();
-
+        require(['/lib/graffeine/loader.js'], function(Graffeine) { 
+            Graffeine.init();
         });
     </script>
 </head>
@@ -55,7 +49,7 @@
     <div id="node-find-container"></div>
     <div id="node-edit-container"></div>
     <div id="node-info-container"></div>
-    <div id="node-menu-container"></div>
+    <div id="graph-menu-container"></div>
     <div id="tool-menu-container"></div>
     <div id="path-edit-container"></div>
     <div id="node-context-container"></div>

@@ -39,6 +39,8 @@ Graffeine.ui.pathEdit = (function(G) {
 
     function handler() { 
 
+        var graph = G.graph;
+
         $(data.selectors.content).modal({ keyboard: true, show: false });
 
         ui.util.event(data.selectors.buttons.cancel, "click", function(e) { 
@@ -54,27 +56,31 @@ Graffeine.ui.pathEdit = (function(G) {
         });
 
         ui.util.event(data.selectors.content, "show.bs.modal", function(e) { 
+            ui.state.selectTargetNode(ui.state.getHoveredNode());
             var options = ui.util.selectize(data.selectors.fields.relationship);
-            ui.util.addOptionsToSelectize(options, graph.data.pathTypes);
+            ui.util.addOptionsToSelectize(options, graph.pathTypes());
         });
 
         ui.util.event(data.selectors.content, "hidden.bs.modal", function(e) { 
-            ui.util.endDraglet();
+            Graffeine.svg.endDraglet();
         });
 
     };
 
     function save() { 
+        var ui = G.ui;
         var relationship = $(data.selectors.fields.relationship).val();
-        if(relationship!=="")
-            Graffeine.command.connectNodes(graph.state.sourceNode, graph.state.hoveredNode, relationship);
+        if(relationship!=="") { 
+            var source = ui.state.getSelectedSourceNode();
+            var target = ui.state.getSelectedTargetNode();
+            Graffeine.command.connectNodes(source, target, relationship);
+        }
         ui.pathEdit.hide();
     };
 
     return { 
 
         show: function(source, target) { 
-            graph.state.newPathActive = true; // @todo: global
             $(data.selectors.fields.source).val(source.getName());
             $(data.selectors.fields.target).val(target.getName());
             $(data.selectors.content).modal('show');

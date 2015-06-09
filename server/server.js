@@ -24,6 +24,7 @@ conn.sockets.on('connection', function (socket) {
     graffeine.log('Got connection');
 
     socket.on('graph-init',    command.graphInitialise);
+    socket.on("graph-delete",  command.graphDelete);
     socket.on('graph-stats',   command.graphStatistics);
     socket.on('graph-fetch',   command.graphFetch);
     socket.on('node-join',     command.nodesJoin);
@@ -33,6 +34,6 @@ conn.sockets.on('connection', function (socket) {
     socket.on('node-find',     command.nodeFind);
     socket.on('node-delete',   command.nodeDelete);
     socket.on('nodes-orphans', command.nodesOrphans);
-    socket.on('path-delete',    command.relDelete);
+    socket.on('path-delete',   command.relDelete);
 
 });

@@ -1,13 +1,10 @@
 
-var graph;
-
 describe("Command", function() { 
 
     beforeAll(function(done) { 
         require(["/lib/graffeine/loader.js"], function() { 
             console.log("test: loaded graffeine for spec");
             Graffeine.init();
-            graph = new Graffeine.graph(); // @todo: global
             done();
         });
     });
@@ -59,14 +56,15 @@ describe("Command", function() {
         var target = graffeineTestHelper.addTargetDomElement("graph");
         var data = JSON.parse(graffeineTestData.tenNodes);
         Graffeine.socket().$events["data-nodes"](data);
-        graph.forceStop(); // @todo global
-        expect(Object.keys(graph.data.nodes).length).toEqual(10);
+        Graffeine.svg.forceStop();
+        var nodes = Graffeine.graph.nodes();
+        expect(Object.keys(nodes).length).toEqual(10);
         expect($("g.nodes > circle").length).toEqual(10);
         expect($("g.draglets > circle").length).toEqual(10);
         expect($("g.node-labels > text").length).toEqual(10);
         expect($("g.node-icons").children().length).toEqual(10);
         expect($("g.paths > path").length).toEqual(5);
-        graph.empty(); // @todo global
+        Graffeine.graph.empty();
         done();
     });
 
@@ -74,14 +72,14 @@ describe("Command", function() {
         var target = graffeineTestHelper.addTargetDomElement("graph");
         var data = JSON.parse(graffeineTestData.oneNode);
         Graffeine.socket().$events["node-add"](data);
-        graph.forceStop(); // @todo global
+        Graffeine.svg.forceStop();
         var c = $("g.nodes > circle");
         expect($("g.nodes > circle").length).toEqual(1);
         expect($("g.draglets > circle").length).toEqual(1);
         expect($("g.node-labels > text").length).toEqual(1);
         expect($("g.node-icons").children().length).toEqual(1);
         expect($("g.paths > path").length).toEqual(0);
-        graph.empty(); // @todo global
+        Graffeine.graph.empty();
         done();
     });
 
@@ -92,14 +90,14 @@ describe("Command", function() {
         Graffeine.socket().$events["data-nodes"](data);
         expect($("g.paths > path").length).toEqual(0);
         Graffeine.socket().$events["node-join"]({source:1, target:2, name:relationship});
-        graph.forceStop(); // @todo global
+        Graffeine.svg.forceStop();
         expect($("g.nodes > circle").length).toEqual(2);
         expect($("g.draglets > circle").length).toEqual(2);
         expect($("g.node-labels > text").length).toEqual(2);
         expect($("g.node-icons").children().length).toEqual(2);
         expect($("g.paths > path").length).toEqual(1);
         expect($("g.paths > path").attr("class")).toContain(relationship);
-        graph.empty(); // @todo global
+        Graffeine.graph.empty();
         done();
     });
 
@@ -124,11 +122,11 @@ describe("Command", function() {
         var target = graffeineTestHelper.addTargetDomElement("graph");
         var data = JSON.parse(graffeineTestData.twoNodes);
         Graffeine.socket().$events["data-nodes"](data);
-        graph.forceStop(); // @todo global
+        Graffeine.svg.forceStop();
         expect($("g.nodes > circle").length).toEqual(2);
         Graffeine.socket().$events["node-delete"]({id:1});
         expect($("g.nodes > circle").length).toEqual(1);
-        graph.empty(); // @todo global
+        Graffeine.graph.empty();
         done();
     });
 
@@ -136,7 +134,7 @@ describe("Command", function() {
         var target = graffeineTestHelper.addTargetDomElement("graph");
         var nodeData = JSON.parse(graffeineTestData.oneNode);
         Graffeine.socket().$events["node-add"](nodeData);
-        graph.forceStop(); // @todo global
+        Graffeine.svg.forceStop();
         expect($("g.nodes > circle").length).toEqual(1);
         var node = $("g.node-labels text");
         nodeData.node.name = "updated name";
@@ -145,7 +143,7 @@ describe("Command", function() {
             updatedAt: new Date().getTime()
         };
         Graffeine.socket().$events["node-update"](nodeUpdateData);
-        graph.empty(); // @todo global
+        Graffeine.graph.empty();
         done();
     });
 
@@ -153,13 +151,13 @@ describe("Command", function() {
         var target = graffeineTestHelper.addTargetDomElement("graph");
         var data = JSON.parse(graffeineTestData.tenNodes);
         Graffeine.socket().$events["data-nodes"](data);
-        graph.forceStop(); // @todo global
+        Graffeine.svg.forceStop();
         expect($("g.nodes > circle").length).toEqual(10);
         expect($("g.paths > path").length).toEqual(5);
         Graffeine.socket().$events["path-delete"]({ source: 4, target: 2, name: "knows" });
         expect($("g.nodes > circle").length).toEqual(10);
         expect($("g.paths > path").length).toEqual(4);
-        graph.empty(); // @todo global
+        //Graffeine.graph.empty();
         done();
     });
 

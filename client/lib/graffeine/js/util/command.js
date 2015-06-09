@@ -4,14 +4,16 @@
 
 Graffeine.command = (function(G) { 
 
-    registerReceivers();
-
     function send(command, data) { 
         G.socket().emit(command, data);
     };
 
     function recv(command, callback, visualUpdate) { 
-        //console.log("recv: registering \"%s\" callback", command);
+        if(G.socket().$events && G.socket().$events[command]) { 
+            console.warn("recv: \"%s\" callback already registered", command);
+            return;
+        }
+        console.log("recv: registering \"%s\" callback", command);
         var visualUpdate = (visualUpdate===undefined) ? false : true;
         G.socket().on(command, function(data) { 
             // @todo find a way to make this cleaner
@@ -34,12 +36,11 @@ Graffeine.command = (function(G) {
 
     function registerReceivers() { 
 
-        var ui = Graffeine.ui;
-        var util = Graffeine.util;
+        var ui = G.ui;
+        var util = G.util;
+        var graph = G.graph;
 
         console.log("command: registerReceivers");
-
-        G.init(); // open the socket first
 
         recv("data-nodes", function (data) { 
             var newVis = ($('#graph-mode').text() === "replace") ? 'replace' : 'update';
@@ -151,6 +152,7 @@ Graffeine.command = (function(G) {
     }
 
     return { 
+        init: registerReceivers,
         send: send,
         connectNodes: connectNodes
     };

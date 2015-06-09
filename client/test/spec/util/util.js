@@ -1,13 +1,10 @@
 
-var graph;
-
 describe("Graffeine Util", function() { 
 
     beforeAll(function(done) { 
         require(["/lib/graffeine/loader.js"], function() { 
             console.log("test: loaded graffeine for spec");
             Graffeine.init();
-            graph = new Graffeine.graph(); // @todo: global
             done();
         });
     });

@@ -39,6 +39,16 @@ var common = {
         if(server.debug) util.log('+++ DEBUG : ' + message);
     },
 
+    timestamp: function() { 
+        var now = new Date();
+        return ( 
+            (now.getMonth() + 1) + '/' +
+            (now.getDate()) + '/' + now.getFullYear() + " " + now.getHours() + ':' +
+            ((now.getMinutes() < 10) ? ("0" + now.getMinutes()) : (now.getMinutes())) + ':' +
+            ((now.getSeconds() < 10) ? ("0" + now.getSeconds()) : (now.getSeconds()))
+        );
+    },
+
     die: function() { 
         var message = util.format.apply(this, arguments);
         common.error(message);

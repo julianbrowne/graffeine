@@ -1,13 +1,10 @@
 
-var graph;
-
 describe("UI Util", function() { 
 
     beforeAll(function(done) { 
         require(["/lib/graffeine/loader.js"], function() { 
             console.log("test: loaded graffeine for spec");
             Graffeine.init();
-            graph = new Graffeine.graph(); // @todo: global
             done();
         });
     });
@@ -73,21 +70,21 @@ describe("UI Util", function() {
         $("body").append($("<div>").attr("id", target).addClass("something").css("display", "none"));
         expect($("#"+target).attr("class")).toEqual("something");
         var element = $("#"+target)[0];
-        Graffeine.ui.util.selectNode(element);
+        Graffeine.ui.state.selectNode({}, element);
         expect($("#"+target).attr("class")).toEqual("something selected");
-        Graffeine.ui.util.selectNode(element);
+        Graffeine.ui.state.selectNode({}, element);
         expect($("#"+target).attr("class")).toEqual("something selected");
         $("#"+target).remove();
     });
 
     it("should indicate unselected node by class", function() { 
-        var target = "node-selected";
-        $("body").append($("<div>").attr("id", target).addClass("something selected").css("display", "none"));
-        expect($("#"+target).attr("class")).toEqual("something selected");
-        var element = $("#"+target)[0];
-        Graffeine.ui.util.unselectNode(element);
-        expect($("#"+target).attr("class")).toEqual("something");
-        $("#"+target).remove();
+        $("body").append($("<div>").attr("id", "node-selected").addClass("something").css("display", "none"));
+        expect($("#node-selected").attr("class")).toEqual("something");
+        var element = $("#node-selected")[0];
+        Graffeine.ui.state.selectNode({}, element);
+        Graffeine.ui.state.unselectNode();
+        expect($("#node-selected").attr("class")).toEqual("something");
+        $("node-selected").remove();
     });
 
     it("should selectize a selection", function() { 

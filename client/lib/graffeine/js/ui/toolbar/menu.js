@@ -37,28 +37,18 @@ Graffeine.ui.toolMenu = (function(G) {
 
     function handler() { 
 
-        $(data.selectors.target).appendTo("#logo-menu-content > nav.navbar");
+        var graph = G.ui;
 
-        ui.util.event(data.selectors.buttons.init, "click", function(e) { 
-            if($(data.selectors.buttons.init).text() === "connect") { 
-                //Graffeine.command.send("graph-stats", {});
-                Graffeine.command.send("graph-init", {});
-                $(data.selectors.buttons.init).text("clear");
-            }
-            else { 
-                $(graph.refs.div).empty();
-                $(data.selectors.buttons.init).text("connect");
-            }
-        });
+        $(data.selectors.target).appendTo("#logo-menu-content > nav.navbar");
 
         ui.util.event(data.selectors.buttons.mode, "click", function(e) { 
             var mode = ui.util.toggleButton(data.selectors.buttons.mode, ["replace", "update"]);
-            graph.replace = (mode==="replace") ? true : false;  // @todo: global
+            graph.replace = (mode==="replace") ? true : false;
         });
 
         ui.util.event(data.selectors.buttons.force, "click", function(e) { 
             var mode = ui.util.toggleButton(data.selectors.buttons.force, ["force", "stop"]);
-            (mode==="force") ? graph.forceStop() : graph.forceStart(); // @todo: global
+            (mode==="force") ? graph.forceStop() : graph.forceStart();
         });
 
         ui.util.event(data.selectors.buttons.stats, "click", function(e) { 
@@ -68,14 +58,13 @@ Graffeine.ui.toolMenu = (function(G) {
         ui.util.event(data.selectors.buttons.source, "click", function(e) { 
             var mode = ui.util.toggleButton(data.selectors.buttons.source, ["local", "remote"]);
             if(mode==="local") { 
-                graph.temp = graph.socket;  // @todo global
-                graph.socket = Fake.socket; // @todo global
+                graph.temp = graph.socket;
+                graph.socket = Fake.socket;
             }
             else { 
-                graph.socket = graph.temp;  // @todo global
-                graph.temp = null;  // @todo global
+                graph.socket = graph.temp;
+                graph.temp = null;
             }
-            console.log(graph); // @todo global
         });
 
     };

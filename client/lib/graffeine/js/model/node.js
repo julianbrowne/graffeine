@@ -59,8 +59,8 @@ Graffeine.model.Node = function(graffnode) {
     };
 
     this.paths = function() { 
-        return _(graph.data.paths).filter(function(path) { // @todo global
-            return (path.source.id === node.id || path.target.id === node.id)
+        return Graffeine.graph.paths().filter(function(p) { 
+            return (p.source.id === node.id || p.target.id === node.id)
         });
     };
 
@@ -78,7 +78,7 @@ Graffeine.model.Node = function(graffnode) {
 
     this.events = { 
 
-        mouseover: function(element) { 
+        mouseover: function(node, element) { 
 
             var r = d3.select(element).attr('r');
 
@@ -87,16 +87,15 @@ Graffeine.model.Node = function(graffnode) {
                 .attr('r', Graffeine.config.graphSettings.circleRadius + 5)
                 .ease("elastic");
 
-            if(graph.state.sourceNode) { 
-                graph.state.hoveredNode = node;
-                d3.select(element).classed('joiner', true);
+            if(ui.state.sourceNodeSelected()) { 
+                ui.state.hoverNode(node, element);
             }
 
-            if(graph.state.draggedNode === null)
+            if(ui.state.draggedNode === null)
                 ui.nodeInfo.show(node);
         },
 
-        mouseout: function(element) { 
+        mouseout: function(node, element) { 
 
             d3.select(element)
                 .transition()
@@ -107,14 +106,11 @@ Graffeine.model.Node = function(graffnode) {
                 .classed('joiner', false);
 
             /**
-             *  Remove this node from the hoveredNode (nodeTarget) state if:
-             *      (a) the ui is in the middle of a drag and 
-             *      (b) there's no relationship dialog
+             *  Remove this node from the hoveredNode state
+             *  if the ui is in the middle of a drag
             **/
 
-            if(graph.state.sourceNode !== null && !graph.state.newPathActive) {
-                graph.state.hoveredNode = null;
-            }
+            if(ui.state.sourceNodeSelected()) ui.state.unhoverNode();
 
             ui.nodeInfo.hide();
         }

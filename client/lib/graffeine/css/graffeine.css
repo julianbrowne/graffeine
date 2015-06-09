@@ -33,6 +33,10 @@
     border: none;
 }
 
+ul.dropdown-menu li a { 
+    cursor: pointer;
+}
+
 input {
     margin: 2px;
     padding-left: 2px !important;

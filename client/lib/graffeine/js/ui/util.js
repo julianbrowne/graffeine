@@ -28,16 +28,6 @@ Graffeine.ui.util = (new function(G) {
             d3.event.preventDefault();
         },
 
-        endDraglet: function() { 
-            console.log("clearing graph ui state");
-            graph.state.newPathActive = false;        
-            graph.state.sourceNode = null;
-            graph.state.hoveredNode = null;
-            graph.state.draggedNode = null;
-            if(graph.refs.svg)
-                graph.refs.svg.selectAll(".connector").remove();
-        },
-
         toggleButton: function(selector, values) { 
             if($(selector).length === 0) G.util.warning("No selector %s to toggle", selector);
             var current = $(selector).text();
@@ -83,21 +73,6 @@ Graffeine.ui.util = (new function(G) {
                 select.addOption({value: option, text: option});
             });
             select.refreshOptions(false);
-        },
-
-        // @todo change this to use D3 classed operator instead
-        selectNode: function(element) { 
-            var classNow = element.getAttribute("class");
-            var classes = classNow.split(" ");
-            if(classes.indexOf("selected")!==-1) return;
-            element.setAttribute("class", classNow + " selected");
-        },
-
-        // @todo change this to use D3 classed operator instead
-        unselectNode: function(element) { 
-            var re = new RegExp(" selected", 'g');
-            var newClass = element.getAttribute("class").replace(re, '');
-            element.setAttribute("class", newClass);
         },
 
         event: function(selector, event, callback) { 

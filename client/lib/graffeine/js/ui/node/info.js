@@ -1,7 +1,8 @@
 /**
- *  Tool Menu
+ *  Node Information
  *
- *  Buttons Across Top
+ *  Mouseover node info
+ *  This is a tooltip, not a modal
  *
 **/
 
@@ -78,11 +79,13 @@ Graffeine.ui.nodeInfo = (function(G) {
     return { 
 
         show: function(node) { 
+            // don't show if a node drag is in progress
+            if(Graffeine.ui.state.nodeDragged()) return;
             var pathsHTML = renderPaths(node.id, node.paths(graph));
             $(data.selectors.fields.paths).html(pathsHTML);
             var labels = node.labels.join(', ');
             $(data.selectors.fields.labels).html(labels);
-            var left  = node.x + (config.graphSettings.circleRadius * 2) - 10;
+            var left  = node.x + (config.node.radius * 2) - 10;
             var right = node.y + 35;
             $(data.selectors.content).css("left", left  + "px");
             $(data.selectors.content).css("top",  right + "px");

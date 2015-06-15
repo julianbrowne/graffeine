@@ -29,7 +29,6 @@ conn.sockets.on('connection', function (socket) {
     socket.on('graph-fetch',   command.graphFetch);
     socket.on('node-join',     command.nodesJoin);
     socket.on('node-add',      command.nodeAdd);
-    socket.on('node-labels',   command.nodeLabels);
     socket.on('node-update',   command.nodeUpdate);
     socket.on('node-find',     command.nodeFind);
     socket.on('node-delete',   command.nodeDelete);

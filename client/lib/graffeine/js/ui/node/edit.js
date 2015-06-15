@@ -1,14 +1,14 @@
 /**
  *  Node Edit
  *
- *  Edit node JSON
+ *  Edit node JSON Modal
  *
 **/
 
 Graffeine.ui.nodeEdit = (function(G) { 
 
-    var self = this;
     var ui = G.ui;
+    var graph = G.graph;
 
     var data = { 
         selectors: { 
@@ -19,7 +19,7 @@ Graffeine.ui.nodeEdit = (function(G) {
                 cancel: "#node-edit-cancel"
             },
             fields: { 
-                form: "#node-edit-form",
+                form: "#node-edit-body",
                 nodeName: "#node-edit-name",
                 nodeTypeInput: "#node-edit-type-input",
                 nodeTypeSelect: "#node-edit-type-select"
@@ -40,7 +40,7 @@ Graffeine.ui.nodeEdit = (function(G) {
 
     function handler() { 
 
-        $(data.selectors.content).modal({ keyboard: true, show: false });
+        ui.util.modal(data.selectors.content);
 
         /// @todo: add node to ..
 
@@ -70,14 +70,98 @@ Graffeine.ui.nodeEdit = (function(G) {
         }
     };
 
+    function addEvents() { 
+        ui.util.event(".delete-path", "click", function(e) { 
+            var dp = e.target.attributes["data-path"].value;
+            console.log(JSON.parse(decodeURI(dp)));
+        });
+    };
+
+    function renderLabels(node) { 
+        var container = (node.labels.length===0) ? $("<span>no labels</span>") : $("<table></table>");
+        container.attr("class", "table");
+        node.labels.forEach(function(label) { 
+            var row = $("<tr></tr>");
+            var c1  = $("<td></td>");
+            var spn = $("<span></span>")
+                .addClass("node-menu-label-name");
+            var input = $("<input>")
+                .addClass("col-sm-8")
+                .attr("type", "text")
+                .attr("name", label)
+                .attr("value", label);
+            spn.append(input);
+            c1.append(spn).appendTo(row);
+            var actionTD = $('<td></td>')
+                .addClass("text-right");
+            var btn = $('<button/>', { 
+                // click: function(e) { graph.handler.deleteLabelButtonClick(node.id, label); } 
+            });
+            btn.prop("type", "button");
+            btn.addClass("btn btn-danger btn-xs");
+            var btnSpan = $('<span/></span>')
+                .addClass("glyphicon glyphicon-trash")
+                .attr("aria-label", "delete")
+                .attr("aria-hidden", "true");
+            btn.append(btnSpan);
+            actionTD.append(btn).appendTo(row);
+            container.append(row);
+        });
+        return container;
+    };
+
+    function renderPaths(node) { 
+        var container = (node.paths().length===0) ? $('<span>no relationships</span>') : $('<table></table>');
+        container.attr('class', 'table');
+        node.paths().forEach(function(path) { 
+            var row = $('<tr></tr>');
+            var c1  = $('<td></td>');
+            var spn = $('<span></span>')
+                .addClass("path-name")
+                .html(path.source.getName() + " " + path.name + " " + path.target.getName());
+            c1.append(spn).appendTo(row);
+            var actionTD = $('<td></td>')
+                .addClass("text-right");
+            var btn = $('<button/>', { 
+                // click: function(e) { graph.handler.deleteLabelButtonClick(node.id, path); } 
+            });
+            btn.prop("type", "button");
+            btn.addClass("btn btn-danger btn-xs");
+            var encodedData = encodeURI(JSON.stringify({
+                source: path.source.id, 
+                target:path.target.id, 
+                name:path.name
+            }));
+            var btnSpan = $('<span/></span>')
+                .addClass("delete-path glyphicon glyphicon-trash")
+                .attr("data-path", encodedData)
+                .attr("aria-label", "delete")
+                .attr("aria-hidden", "true");
+            btn.append(btnSpan);
+            actionTD.append(btn).appendTo(row);
+            container.append(row);
+        });
+        return container;
+    };
+
+    function renderData(node) { 
+        console.log(util);
+        return util.objToForm(node.data);
+    };
+
     return { 
 
         show: function(node) { 
+            ui.state.setMenuActive();
             var graph = G.graph;
+            //$(data.selectors.fields.data).html(renderData(node));
+            //$(data.selectors.fields.labels).html(renderLabels(node));
+            //$(data.selectors.fields.paths).html(renderPaths(node));
+            //addEvents();
             if(!node) node = new Graffeine.model.Node();
             $(data.selectors.fields.form).html(
                 Graffeine.util.objToForm(node.data, { type: { 
-                    data: graph.nodeTypes(), 
+                    data: graph.getNodeTypes(), 
                     user: true, selected: node.type 
                 }})
             );
@@ -87,13 +171,14 @@ Graffeine.ui.nodeEdit = (function(G) {
 
         hide: function() { 
             $(data.selectors.content).modal('hide');
-            ui.enableActionButtons();
+            ui.util.enableActionButtons();
+            ui.state.setMenuActive();
         },
 
         updateNodeTypes: function() { 
             var graph = G.graph;
             $(data.selectors.fields.nodeTypeSelect).empty();
-            $.each(graph.nodeTypes(), function(key, value) { 
+            $.each(graph.getNodeTypes(), function(key, value) { 
                 addUniqueSelectOption(data.selectors.fields.nodeTypeSelect, key, value);
             });
         }

@@ -25,15 +25,27 @@ circle.node.selected {
   fill: #CC0023 !important;
 }
 
+/** hover: mouse over node **/
+
 circle.node:hover {
-  stroke: #003345 !important;
-  stroke-width: 3px !important;
-  stroke-dasharray: 2,2 !important;
+  stroke: #003345;
+  stroke-width: 3px;
+}
+
+/** moving: in motion via a drag **/
+
+circle.node.moving {
+  stroke: #333EB2;
+  stroke-width: 3px;
 }
 
 circle.node.joiner {
   stroke: #FF0000 !important;
   stroke-width: 2px !important;
+}
+
+circle.node.fixed {
+  stroke: #0000FF;
 }
 
 .control.glyphicon {
@@ -56,6 +68,14 @@ path.connector {
   stroke-width: 4px;
   stroke-dasharray: 5,5;
 }
+
+.bg1 { fill: #214071 }
+.bg2 { fill: #3F6CAF }
+.bg3 { fill: #B34143 }
+.bg4 { fill: #8AB047 }
+.bg5 { fill: #725495 }
+.bg6 { fill: #3E9CB9 }
+.bg7 { fill: #F38337 }
 
 div.tooltip, div.linkMenu {
   position: absolute;

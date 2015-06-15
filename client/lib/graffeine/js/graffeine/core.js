@@ -6,6 +6,7 @@ Graffeine = (function() {
 
     function init() { 
         console.log("graffeine: init");
+        Graffeine.graph.init();
         connect();
     };
 

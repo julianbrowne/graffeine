@@ -24,27 +24,6 @@ var helper = {
     },
 
     /**
-     * Works out a value for the 'name' field from whatever exists in the neo4j node
-     * @todo: fold into 'setGraffNodeTypeFromData'
-    **/
-
-    setGraffNodeNameFromData: function (nodeData) { 
-        g.debug("(setGraffNodeNameFromData) trying to set node name");
-        var possibleNameFields = g.config.graph.nameFields;
-        g.debug("(setGraffNodeNameFromData) possible field sources: " + possibleNameFields);
-        for(var i=0; i<possibleNameFields.length; i++) { 
-            var field = possibleNameFields[i];
-            g.debug("(setGraffNodeNameFromData) checking field: " + field);
-            if(nodeData[field] !== undefined) { 
-                g.debug("(setGraffNodeNameFromData) found field: " + field + " with value " + nodeData[field]);
-                return nodeData[field];
-            }
-        };
-        g.debug("(setGraffNodeNameFromData) defaulting to '-'");
-        return '-';
-    },
-
-    /**
      *  Works out a value for the 'type' field from whatever exists in the neo4j node
      * todo: fold into 'setGraffNodeNameFromData'
     **/
@@ -87,15 +66,6 @@ var helper = {
         return nodeStyle;
     },
 
-    /**
-     *  Unifies node and relationship cypher results into a single graffNode object.
-     *  Nodes are denoted either by the column name (n or m) or by passing type
-     *  to the function.
-     *
-     *  @param {neo4JNodeObj} neoNode neo4j node or relationship query result
-     *  @todo major refactor required
-    **/
-
     buildGraffNode: function(neoNode) { 
 
         var neoType = neoNode.node;
@@ -106,46 +76,22 @@ var helper = {
         graffNode.self   = neoNode.self;
         graffNode.exists = neoNode.exists;
 
-        if(neoType === 'r') {
+        if(neoType === 'r') { 
             graffNode.node   = 'r';
-            graffNode.type   = neoNode.type || '-';
+            graffNode.type   = neoNode.type;
             graffNode.start  = neoNode.start.id;
             graffNode.end    = neoNode.end.id;
             return graffNode;
         }
 
         if(neoType === 'n' || neoType === 'm') { 
-
             graffNode.node   = 'n';
             graffNode.labels = neoNode.labels;
-            graffNode.name   = helper.setGraffNodeNameFromData(neoNode.data);
-            graffNode.type   = helper.setGraffNodeTypeFromData(neoNode.data);
-            graffNode.cssClass = graffNode.type;
-
-            // @todo: remove in favour of cssClass only
-            //graffNode.style  = helper.setGraffNodeStyleFromData(neoNode.data);
-
-            graffNode.label  = { fill: '#000000' };
-
-            // Set extras
-            /**
-            [ 'icon' ].forEach(function(c) {
-                if(g.config.nodes[graffNode.type]) {
-                    if(g.config.nodes[graffNode.type][c] !== undefined)
-                        graffNode[c] = g.config.nodes[graffNode.type][c];
-                    else
-                        graffNode[c] = g.config.nodes['default'][c];
-                }
-                else {
-                    graffNode[c] = g.config.nodes['default'][c];
-                }
-            });
-            **/
-
             return graffNode;
         }
-
-        console.log("WARNING: (graffNode) : unknown node type " + neoType);
+        
+        console.error("buildGraffNode: unknown node type " + neoType)
+        process.exit(-1);
     },
 
     mapCypherQueryResult: function(results, columnsWanted) {

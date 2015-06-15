@@ -108,4 +108,11 @@ describe("UI State", function() {
         expect(state.getHoveredElement()).toEqual(null);
     });
 
+    it("should keep count of nodes on screen", function() { 
+        state.nodesOnDeck(99);
+        expect(state.nodesOnDeck(99)).toEqual(99);
+        state.nodesOnDeck(0);
+        expect(state.nodesOnDeck(0)).toEqual(0);
+    });
+
 });

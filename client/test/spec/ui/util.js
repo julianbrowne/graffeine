@@ -26,6 +26,8 @@ describe("UI Util", function() {
         });
     });
 
+    // @todo: check ui.util.event balks when no selector for event
+
     it("should toggle buttons", function() { 
         var target = "toggler";
         var mode = null;

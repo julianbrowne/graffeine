@@ -25,18 +25,6 @@ var Nodes = {
 
     },
 
-    labels: function(id, callback) { 
-
-        var cypher = [ 
-            "MATCH (n)",
-            "WHERE id(n) = " + id,
-            "RETURN labels(n)"
-        ].join("\n");
-
-        util.runQuery(cypher, callback, "labels(n)");
-
-    },
-
     /**
      *  Get a count of nodes in the graph
      *

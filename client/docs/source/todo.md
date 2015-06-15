@@ -2,6 +2,7 @@
 TODO
 ====
 
+*   select fill based on node label (or type) and choose css fill style from list
 *   Add local mode that doesn't need a server
 *   Add github detection to turn local mode on
 *   Add node data editing
@@ -24,3 +25,5 @@ DONE
 *   if a node name field is an array then .join(' ') the elements in the visualisation
 *   get graph metadata *after* connect, not before
 *   on node menu replace the -> crappy arrow with a nice multi-glyph version
+*   smooth force layout on start
+

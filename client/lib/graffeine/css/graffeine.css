@@ -18,6 +18,21 @@
     position: absolute;
 }
 
+/**
+ *  Mods/Extensions to Bootstrap list-group
+**/
+
+.list-group.inner { margin-bottom: 0; }
+.list-group-item { padding: 3px; overflow: auto; clear: both; }
+.list-group.inner .list-group-item { margin-left: 10px; }
+.list-group-section { font-weight: bold; }
+.list-group-row { display: block; clear: both; line-height: 25px; }
+.list-group-field-name { padding: 2px; float: left; width: 100px; }
+.list-group-field-value { padding: 2px; float: left; width: 300px; }
+.list-group-field-name.list-group-section { width: inherit; }
+
+/**   **/
+
 #node-info-content > div.arrow { 
     top: 55px;
 }
@@ -27,10 +42,34 @@
     border-top-right-radius: 6px;
 }
 
-#node-context-paths td { 
+#node-edit-paths td { 
     vertical-align: middle;
     padding: 2px;
     border: none;
+}
+
+ul.dropdown-menu.open-menu { 
+    display: block;
+    float: none;
+    position: static;
+    background-color: #f8f8f8;
+    border: 1px solid #e7e7e7;
+    box-shadow:none;
+    margin-top:0;
+    position:static;
+    width:100%;
+}
+
+.navbar-nav .dropdown-menu.open-menu > li > a, 
+.navbar-nav .dropdown-menu.open-menu .dropdown-header { 
+    padding:5px 15px 5px 25px;
+}
+
+.navbar-nav .dropdown-menu.open-menu > li > a { 
+    line-height:20px;
+}
+.navbar-default .navbar-nav .dropdown-menu.open-menu > li > a { 
+    color:#777;
 }
 
 ul.dropdown-menu li a { 

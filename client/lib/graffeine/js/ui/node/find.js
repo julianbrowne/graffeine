@@ -37,6 +37,8 @@ Graffeine.ui.nodeFind = (function(G) {
 
     function handler() { 
 
+        ui.util.modal(data.selectors.content);
+
         ui.util.event(data.selectors.buttons.save, 'click', function(e) { 
         /**
             var name = $(graph.ui.labels.nodeFindName).val();
@@ -57,11 +59,13 @@ Graffeine.ui.nodeFind = (function(G) {
 
     return { 
         show: function(node) { 
+            ui.state.setMenuActive();
             $(data.selectors.content).modal('show');
         },
 
         hide: function() { 
             $(data.selectors.content).modal('hide');
+            ui.state.unsetMenuActive();
         }
     };
 

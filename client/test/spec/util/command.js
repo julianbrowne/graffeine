@@ -53,6 +53,7 @@ describe("Command", function() {
     });
 
     it("should manage a data-nodes message", function(done) { 
+        Graffeine.init();
         var target = graffeineTestHelper.addTargetDomElement("graph");
         var data = JSON.parse(graffeineTestData.tenNodes);
         Graffeine.socket().$events["data-nodes"](data);
@@ -64,7 +65,7 @@ describe("Command", function() {
         expect($("g.node-labels > text").length).toEqual(10);
         expect($("g.node-icons").children().length).toEqual(10);
         expect($("g.paths > path").length).toEqual(5);
-        Graffeine.graph.empty();
+        Graffeine.graph.clear();
         done();
     });
 
@@ -79,7 +80,7 @@ describe("Command", function() {
         expect($("g.node-labels > text").length).toEqual(1);
         expect($("g.node-icons").children().length).toEqual(1);
         expect($("g.paths > path").length).toEqual(0);
-        Graffeine.graph.empty();
+        Graffeine.graph.clear();
         done();
     });
 
@@ -97,7 +98,7 @@ describe("Command", function() {
         expect($("g.node-icons").children().length).toEqual(2);
         expect($("g.paths > path").length).toEqual(1);
         expect($("g.paths > path").attr("class")).toContain(relationship);
-        Graffeine.graph.empty();
+        Graffeine.graph.clear();
         done();
     });
 
@@ -126,7 +127,7 @@ describe("Command", function() {
         expect($("g.nodes > circle").length).toEqual(2);
         Graffeine.socket().$events["node-delete"]({id:1});
         expect($("g.nodes > circle").length).toEqual(1);
-        Graffeine.graph.empty();
+        Graffeine.graph.clear();
         done();
     });
 
@@ -143,7 +144,7 @@ describe("Command", function() {
             updatedAt: new Date().getTime()
         };
         Graffeine.socket().$events["node-update"](nodeUpdateData);
-        Graffeine.graph.empty();
+        Graffeine.graph.clear();
         done();
     });
 
@@ -157,7 +158,7 @@ describe("Command", function() {
         Graffeine.socket().$events["path-delete"]({ source: 4, target: 2, name: "knows" });
         expect($("g.nodes > circle").length).toEqual(10);
         expect($("g.paths > path").length).toEqual(4);
-        //Graffeine.graph.empty();
+        //Graffeine.graph.clear();
         done();
     });
 

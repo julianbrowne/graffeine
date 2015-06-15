@@ -1,10 +1,7 @@
-{
+{ 
   "name": "graffeine",
-  "version": "0.0.5",
+  "version": "0.1.0",
   "description": "Caffeinated Neo4J Graph Admin",
-  "contributors": [ 
-    "Julian Browne"
-  ],
   "homepage": "https://github.com/julianbrowne/graffeine",
   "repository": {
     "type": "git",
@@ -17,29 +14,14 @@
     "graph"
   ],
   "author": "Julian Browne",
-  "scripts": {
-    "start": "node server.js"
-  },
-  "gitHead": "bf98fc30e71141fc4a07bce1714f14c912a6ef4e",
-  "readmeFilename": "readme.md",
-  "main": "server.js",
-  "directories": {
-    "doc": "doc",
-    "test": "test"
-  },
   "dependencies": { 
-    "d3": "3.1.10",
     "neo4j": "1.1.0",
     "node-static": "0.6.9",
     "socket.io": "0.9.17"
   },
-  "bundledDependencies": [
-    "d3",
-    "js-yaml",
+  "bundledDependencies": [ 
     "neo4j",
     "node-static",
     "socket.io"
-  ],
-  "devDependencies": {},
-  "license": "LGPL-3.0"
+  ]
 }

@@ -95,14 +95,6 @@ var Command = {
             });
         },
 
-        this.nodeLabels = function(data) { 
-            graffeine.log('RECV : node-labels -> ' + util.inspect(data));
-            model.nodes.labels(data.id, function(result) { 
-                graffeine.log('SEND: node-labels -> : ' + util.inspect(result));
-                socket.emit('node-labels', { id: data.id, labels: result, updatedAt: new Date().getTime() } );
-            });
-        },
-
         this.nodeFind = function(data) {
             graffeine.log('RECV : node-find -> ' + util.inspect(data));
             model.nodes.find(data.name, data.type, function(nodes) {

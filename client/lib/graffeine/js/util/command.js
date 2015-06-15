@@ -43,23 +43,11 @@ Graffeine.command = (function(G) {
         console.log("command: registerReceivers");
 
         recv("data-nodes", function (data) { 
-            var newVis = ($('#graph-mode').text() === "replace") ? 'replace' : 'update';
-            graph.updateMode = newVis;
+            //var newVis = ($('#graph-mode').text() === "replace") ? 'replace' : 'update';
+            //graph.updateMode = newVis;
             graph.addGraphData(data);
             graph.refresh();
-            $('#graph-root').text(data.root||0);
-        });
-
-        /**
-         *  Node labels
-         *  @todo: refactor out and include in general node data
-         *  untested in Jasmine
-        **/
-
-        recv('node-labels', function (data) { 
-            util.debug("(node-labels) processing: " + JSON.stringify(data));
-            graph.data.nodes[data.id].addLabels(data.labels);
-            graph.refresh();
+            //$('#graph-root').text(data.root||0);
         });
 
         // join nodes

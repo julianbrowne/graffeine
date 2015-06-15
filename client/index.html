@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <meta charset="utf-8">
     <meta http-equiv="Content-type" content="text/html; charset=utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -21,10 +22,11 @@
     <!-- app stylesheets -->
     <link rel="stylesheet" media="all" href="lib/graffeine/css/graffeine.css" />
     <!-- 3rd party js -->
-    <script src="lib/jquery/jquery-1.9.1.js"></script>
-    <script src="lib/bootstrap/js/bootstrap.min.js"></script>
+    <script src="lib/jquery/jquery-2.1.4.js"></script>
+    <script src="lib/bootstrap/js/bootstrap.js"></script>
+    <script src="lib/bootstrap/js/bootlint.js"></script>
     <script src="lib/selectize/dist/js/standalone/selectize.js"></script>
-    <script src="lib/d3/d3.v2.js"></script>
+    <script src="lib/d3/d3.js"></script>
     <script src="lib/jquery/jquery.svg.js"></script>
     <!--[if lt IE 9]>
         <script src="lib/javascripts/html5shiv.min.js"></script>
@@ -36,26 +38,28 @@
     <script>
         require(['/lib/graffeine/loader.js'], function(Graffeine) { 
             Graffeine.init();
+            bootlint.lintCurrentDocument(function(output) { 
+                console.log(output);
+            }, []);
         });
     </script>
 </head>
 <body>
     <div id="container">
-        <div id="logo-menu-container"></div>
+        <div id="toolbar-container"></div>
     </div>
     <div class="panel panel-default">
       <div id="graph" class="panel-body"></div>
     </div>
-    <div id="node-find-container"></div>
-    <div id="node-edit-container"></div>
-    <div id="node-info-container"></div>
-    <div id="graph-menu-container"></div>
-    <div id="tool-menu-container"></div>
-    <div id="path-edit-container"></div>
-    <div id="node-context-container"></div>
-    <div id="graph-stats-container"></div>
     <footer class="footer">
       <div id="flash" class="container"></div>
     </footer>
+    <div id="node-find-container"></div>
+    <div id="node-edit-container"></div>
+    <span id="node-view-container"></span>
+    <div id="node-info-container"></div>
+    <div id="path-edit-container"></div>
+    <div id="node-menu-container"></div>
+    <div id="graph-stats-container"></div>
 </body>
 </html>

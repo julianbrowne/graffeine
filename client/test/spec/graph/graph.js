@@ -16,6 +16,7 @@ describe("Graph", function() {
     });
 
     it("should add a node", function() { 
+        Graffeine.init();
         Graffeine.graph.addNode({ id: 1, name: "a" });
         expect(graffeineTestHelper.objectLength(Graffeine.graph.nodes())).toEqual(1);
         Graffeine.graph.addNode({ id: 2, name: "b" });
@@ -23,6 +24,7 @@ describe("Graph", function() {
     });
 
     it("should fetch a node", function() { 
+        Graffeine.init();
         var nodeData = { id: 56, name: "a" };
         Graffeine.graph.addNode(nodeData);
         var node = Graffeine.graph.getNode(56);
@@ -31,6 +33,7 @@ describe("Graph", function() {
     });
 
     it("should know if a node exists", function() { 
+        Graffeine.init();
         var nodeData = { id: 99, name: "a" };
         Graffeine.graph.addNode(nodeData);
         var nodeTrue = Graffeine.graph.nodeExists(99);
@@ -40,7 +43,7 @@ describe("Graph", function() {
     });
 
     it("should remove a node", function() { 
-        Graffeine.graph.empty();
+        Graffeine.init();
         var nodeData = { id: 12, name: "a" };
         Graffeine.graph.addNode(nodeData);
         expect(Graffeine.graph.nodeExists(12)).toBe(true);
@@ -54,7 +57,7 @@ describe("Graph", function() {
     });
 
     it("should clear all nodes", function() { 
-        Graffeine.graph.empty();
+        Graffeine.init();
         var nodeData1 = { id: 1, name: "a" };
         var nodeData2 = { id: 2, name: "b" };
         var nodeData3 = { id: 3, name: "c" };
@@ -70,7 +73,7 @@ describe("Graph", function() {
     });
 
     it("should count nodes", function() { 
-        Graffeine.graph.empty();
+        Graffeine.init();
         var nodeData1 = { id: 1, name: "a" };
         var nodeData2 = { id: 2, name: "b" };
         var nodeData3 = { id: 3, name: "c" };
@@ -83,19 +86,19 @@ describe("Graph", function() {
     });
 
     it("should add node types", function() { 
-        Graffeine.graph.empty();
+        Graffeine.init();
         Graffeine.graph.addNodeType("a");
         Graffeine.graph.addNodeType("b");
         Graffeine.graph.addNodeType("c");
-        expect(graffeineTestHelper.objectLength(Graffeine.graph.nodeTypes())).toEqual(3);
+        expect(graffeineTestHelper.objectLength(Graffeine.graph.getNodeTypes())).toEqual(3);
         Graffeine.graph.addNodeType("a");
         Graffeine.graph.addNodeType("a");
         Graffeine.graph.addNodeType("a");
-        expect(graffeineTestHelper.objectLength(Graffeine.graph.nodeTypes())).toEqual(3);
+        expect(graffeineTestHelper.objectLength(Graffeine.graph.getNodeTypes())).toEqual(3);
     });
 
     it("should count node types", function() { 
-        Graffeine.graph.empty();
+        Graffeine.init();
         Graffeine.graph.addNodeType("a");
         var count = Graffeine.graph.nodeTypeCount();
         expect(count).toEqual(1);
@@ -105,7 +108,7 @@ describe("Graph", function() {
     });
 
     it("should clear node types", function() { 
-        Graffeine.graph.empty();
+        Graffeine.init();
         Graffeine.graph.addNodeType("a");
         Graffeine.graph.addNodeType("b");
         var count = Graffeine.graph.nodeTypeCount();
@@ -113,11 +116,11 @@ describe("Graph", function() {
         Graffeine.graph.clearNodeTypes();
         count = Graffeine.graph.nodeTypeCount();
         expect(count).toEqual(0);
-        expect(graffeineTestHelper.objectLength(Graffeine.graph.nodeTypes())).toEqual(0);
+        expect(graffeineTestHelper.objectLength(Graffeine.graph.getNodeTypes())).toEqual(0);
     });
 
     it("should add a path", function() { 
-        Graffeine.graph.empty();
+        Graffeine.init();
         var nodeSource = { id: 1, name: "a" };
         var nodeTarget = { id: 2, name: "b" };
         Graffeine.graph.addNode(nodeSource);
@@ -128,7 +131,7 @@ describe("Graph", function() {
     });
 
     it("should fetch a path", function() { 
-        Graffeine.graph.empty();
+        Graffeine.init();
         var nodeSource = { id: 1, name: "a" };
         var nodeTarget = { id: 2, name: "b" };
         Graffeine.graph.addNode(nodeSource);
@@ -141,7 +144,7 @@ describe("Graph", function() {
     });
 
     it("should know if a path exists", function() { 
-        Graffeine.graph.empty();
+        Graffeine.init();
         var nodeSource = { id: 1, name: "a" };
         var nodeTarget = { id: 2, name: "b" };
         Graffeine.graph.addNode(nodeSource);
@@ -154,7 +157,7 @@ describe("Graph", function() {
     });
 
     it("should remove a path", function() { 
-        Graffeine.graph.empty();
+        Graffeine.init();
         var nodeSource = { id: 1, name: "a" };
         var nodeTarget = { id: 2, name: "b" };
         Graffeine.graph.addNode(nodeSource);
@@ -169,7 +172,7 @@ describe("Graph", function() {
     });
 
     it("should clear paths", function() { 
-        Graffeine.graph.empty();
+        Graffeine.init();
         var nodeSource = { id: 1, name: "a" };
         var nodeTarget = { id: 2, name: "b" };
         Graffeine.graph.addNode(nodeSource);
@@ -183,7 +186,7 @@ describe("Graph", function() {
     });
 
     it("should count paths", function() { 
-        Graffeine.graph.empty();
+        Graffeine.init();
         var nodeSource = { id: 1, name: "a" };
         var nodeTarget = { id: 2, name: "b" };
         Graffeine.graph.addNode(nodeSource);
@@ -198,19 +201,19 @@ describe("Graph", function() {
     });
 
     it("should add path types", function() { 
-        Graffeine.graph.empty();
+        Graffeine.init();
         Graffeine.graph.addPathType("knows");
         Graffeine.graph.addPathType("hears");
         Graffeine.graph.addPathType("sees");
-        expect(graffeineTestHelper.objectLength(Graffeine.graph.pathTypes())).toEqual(3);
+        expect(graffeineTestHelper.objectLength(Graffeine.graph.getPathTypes())).toEqual(3);
         Graffeine.graph.addPathType("knows");
         Graffeine.graph.addPathType("knows");
         Graffeine.graph.addPathType("knows");
-        expect(graffeineTestHelper.objectLength(Graffeine.graph.pathTypes())).toEqual(3);
+        expect(graffeineTestHelper.objectLength(Graffeine.graph.getPathTypes())).toEqual(3);
     });
 
     it("should count path types", function() { 
-        Graffeine.graph.empty();
+        Graffeine.init();
         Graffeine.graph.addPathType("knows");
         Graffeine.graph.addPathType("hears");
         Graffeine.graph.addPathType("sees");
@@ -222,7 +225,7 @@ describe("Graph", function() {
     });
 
     it("should clear path types", function() { 
-        Graffeine.graph.empty();
+        Graffeine.init();
         Graffeine.graph.addPathType("knows");
         Graffeine.graph.addPathType("hears");
         Graffeine.graph.addPathType("sees");
@@ -232,21 +235,21 @@ describe("Graph", function() {
     });
 
     it("should empty graph", function(done) { 
-        Graffeine.graph.empty();
+        Graffeine.init();
         expect(Graffeine.graph.nodeCount()).toEqual(0);
         var data = JSON.parse(graffeineTestData.oneNode);
         console.log(Graffeine.socket());
         Graffeine.socket().$events["node-add"](data);
         Graffeine.svg.forceStop();
         expect(Graffeine.graph.nodeCount()).toEqual(1);
-        Graffeine.graph.empty();
+        Graffeine.graph.clear();
         expect(Graffeine.graph.nodeCount()).toEqual(0);
-        Graffeine.graph.empty();
+        Graffeine.graph.clear();
         done();
     });
 
     it("should add mixed data", function(done) { 
-        Graffeine.graph.empty();
+        Graffeine.init();
         var target = graffeineTestHelper.addTargetDomElement("graph");
         var data = JSON.parse(graffeineTestData.tenNodes);
         Graffeine.graph.addGraphData(data);
@@ -254,7 +257,7 @@ describe("Graph", function() {
         expect(Graffeine.graph.pathCount()).toEqual(5);
         expect(Graffeine.graph.nodeTypeCount()).toEqual(8);
         expect(Graffeine.graph.pathTypeCount()).toEqual(4);
-        Graffeine.graph.empty(); 
+        Graffeine.graph.clear(); 
         done();
     });
 

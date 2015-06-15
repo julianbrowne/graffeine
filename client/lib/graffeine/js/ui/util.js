@@ -4,7 +4,7 @@
 
 Graffeine.ui.util = (new function(G) { 
 
-    var self = this;
+    var ui = G.ui;
 
     this.init = function() { 
         console.log("init: ui.util");
@@ -12,20 +12,22 @@ Graffeine.ui.util = (new function(G) {
 
     this.init();
 
-    return {
+    return { 
 
-        loadPartial: function(url, target, then) { 
-            //console.log("loading: %s for ", url, target);
+        loadPartial: function(url, target, callback) { 
             if($(target).length === 0) { 
-                G.util.warning("No target "+target+" for "+url+": creating one");
-                $("body").append($("<div>").attr("id", target.replace(/^\#/,"")));
+                console.error("ui.util.loadPartial: no target %s for %s", target, url);
+                return;
             }
-            $(target).load(url, function() { console.log("loaded: %s", url); if(then) then(); });
-        },
-
-        eventBlock: function() { 
-            d3.event.stopPropagation();
-            d3.event.preventDefault();
+            $(target).load(url, function(response, status, xhr) { 
+                console.log("loaded: %s: [%s]", url, status);
+                if (status==="error") { 
+                    console.error("ui.util.loadPartial: error %s: %s", xhr.status, xhr.statusText);
+                }
+                else { 
+                    if(typeof callback === "function" ) setTimeout(callback, 0);
+                }
+            });
         },
 
         toggleButton: function(selector, values) { 
@@ -75,10 +77,38 @@ Graffeine.ui.util = (new function(G) {
             select.refreshOptions(false);
         },
 
+        modal: function(selector) { 
+
+            if($(selector).length === 0) { 
+                console.error("ui.util.modal: no DOM elements found matching " + selector);
+                return;
+            };
+
+            setTimeout(function() { 
+                var modal = $(selector).modal({keyboard: true, background: "static", show: false});
+                $(selector).on("show.bs.modal", function() { 
+                    ui.state.setMenuActive();
+                });
+                $(selector).on("hide.bs.modal", function() { 
+                    ui.state.unsetMenuActive();
+                });
+                console.log("ui.util.modal: set modal for %s", selector);
+                ["show.bs.modal", "shown.bs.modal", "hidden.bs.modal", "hide.bs.modal", "loaded.bs.modal"]
+                    .forEach(function(event) { 
+                        $(selector).on(event, function(e) { 
+                            console.log("%s: registered %s event", selector, event);
+                        });
+                    });
+            }, 0);
+
+        },
+
         event: function(selector, event, callback) { 
-            if($(selector).length === 0) G.util.warning("No DOM elements found matching " + selector);
+            if($(selector).length === 0) { 
+                console.error("ui.util.event: No DOM elements found matching " + selector);
+                return;
+            };
             $(selector).on(event, function(e) { 
-                console.log("%s: %s", event, selector);
                 callback(e);
             });
         }

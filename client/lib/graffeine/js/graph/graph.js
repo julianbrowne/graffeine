@@ -7,10 +7,11 @@ Graffeine.graph = (function(G) {
     var updateMode = 'replace'; // {'update'|'replace'} for new svg data
 
     var data = { 
+        nodes: {},      // nodes in the graph
+        paths: [],      // relationships between nodes
         nodeTypes: [],  // types of node (person, dog, cat, etc)
         pathTypes: [],  // types of relationship (knows, etc)
-        nodes: {},      // nodes in the graph
-        paths: []       // relationships between nodes
+        labels: []      // node labels
     };
 
     function checkPaths() { 
@@ -49,7 +50,6 @@ Graffeine.graph = (function(G) {
     function refresh() { 
         var ui = G.ui;
         ui.nodeEdit.updateNodeTypes();
-        ui.graphStats.refresh();
         if(updateMode==='replace'||$(G.config.graphTargetDiv).length === 0) { 
             G.svg.init();
         }
@@ -72,6 +72,7 @@ Graffeine.graph = (function(G) {
             newNode.transferD3Data(getNode(newNode.id));
         data.nodes[newNode.id] = newNode;
         addNodeType(newNode.type);
+        addNodeLabels(newNode.labels);
     };
 
     function getNode(id) { 
@@ -101,11 +102,24 @@ Graffeine.graph = (function(G) {
     };
 
     function addNodeType(type) { 
-        data.nodeTypes.push(type);
-        data.nodeTypes = data.nodeTypes.sort().filter(function(el,i,a) { 
-            if(i===a.indexOf(el)) return 1;
-            return 0;
+        if(data.nodeTypes.indexOf(type)===-1) {
+            data.nodeTypes.push(type);
+            data.nodeTypes = data.nodeTypes.sort()
+        }
+    };
+
+    function addNodeLabels(labels) { 
+        data.labels = data.labels.concat(labels);
+        data.labels = data.labels.sort().filter(function(el,i,a) { 
+            return (i==a.indexOf(el));
         });
+    };
+
+    function addPathType(type) { 
+        if(data.pathTypes.indexOf(type)===-1) { 
+            data.pathTypes.push(type);
+            data.nodeTypes = data.nodeTypes.sort()
+        }
     };
 
     function nodeTypeCount() { 
@@ -178,11 +192,6 @@ Graffeine.graph = (function(G) {
         return data.paths.length;
     };
 
-    function addPathType(type) { 
-        if(data.pathTypes.indexOf(type)===-1)
-            data.pathTypes.push(type);
-    };
-
     function pathTypeCount() { 
         return data.pathTypes.length;
     };
@@ -195,7 +204,8 @@ Graffeine.graph = (function(G) {
         if(debug) console.log("DEBUG : %s", mesg);
     };
 
-    function empty() { 
+    function clear() { 
+        Graffeine.svg.forceStop();
         init();
         refresh();
     };
@@ -206,16 +216,19 @@ Graffeine.graph = (function(G) {
         clearPathTypes();
         clearNodes();
         clearPaths();
+        $(".disable-when-graph-empty").addClass("disabled");
     };
 
     init();
 
     return { 
-        nodeTypes: function() { return data.nodeTypes; },
-        pathTypes: function() { return data.pathTypes; },
         nodes: function() { return data.nodes; },
         paths: function() { return data.paths; },
-        empty: empty,
+        getNodeTypes: function() { return data.nodeTypes; },
+        getPathTypes: function() { return data.pathTypes; },
+        getNodeLabels: function() { return data.labels; },
+        init: init,
+        clear: clear,
         addNode: addNode,
         getNode: getNode,
         nodeExists: nodeExists,

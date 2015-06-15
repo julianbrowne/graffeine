@@ -16,17 +16,12 @@
     <script type="text/javascript" src="../lib/highlight/highlight.pack.js"></script>
 </head>
 <body>
-    <div id="container">
-        <div id="toolbar"></div>
-    </div>
     <div class="panel panel-default">
         <div id="doc" class="panel-body"></div>
     </div>
     <script>
         $(function() { 
 
-            var menu = $.ajax({ url: "/lib/graffeine/html/logo-menu.html", cache: false, method: "get" });
-            menu.done(function(html) { $("#toolbar").html(html); });
             var docRoot = window.location.pathname + "/source/";
             var cnv = new Markdown.Converter();
             cnv.hooks.chain("postConversion", function(html) { return html; });

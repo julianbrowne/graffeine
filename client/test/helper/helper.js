@@ -18,6 +18,15 @@ var graffeineTestHelper = {
             return o.length;
         else
             return Object.getOwnPropertyNames(o).length;        
+    },
+
+    duplicateIds: function() { 
+        var dups = [];
+        $('[id]').each(function() { 
+            var ids = $('[id="'+this.id+'"]');
+            if(ids.length>1 && ids[0]==this) dups.push("#"+this.id);
+        });
+        return dups;
     }
 
 };

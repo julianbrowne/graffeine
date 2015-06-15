@@ -1,11 +1,9 @@
 /**
- *  Graph Stats
- *
+ *  Graph Stats Modal
 **/
 
 Graffeine.ui.graphStats = (function(G) { 
 
-    var self = this;
     var ui = G.ui;
 
     var data = { 
@@ -33,15 +31,17 @@ Graffeine.ui.graphStats = (function(G) {
     };
 
     function handler() { 
-        $(data.selectors.content).modal({ keyboard: true, show: false });
+        ui.util.modal(data.selectors.content);
     };
 
     return {
         show: function() { 
+            ui.state.setMenuActive();
             $(data.selectors.content).modal('show');
         },
         hide: function() { 
             $(data.selectors.content).modal('hide');
+            ui.state.unsetMenuActive();
         },
         update: function(key, value) { 
             if(data.selectors.fields[key] === undefined) return;
@@ -49,10 +49,13 @@ Graffeine.ui.graphStats = (function(G) {
         },
         refresh: function() { 
             var graph = G.graph;
-            $('#graph-node-count').html(Object.keys(graph.nodes()).length);
-            $('#graph-node-max').html(G.config.graphSettings.nodeLimit);
-            $('#graph-link-count').html(graph.paths().length);
-            $('#graph-path-types-count').html(graph.pathTypes().length);
+            $("#graph-node-count").html(Object.keys(graph.nodes()).length);
+            $("#graph-node-max").html(G.config.graphSettings.nodeLimit);
+            $("#graph-link-count").html(graph.paths().length);
+            $("#graph-path-types-count").html(graph.getPathTypes().length);
+            $("#node-labels-list").html(graph.getNodeLabels().join(", "));
+            $("#node-types-list").html(graph.getNodeTypes().join(", "));
+            $("#path-types-list").html(graph.getPathTypes().join(", "));
         }
 
     };

@@ -12,7 +12,7 @@
     <script src="lib/jasmine-2.3.4/boot.js"></script>
     <script src="/socket.io/socket.io.js"></script>
     <script src="../lib/jquery/jquery-1.9.1.js"></script>
-    <script src="../lib/d3/d3.v2.js"></script>
+    <script src="../lib/d3/d3.js"></script>
     <script src="../lib/bootstrap/js/bootstrap.min.js"></script>
     <script src="../lib/selectize/dist/js/standalone/selectize.js"></script>
     <script src="../lib/require/require.js"></script>
@@ -32,14 +32,14 @@
 
 </head>
 <body>
-    <div id="container">
-        <div id="toolbar"></div>
-    </div>
-    <script>
-        $(function() { 
-            var menu = $.ajax({ url: "/lib/graffeine/html/logo-menu.html", cache: false, method: "get" });
-            menu.done(function(html) { $("#toolbar").html(html); });
-        });
-    </script>
+    <div id="toolbar-container"></div>
+    <div id="test-loader"></div>
+    <div id="node-find-container"></div>
+    <div id="node-edit-container"></div>
+    <div id="node-view-container"></div>
+    <div id="node-info-container"></div>
+    <div id="path-edit-container"></div>
+    <div id="node-menu-container"></div>
+    <div id="graph-stats-container"></div>
 </body>
 </html>

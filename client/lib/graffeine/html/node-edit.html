@@ -1,13 +1,34 @@
-<div id="node-edit-content" class="modal fade" id="node-edit" tabindex="-1" role="dialog" aria-labelledby="nodeEditLabel" aria-hidden="true">
+<div id="node-edit-content" class="modal" role="dialog">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
-                <h4 class="modal-title" id="nodeEditLabel">Node Edit</h4>
+                <h4 class="modal-title">Node Edit</h4>
             </div>
-            <div id="node-edit-form" class="modal-body"></div>
+            <div id="node-edit-body" class="modal-body">
+                <form class="form-horizontal">
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label text-right" for="path-edit-source">Data:</label>
+                        <div class="col-sm-8">
+                            <div id="node-menu-data"></div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label text-right" for="path-edit-source">Labels:</label>
+                        <div class="col-sm-8">
+                           <div id="node-menu-labels"></div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label text-right" for="path-edit-source">Relationships:</label>
+                        <div class="col-sm-8">
+                          <div id="node-menu-paths"></div>
+                        </div>
+                    </div>
+                </form>
+            </div>
             <div class="modal-footer">
                 <button id="node-edit-cancel" type="button" class="btn btn-default" data-dismiss="modal">cancel</button>
                 <button id="node-edit-save" type="button" class="btn btn-primary">save</button>

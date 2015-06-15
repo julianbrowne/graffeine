@@ -7,8 +7,8 @@
 
 Graffeine.ui.pathEdit = (function(G) { 
 
-    var self = this;
     var ui = G.ui;
+    var graph = G.graph;
 
     var data = { 
         selectors: { 
@@ -39,9 +39,7 @@ Graffeine.ui.pathEdit = (function(G) {
 
     function handler() { 
 
-        var graph = G.graph;
-
-        $(data.selectors.content).modal({ keyboard: true, show: false });
+        ui.util.modal(data.selectors.content);
 
         ui.util.event(data.selectors.buttons.cancel, "click", function(e) { 
             ui.pathEdit.hide();
@@ -58,7 +56,7 @@ Graffeine.ui.pathEdit = (function(G) {
         ui.util.event(data.selectors.content, "show.bs.modal", function(e) { 
             ui.state.selectTargetNode(ui.state.getHoveredNode());
             var options = ui.util.selectize(data.selectors.fields.relationship);
-            ui.util.addOptionsToSelectize(options, graph.pathTypes());
+            ui.util.addOptionsToSelectize(options, graph.getPathTypes());
         });
 
         ui.util.event(data.selectors.content, "hidden.bs.modal", function(e) { 

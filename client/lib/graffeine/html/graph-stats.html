@@ -1,9 +1,9 @@
-<div id="graph-stats-content" class="modal fade" id="graph-stats-content" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div id="graph-stats-content" class="modal" role="dialog">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="myModalLabel">Graph Stats</h4>
+                <h4 class="modal-title">Graph Stats</h4>
             </div>
             <div class="modal-body">
                 <table class="table">
@@ -30,6 +30,23 @@
                     <tbody>
                         <tr><td>V<sub>n</sub></td><td id="node-selected-id">-</td></tr>
                         <tr><td>V<sub>deg</sub></td><td id="node-selected-degrees">-</td></tr>
+                    </tbody>
+                    <thead>
+                        <tr><th>data</th><th></th></tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>types</td>
+                            <td id="node-types-list">-</td>
+                        </tr>
+                        <tr>
+                            <td>labels</td>
+                            <td id="node-labels-list">-</td>
+                        </tr>
+                        <tr>
+                            <td>relationships</td>
+                            <td id="path-types-list">-</td>
+                        </tr>
                     </tbody>
                 </table>
             </div>

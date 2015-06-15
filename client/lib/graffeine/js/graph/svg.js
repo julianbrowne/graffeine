@@ -94,26 +94,30 @@ Graffeine.svg = (function(G) {
 
         var nodeDragger = force.drag()
             .on("dragstart", function(d) { 
+                // ignore right-click
+                if(d3.event.sourceEvent.button===2) return;
+                console.log("node: dragstart");
+                d3.event.sourceEvent.stopPropagation();
                 ui.nodeInfo.hide();
-                // ignore right-click
-                if(d3.event.sourceEvent.button===2) return;
-                console.log("node: dragstart: start drag");
-                console.log("node: dragstart: fixing node position");
-                d3.select(this).classed("fixed", d.fixed = true);
                 ui.state.dragNode(d, this);
-                d3.select(this).classed("noclick", true);
             })
-            .on("dragend", function() { 
+            .on("dragend", function(d) { 
                 // ignore right-click
                 if(d3.event.sourceEvent.button===2) return;
-                if(d3.select(this).classed("nodrag")) { 
-                    console.log("node: dragend: no drag in progress");
-                    d3.select(this).classed("nodrag", false);
-                    return;
+                console.log("node: dragend");
+                // check for no drag (i.e. click)
+                var originalPosition = ui.state.getDraggedOrigin();
+                if(originalPosition.x!==d.x&&originalPosition.y!==d.y) { 
+                    console.log("node: dragend: fixing node position");
+                    d3.select(this).classed("fixed", d.fixed = true);
                 }
-                console.log("node: enddrag");
+                else {
+                    console.log("node: dragend: ignored (click)");
+                }
                 ui.state.undragNode();
             });
+
+        console.log(nodeDragger);
 
         /**
          *  Bring on the nodes
@@ -130,47 +134,40 @@ Graffeine.svg = (function(G) {
                 })
                 .attr("r", config.node.radius)
                 .on("mousedown", function(d,i) { 
-                    var ui = G.ui;
-                    ui.nodeInfo.hide(); 
+                    G.ui.nodeInfo.hide(); 
                 })
                 .on("click", function(d, i) { 
-                    console.log("node: click event");
+                    if (d3.event.defaultPrevented) return;
+                    d3.event.stopPropagation();
+                    console.log("node: click");
                     var ui = G.ui;
                     if(ui.state.menuActive()) { 
                         console.log("node: click: aborted (menu active)");
                         return;
                     }
-
-                    /**
-                     *  Not a "real" click if a drag or similar event has just taken place
-                    **/
-
-                    if(d3.select(this).classed("noclick")) { 
-                        console.log("node: click: rejecting click as noclick");
-                        d3.select(this).classed("noclick", false);
-                        return;
-                    }
-
                     force.stop();
                     // node node currently selected
                     if(!ui.state.nodeSelected()) { 
+                        console.log("node: click: selecting node %d", d.id);
                         ui.state.selectNode(d, this);
                     }
                     else { 
                         // node selected but not this one
                         if(ui.state.getSelectedElement()!==this) { 
+                            console.log("node: click: switching nodes");
                             ui.state.unselectNode();
                             ui.state.selectNode(d, this);
                         }
                         // node selected is this one,
                         // so unselect it
                         else { 
+                            console.log("node: click: toggling node");
                             ui.state.unselectNode();
                         }
                     }
                 })
                 .on("dblclick", function(d) { 
-                    console.log("node: double-click event");
+                    console.log("node: double-click");
                     var ui = G.ui;
                     if(ui.state.menuActive()) { 
                         console.log("node: double-click: aborted (menu active)");
@@ -180,6 +177,7 @@ Graffeine.svg = (function(G) {
                     //G.command.graphFetch({ start: d.id });
                 })
                 .on("mouseover", function(d) { 
+                    console.log("node: mouseover");
                     var ui = G.ui;
                     d3.select(this)
                         .transition()
@@ -193,6 +191,7 @@ Graffeine.svg = (function(G) {
                             ui.nodeInfo.show(d);
                 })
                 .on("mouseout", function(d) { 
+                    console.log("node: mouseout");
                     var ui = G.ui;
                     d3.select(this)
                         .transition()
@@ -208,9 +207,8 @@ Graffeine.svg = (function(G) {
                     ui.nodeInfo.hide();
                 })
                 .on("contextmenu", function(d) { 
-                    console.log("node: right-click event");
+                    console.log("node: right-click");
                     var ui = G.ui;
-                    d3.select(this).classed("nodrag", true);
                     if(ui.state.menuActive()) { 
                         console.log("node: right-click: aborted (menu active)");
                         return;
@@ -418,6 +416,7 @@ Graffeine.svg = (function(G) {
             .select(G.config.graphTargetDiv)
             .append("svg:svg")
             .on('click', function() { 
+                console.log("svg: click");
                 force.stop();
                 if(ui.state.nodeSelected()) ui.state.unselectNode();
             })

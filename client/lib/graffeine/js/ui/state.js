@@ -21,17 +21,21 @@ Graffeine.ui.state = (function(G) {
         this.forceActivated = false;
 
         this.dragNode = function(node, element) { 
-            this.draggedNode = {node: node, element: element};
-            this.selectNode(node, element);
+            var nodeClone = $.extend({}, node);
+            this.draggedNode = {node: node, element: element, x: nodeClone.x, y: nodeClone.y };
             d3.select(element).classed("moving", true);
             return node;
         };
 
         this.undragNode = function() { 
-            this.unselectNode();
             if(this.draggedNode===null) return;
             d3.select(this.draggedNode.element).classed("moving", false);
             this.draggedNode = null;
+        };
+
+        this.getDraggedOrigin = function() { 
+            if(this.draggedNode===null) return null;
+            return { x: this.draggedNode.x, y: this.draggedNode.y };
         };
 
         this.getDraggedNode = function() { 

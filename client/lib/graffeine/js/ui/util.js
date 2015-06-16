@@ -24,10 +24,54 @@ Graffeine.ui.util = (function(G) {
         return "";
     };
 
+    function dynamicModal(title, content) { 
+        var modalId = "#custom-modal";
+        var customModal = $('<div id="custom-modal" class="modal" role="dialog"> <div class="modal-dialog"> <div class="modal-content"> <div class="modal-header"> <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button> <h4 class="modal-title">Modal</h4> </div> <div id="custom-modal-body" class="modal-body"> </div> <div class="modal-footer"> <button type="button" class="btn btn-default" data-dismiss="modal">OK</button> </div> </div> </div> </div>');
+        $("body").append(customModal);
+        $(modalId).find($("h4")).html(title);
+        ui.util.modal(modalId);
+        event(modalId, "show.bs.modal", function() { 
+            $("#custom-modal-body").html(content);
+        });
+        event(modalId, "hidden.bs.modal", function() { 
+            $(modalId).remove();
+        });
+        setTimeout(function() { $(modalId).modal("show"); }, 0);
+        return modalId;
+    };
+
+    function event(selector, event, callback) { 
+        if($(selector).length === 0) { 
+            console.error("ui.util.event: No DOM elements found matching " + selector);
+            return;
+        };
+        console.log("%s: registered callback for %s", selector, event);
+        $(selector).on(event, function(e) { 
+            if($(selector).hasClass("disabled")) { 
+                console.warn("%s: %s ignored - disabled", selector, event);
+                return;
+            }
+            console.log("%s: recorded event %s", selector, event);
+            callback(e);
+        });
+    };
+
+    function prettyObject(obj) { 
+        return JSON.stringify(obj, null, 2);
+    };
+
+    function highlightModalCode(selector) { 
+        $(selector).find(".modal-body").each(function(i, block) { 
+            hljs.highlightBlock(block);
+        });
+    };
+
     return { 
-
         suggestLabelCSS: suggestLabelCSS,
-
+        dynamicModal: dynamicModal,
+        prettyObject: prettyObject,
+        event: event,
+        highlightModalCode: highlightModalCode,
         loadPartial: function(url, target, callback) { 
             if($(target).length === 0) { 
                 console.error("ui.util.loadPartial: no target %s for %s", target, url);
@@ -144,23 +188,7 @@ Graffeine.ui.util = (function(G) {
                     });
             });
 
-        },
-
-        event: function(selector, event, callback) { 
-            if($(selector).length === 0) { 
-                console.error("ui.util.event: No DOM elements found matching " + selector);
-                return;
-            };
-            $(selector).on(event, function(e) { 
-                if($(selector).hasClass("disabled")) { 
-                    console.warn("%s: %s ignored - disabled", selector, event);
-                    return;
-                }
-                console.log("%s: registered %s event", selector, event);
-                callback(e);
-            });
         }
-
     }
 
 }(Graffeine));

@@ -16,7 +16,6 @@ Graffeine.ui.nodeMenu = (function(G) {
         selectors: { 
             target:  "#node-menu-container",
             content: "#node-menu-content",
-            customModal: "#custom-modal",
             actions: { 
                 view: "#init-node-view",
                 edit: "#init-node-edit",
@@ -77,21 +76,10 @@ Graffeine.ui.nodeMenu = (function(G) {
 
         ui.util.event(data.selectors.actions.inspect, 'click', function(e) { 
             ui.nodeMenu.hide();
-            var customModal = $('<div id="custom-modal" class="modal" role="dialog"> <div class="modal-dialog"> <div class="modal-content"> <div class="modal-header"> <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button> <h4 class="modal-title">Modal</h4> </div> <div id="custom-modal-body" class="modal-body"> </div> <div class="modal-footer"> <button type="button" class="btn btn-default" data-dismiss="modal">OK</button> </div> </div> </div> </div>');
-            $("body").append(customModal);
-            $(data.selectors.customModal).find($('h4')).html("Node Inspect");
-            ui.util.modal(data.selectors.customModal);
-            $(data.selectors.customModal).on('show.bs.modal', function() { 
-                var code = $("<pre><code>")
-                    .html(JSON.stringify(ui.state.getSelectedNode(),null,2));
-                $("#custom-modal-body").html(code);
-                $("#custom-modal-body.modal-body pre").each(function(i, block) { 
-                    hljs.highlightBlock(block);
-                  });
-            });
-            $(data.selectors.customModal).modal("show");
-            $(data.selectors.customModal).on('hidden.bs.modal', function() { 
-                $(data.selectors.customModal).remove();
+            var content = $("<pre><code>").html(ui.util.prettyObject(ui.state.getSelectedNode()));
+            var modal = ui.util.dynamicModal("Node Inspect", content);
+            ui.util.event(modal, "show.bs.modal", function() { 
+                ui.util.highlightModalCode(modal);
             });
         });
 

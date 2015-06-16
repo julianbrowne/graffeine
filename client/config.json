@@ -12,7 +12,7 @@
     "graphSettings": { 
         "width": 1200,
         "height": 800,
-        "nodeLimit": 50,
+        "nodeLimit": 500,
         "dragletOffset": 20,
         "linkDistance": 250,
         "charge": -1200

@@ -71,22 +71,22 @@ var helper = {
         var neoType = neoNode.node;
         var graffNode = {};
 
-        graffNode.data   = neoNode.data || {};
-        graffNode.id     = neoNode.id;
+        graffNode.data   = neoNode.properties || {};
+        graffNode.id     = neoNode._id;
         graffNode.self   = neoNode.self;
         graffNode.exists = neoNode.exists;
+        graffNode.labels = neoNode.labels;
 
         if(neoType === 'r') { 
-            graffNode.node   = 'r';
-            graffNode.type   = neoNode.type;
-            graffNode.start  = neoNode.start.id;
-            graffNode.end    = neoNode.end.id;
+            graffNode.node = 'r';
+            graffNode.type = neoNode.type;
+            graffNode.start = neoNode._fromId;
+            graffNode.end = neoNode._toId;
             return graffNode;
         }
 
         if(neoType === 'n' || neoType === 'm') { 
             graffNode.node   = 'n';
-            graffNode.labels = neoNode.labels;
             return graffNode;
         }
         
@@ -179,7 +179,7 @@ var helper = {
 
         if(columns === undefined) { 
             g.debug("(runQuery) : expecting boolean result");
-            g.db.conn.query(cypher, {}, helper.booleanResult(callback));
+            g.db.conn.cypher(cypher, helper.booleanResult(callback));
         }
         else { 
             if(typeof(columns)=="string") { 

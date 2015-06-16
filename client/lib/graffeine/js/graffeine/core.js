@@ -4,10 +4,18 @@ Graffeine = (function() {
     var config = null; // applied by loader
     var socket = null;
 
+    var settings = { 
+        dbs: []
+    };
+
     function init() { 
         console.log("graffeine: init");
         Graffeine.graph.init();
         connect();
+    };
+
+    function set(key, value) { 
+        settings[key] = value;
     };
 
     function connect() { 
@@ -15,7 +23,6 @@ Graffeine = (function() {
         if(typeof io === "undefined")
             throw "No web socket";
         else { 
-            console.log(io);
             socket = io(Graffeine.config.core.host);
             socket.on("connect", function() { Graffeine.ui.state.connectDB(); });
             socket.on("disconnect", function(error) { Graffeine.ui.state.disconnectDB(); });
@@ -27,7 +34,9 @@ Graffeine = (function() {
 
     return { 
         socket: function() { return socket; },
-        init: init
+        init: init,
+        set: set,
+        settings: settings
     };
 
 }());

@@ -1,4 +1,5 @@
 
+var fs = require('fs');
 var sio = require('socket.io');
 var http = require('http');
 var content = require('node-static');
@@ -27,6 +28,7 @@ conn.sockets.on('connection', function (socket) {
     socket.on("graph-delete",  command.graphDelete);
     socket.on('graph-stats',   command.graphStatistics);
     socket.on('graph-fetch',   command.graphFetch);
+    socket.on('graph-load',    command.graphLoad);
     socket.on('node-join',     command.nodesJoin);
     socket.on('node-add',      command.nodeAdd);
     socket.on('node-update',   command.nodeUpdate);
@@ -35,5 +37,14 @@ conn.sockets.on('connection', function (socket) {
     socket.on('nodes-orphans', command.nodesOrphans);
     socket.on('path-all',      command.pathAll);
     socket.on('path-delete',   command.relDelete);
+
+    fs.readdir("data", function(err, files) { 
+        var fileRoots = [];
+        files.forEach(function(f) { 
+            if(f[0]!==".")
+                fileRoots.push(f.replace(/\.cypher/,""));
+        });
+        socket.emit("graph-dbs", { names: fileRoots, updatedAt: new Date().getTime() });
+    });
 
 });

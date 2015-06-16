@@ -30,6 +30,19 @@ var Command = {
             });
         },
 
+        this.graphLoad = function(data) { 
+            graffeine.log("RECV: graph-load");
+            model.graph.load(data.name, function(result) { 
+                graffeine.log("SEND: graph-load");
+                socket.emit("server-message", { 
+                    category: "info", 
+                    title: 'database loaded',
+                    message: "loaded " + data.name, 
+                    updatedAt: new Date().getTime()
+                });
+            });
+        },
+
         this.graphStatistics = function(data) {
             graffeine.log('RECV: graph-stats -> : ' + util.inspect(data));
             model.nodes.count(function(count) {
@@ -139,7 +152,6 @@ var Command = {
                 graffeine.log("SEND: path-all");
                 var types = result.map(function(r) { return r.type });
                 var filtered = types.sort().filter(function(el,i,a) { return (i==a.indexOf(el)); });
-                console.log(filtered);
                 socket.emit('path-all', { data: filtered, updatedAt: new Date().getTime() } );
             });
         }

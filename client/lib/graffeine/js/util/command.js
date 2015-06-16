@@ -5,11 +5,12 @@
 Graffeine.command = (function(G) { 
 
     function send(command, data) { 
+        if(typeof _Graffeine_Test_Mode === "boolean" && _Graffeine_Test_Mode === true) return;
         G.socket().emit(command, data);
     };
 
     function recv(command, callback, visualUpdate) { 
-        if(G.socket().$events && G.socket().$events[command]) { 
+        if(G.socket()._callbacks && G.socket()._callbacks[command]) { 
             console.warn("recv: \"%s\" callback already registered", command);
             return;
         }
@@ -46,12 +47,18 @@ Graffeine.command = (function(G) {
 
         console.log("command: registerReceivers");
 
+        /**
+         *  List the graph databases the server can build
+        **/
+
+        recv("graph-dbs", function (data) { 
+            Graffeine.set("dbs", data.names);
+        });
+
         recv("data-nodes", function (data) { 
-            //var newVis = ($('#graph-mode').text() === "replace") ? 'replace' : 'update';
-            //graph.updateMode = newVis;
+            console.log(data);
             graph.addGraphData(data);
             graph.refresh();
-            //$('#graph-root').text(data.root||0);
         });
 
         // join nodes

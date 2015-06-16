@@ -10,11 +10,23 @@
     <script src="lib/jasmine-2.3.4/jasmine.js"></script>
     <script src="lib/jasmine-2.3.4/jasmine-html.js"></script>
     <script src="lib/jasmine-2.3.4/boot.js"></script>
-    <script src="/socket.io/socket.io.js"></script>
-    <script src="../lib/jquery/jquery-1.9.1.js"></script>
-    <script src="../lib/d3/d3.js"></script>
-    <script src="../lib/bootstrap/js/bootstrap.min.js"></script>
+
+    <!-- 3rd party js -->
+    <script src="../lib/sprintf/sprintf.js"></script>
+    <script src="../lib/jquery/jquery-2.1.4.js"></script>
+    <script src="../lib/bootstrap/js/bootstrap.js"></script>
+    <script src="../lib/bootstrap/js/bootlint.js"></script>
+    <script src="../lib/highlight/js/highlight.pack.js"></script>
+
     <script src="../lib/selectize/dist/js/standalone/selectize.js"></script>
+    <script src="../lib/d3/d3.js"></script>
+    <script src="../lib/jquery/jquery.svg.js"></script>
+    <!--[if lt IE 9]>
+        <script src="../lib/javascripts/html5shiv.min.js"></script>
+        <script src="../lib/javascripts/respond.min.js"></script>
+    <![endif]-->
+    <!-- app js -->
+    <script src="/socket.io/socket.io.js"></script>
     <script src="../lib/require/require.js"></script>
 
     <script src="helper/helper.js"></script>
@@ -29,9 +41,22 @@
     <script src="spec/ui/path/edit.js"></script>
     <script src="spec/graph/graph.js"></script>
     <script src="spec/util/command.js"></script>
-
+    <script>
+        $(function() { 
+            _Graffeine_Test_Mode = true;
+        });
+    </script>
 </head>
 <body>
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+            <ul class="nav navbar-nav">
+                <li><a href="/">Home</a></li>
+                <li class="divider"></li>
+                <li><a href="/test">Test</a></li>
+            </ul>
+        </div>
+    </nav>
     <div id="toolbar-container"></div>
     <div id="test-loader"></div>
     <div id="node-find-container"></div>

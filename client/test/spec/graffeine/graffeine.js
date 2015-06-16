@@ -23,11 +23,10 @@ describe("Graffeine", function() {
     });
 
     it("should throw error when no socket connection", function() { 
-        var ioCopy = jQuery.extend(true, {}, window.io);
-        window.io = undefined;
+        spyOn(window, "io").and.returnValue(undefined);
         expect(function(){ Graffeine.init(); }).toThrow();
-        expect(function(){ Graffeine.init(); }).toThrow("No web socket");
-        window.io = jQuery.extend(true, {}, ioCopy);
     });
+
+    // @todo: create tests for graffeine settings
 
 });

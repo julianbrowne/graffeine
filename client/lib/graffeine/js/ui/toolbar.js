@@ -43,6 +43,7 @@ Graffeine.ui.toolbar = (function(G) {
     };
 
     function load(callback) { 
+        if(typeof _Graffeine_Test_Mode === "boolean" && _Graffeine_Test_Mode === true) return;
         ui.util.loadPartial(data.viewURL, data.selectors.target, callback);
     };
 
@@ -97,23 +98,19 @@ Graffeine.ui.toolbar = (function(G) {
             ui.graphStats.show();
         });
 
-        ui.util.event(data.selectors.graphMenu.setttings, "click", function(e) { 
-            // open settings modal
-            // save session settings
+        /**
+         *  Graffeine settings
+        **/
 
-/**
-            var mode = ui.util.toggleButton(data.selectors.buttons.source, ["local", "remote"]);
-            if(mode==="local") { 
-                graph.temp = graph.socket;
-                graph.socket = Fake.socket;
-            }
-            else { 
-                graph.socket = graph.temp;
-                graph.temp = null;
-            }
-**/
-       });
-                /**
+        ui.util.event(data.selectors.graphMenu.setttings, "click", function(e) { 
+            var content = ui.util.prettyObject(Graffeine.settings);
+            var modal = ui.util.dynamicModal("Graffeine Settings", content);
+            ui.util.event(modal, "show.bs.modal", function() { 
+                ui.util.highlightModalCode(modal);
+            });
+        });
+
+        /**
          *  Node Menu drop-down options
         **/
 

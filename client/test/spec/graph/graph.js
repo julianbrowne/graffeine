@@ -239,7 +239,7 @@ describe("Graph", function() {
         expect(Graffeine.graph.nodeCount()).toEqual(0);
         var data = JSON.parse(graffeineTestData.oneNode);
         console.log(Graffeine.socket());
-        Graffeine.socket().$events["node-add"](data);
+        Graffeine.socket()._callbacks["node-add"][0](data);
         Graffeine.svg.forceStop();
         expect(Graffeine.graph.nodeCount()).toEqual(1);
         Graffeine.graph.clear();

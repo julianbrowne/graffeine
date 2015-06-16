@@ -20,6 +20,14 @@ var graffeineTestHelper = {
             return Object.getOwnPropertyNames(o).length;        
     },
 
+    getSocketEventCallback: function(event) { 
+        var socket = Graffeine.socket();
+        console.log(socket);
+        var callbacks = socket._callbacks[event];
+        if(callbacks.length>1) console.warn("More than one callback registered for %s", event);
+        return callbacks[0];
+    },
+
     duplicateIds: function() { 
         var dups = [];
         $('[id]').each(function() { 

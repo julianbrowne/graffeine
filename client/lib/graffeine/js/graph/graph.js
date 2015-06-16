@@ -42,9 +42,11 @@ Graffeine.graph = (function(G) {
         graphData.nodes.forEach(function(n) {
             if(n.node === 'n') addNode(n);
         });
-        graphData.nodes.forEach(function(n) { 
-            if(n.node === 'r') addPath(n.start, n.end, n.type);
+        console.log("populated graph with %s nodes", nodeCount());
+        graphData.nodes.forEach(function(p) { 
+            if(p.node === 'r') addPath(p.start, p.end, p.type);
         });
+        console.log("populated graph with %s paths", pathCount());
     };
 
     function refresh() { 
@@ -57,14 +59,9 @@ Graffeine.graph = (function(G) {
         G.svg.refresh();
     };
 
-    function addNode(node, overrideMax) { 
-        var overrideMax = overrideMax ? overrideMax : false;
-        if(!overrideMax) { 
-            if(nodeCount() > G.config.graphSettings.nodeLimit)
-                return;
-        }
-        if(node===undefined||node.id === undefined) { 
-            console.warn("addNode: adding node with bad data: %s", node);
+    function addNode(node) { 
+        if(node===undefined||node.id === undefined||node === null) { 
+            console.warn("graph.addNode: node with bad data: %s", JSON.stringify(node));
             return;
         }
         var newNode = new G.model.Node(node);
@@ -76,8 +73,9 @@ Graffeine.graph = (function(G) {
     };
 
     function getNode(id) { 
-        if(data.nodes[id]===undefined)
-            console.warn("fetching non-existent node: %s", id);
+        if(data.nodes[id]===undefined) { 
+            console.warn("graph.getNode: fetching non-existent node: %s", id);
+        }
         return data.nodes[id];
     };
 

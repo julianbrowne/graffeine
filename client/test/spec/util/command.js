@@ -5,6 +5,7 @@ describe("Command", function() {
         require(["/lib/graffeine/loader.js"], function() { 
             console.log("test: loaded graffeine for spec");
             Graffeine.init();
+            spyOn(Graffeine.command, 'send').and.returnValue(true);
             done();
         });
     });
@@ -18,19 +19,15 @@ describe("Command", function() {
     });
 
     it("should send a command message", function() { 
-        spyOn(Graffeine.socket(), 'emit');
         Graffeine.command.send('test', {a:1});
-        expect(Graffeine.socket().emit).toHaveBeenCalled();
-        expect(Graffeine.socket().emit).toHaveBeenCalledWith("test", {a:1});
+        expect(Graffeine.command.send).toHaveBeenCalled();
+        expect(Graffeine.command.send).toHaveBeenCalledWith("test", {a:1});
     });
 
     it("should manage a server-error message", function() { 
         var target = graffeineTestHelper.addTargetDomElement("flash");
-        Graffeine.socket().$events["server-message"]({ 
-            category: "error",
-            title: "test",
-            message: "test"
-        });
+        var serverMessage = graffeineTestHelper.getSocketEventCallback("server-message");
+        serverMessage({ category: "error", title: "test", message: "test" });
         expect(target.html()).toEqual('<div class="alert alert-dismissible alert-danger" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="close"><span aria-hidden="true">×</span></button><strong>test: </strong>test</div>');
         graffeineTestHelper.removeTargetDomElement(target);
     });
@@ -47,7 +44,7 @@ describe("Command", function() {
             "path-delete"
         ];
         events.forEach(function(e, index) { 
-            expect(Graffeine.socket().$events[e]).toBeDefined();
+            expect(Graffeine.socket()._callbacks[e]).toBeDefined();
             if(index===(events.length-1)) done();
         });
     });
@@ -56,7 +53,8 @@ describe("Command", function() {
         Graffeine.init();
         var target = graffeineTestHelper.addTargetDomElement("graph");
         var data = JSON.parse(graffeineTestData.tenNodes);
-        Graffeine.socket().$events["data-nodes"](data);
+        var dataNodes = graffeineTestHelper.getSocketEventCallback("data-nodes");
+        dataNodes(data);
         Graffeine.svg.forceStop();
         var nodes = Graffeine.graph.nodes();
         expect(Object.keys(nodes).length).toEqual(10);
@@ -72,7 +70,8 @@ describe("Command", function() {
     it("should manage a node-add message", function(done) { 
         var target = graffeineTestHelper.addTargetDomElement("graph");
         var data = JSON.parse(graffeineTestData.oneNode);
-        Graffeine.socket().$events["node-add"](data);
+        var nodeAdd = graffeineTestHelper.getSocketEventCallback("node-add");
+        nodeAdd(data);
         Graffeine.svg.forceStop();
         var c = $("g.nodes > circle");
         expect($("g.nodes > circle").length).toEqual(1);
@@ -88,9 +87,11 @@ describe("Command", function() {
         var target = graffeineTestHelper.addTargetDomElement("graph");
         var relationship = "knows";
         var data = JSON.parse(graffeineTestData.twoNodes);
-        Graffeine.socket().$events["data-nodes"](data);
+        var dataNodes = graffeineTestHelper.getSocketEventCallback("data-nodes");
+        dataNodes(data);
         expect($("g.paths > path").length).toEqual(0);
-        Graffeine.socket().$events["node-join"]({source:1, target:2, name:relationship});
+        var nodeJoin = graffeineTestHelper.getSocketEventCallback("node-join");
+        nodeJoin({source:1, target:2, name:relationship});
         Graffeine.svg.forceStop();
         expect($("g.nodes > circle").length).toEqual(2);
         expect($("g.draglets > circle").length).toEqual(2);
@@ -104,7 +105,8 @@ describe("Command", function() {
 
     it("should manage a nodes-count message", function(done) { 
         var target = graffeineTestHelper.addTargetDomElement("graph-stats-node-count");
-        Graffeine.socket().$events["nodes-count"]({count: 99});
+        var nodesCount = graffeineTestHelper.getSocketEventCallback("nodes-count");
+        nodesCount({count: 99});
         expect(target.html()).toEqual("99");
         graffeineTestHelper.removeTargetDomElement(target);
         done();
@@ -112,7 +114,8 @@ describe("Command", function() {
 
     it("should manage a path-count message", function(done) { 
         var target = graffeineTestHelper.addTargetDomElement("graph-stats-path-count");
-        Graffeine.socket().$events["path-count"]({count: 99});
+        var pathCount = graffeineTestHelper.getSocketEventCallback("path-count");
+        pathCount({count: 99});
         expect(target.html()).toEqual("99");
         graffeineTestHelper.removeTargetDomElement(target);
         done();
@@ -122,10 +125,12 @@ describe("Command", function() {
     it("should manage a node-delete message", function(done) { 
         var target = graffeineTestHelper.addTargetDomElement("graph");
         var data = JSON.parse(graffeineTestData.twoNodes);
-        Graffeine.socket().$events["data-nodes"](data);
+        var dataNodes = graffeineTestHelper.getSocketEventCallback("data-nodes");
+        dataNodes(data);
         Graffeine.svg.forceStop();
         expect($("g.nodes > circle").length).toEqual(2);
-        Graffeine.socket().$events["node-delete"]({id:1});
+        var nodeDelete = graffeineTestHelper.getSocketEventCallback("node-delete");
+        nodeDelete({id:1});
         expect($("g.nodes > circle").length).toEqual(1);
         Graffeine.graph.clear();
         done();
@@ -134,7 +139,8 @@ describe("Command", function() {
     it("should manage a node-update message", function(done) { 
         var target = graffeineTestHelper.addTargetDomElement("graph");
         var nodeData = JSON.parse(graffeineTestData.oneNode);
-        Graffeine.socket().$events["node-add"](nodeData);
+        var nodeAdd = graffeineTestHelper.getSocketEventCallback("node-add");
+        nodeAdd(nodeData);
         Graffeine.svg.forceStop();
         expect($("g.nodes > circle").length).toEqual(1);
         var node = $("g.node-labels text");
@@ -143,7 +149,8 @@ describe("Command", function() {
             node: nodeData, 
             updatedAt: new Date().getTime()
         };
-        Graffeine.socket().$events["node-update"](nodeUpdateData);
+        var nodeUpdate = graffeineTestHelper.getSocketEventCallback("node-update");
+        nodeUpdate(nodeUpdateData);
         Graffeine.graph.clear();
         done();
     });
@@ -151,11 +158,13 @@ describe("Command", function() {
     it("should manage a path-delete message", function(done) { 
         var target = graffeineTestHelper.addTargetDomElement("graph");
         var data = JSON.parse(graffeineTestData.tenNodes);
-        Graffeine.socket().$events["data-nodes"](data);
+        var dataNodes = graffeineTestHelper.getSocketEventCallback("data-nodes");
+        dataNodes(data);
         Graffeine.svg.forceStop();
         expect($("g.nodes > circle").length).toEqual(10);
         expect($("g.paths > path").length).toEqual(5);
-        Graffeine.socket().$events["path-delete"]({ source: 4, target: 2, name: "knows" });
+        var pathDelete = graffeineTestHelper.getSocketEventCallback("path-delete");
+        pathDelete({ source: 4, target: 2, name: "knows" });
         expect($("g.nodes > circle").length).toEqual(10);
         expect($("g.paths > path").length).toEqual(4);
         //Graffeine.graph.clear();

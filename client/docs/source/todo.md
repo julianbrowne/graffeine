@@ -26,3 +26,4 @@ DONE
 *   Add support for hyperlinks in node data
 *   Pressing return in the join-nodes modal dialog closes the window and does nothing
 *   When the graph loads it needs to get all relationship types, not just those of the nodes on the screen
+*   Upgrade to latest neo4j and add authentication support

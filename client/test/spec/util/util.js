@@ -49,9 +49,11 @@ describe("Graffeine Util", function() {
 
     it("should make list from an object", function() { 
         expect(Graffeine.util.objToList).toBeDefined();
-        // @todo: add more variations here
         expect(Graffeine.util.objToList({id: 123}).prop('outerHTML'))
             .toEqual("<ul class=\"list-group\"><li class=\"list-group-item\"><div class=\"list-group-row\"><div class=\"list-group-field-name\">id</div><div class=\"list-group-field-value\">123</div></div></li></ul>");
+        expect(Graffeine.util.objToList({link: "http://neo4j.com/"}).prop('outerHTML'))
+            .toEqual("<ul class=\"list-group\"><li class=\"list-group-item\"><div class=\"list-group-row\"><div class=\"list-group-field-name\">link</div><div class=\"list-group-field-value\"><a href=\"http://neo4j.com\">http://neo4j.com</a></div></div></li></ul>");
+        // @todo: add more variations here
     });
 
 });

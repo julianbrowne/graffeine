@@ -39,7 +39,6 @@ Graffeine.ui.nodeView = (function(G) {
 
         ui.util.event(data.selectors.content, "show.bs.modal", function(e) { 
             var node = ui.state.getSelectedNode();
-            console.log(node);
             var table = util.objToList(node);
             $(data.selectors.fields.body).empty();
             $(data.selectors.fields.body).append(table);
@@ -48,7 +47,7 @@ Graffeine.ui.nodeView = (function(G) {
     };
 
     return { 
-        show: function(node) { 
+        show: function() { 
             $(data.selectors.content).modal('show');
         },
         hide: function() { 

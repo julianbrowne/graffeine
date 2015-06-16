@@ -1,10 +1,12 @@
 { 
     "root": "/lib/graffeine/",
     "graphTargetDiv": "#graph",
+    "debug": true,
     "node": { 
         "radius": 30,
         "nameFields": [ 
-            "name"
+            "name",
+            "number"
         ]
     },
     "graphSettings": { 

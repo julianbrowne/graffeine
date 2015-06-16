@@ -1,5 +1,5 @@
 
-Graffeine.util = (function() { 
+Graffeine.util = (function(G) { 
 
     function getType(obj) { 
         var s = typeof obj;
@@ -115,6 +115,11 @@ Graffeine.util = (function() {
         return form;
     };
 
+    function anchorHyperlinks(text) { 
+        var urlRegex = /((?:(http|https|Http|Https|rtsp|Rtsp):\/\/(?:(?:[a-zA-Z0-9\$\-\_\.\+\!\*\'\(\)\,\;\?\&\=]|(?:\%[a-fA-F0-9]{2})){1,64}(?:\:(?:[a-zA-Z0-9\$\-\_\.\+\!\*\'\(\)\,\;\?\&\=]|(?:\%[a-fA-F0-9]{2})){1,25})?\@)?)?((?:(?:[a-zA-Z0-9][a-zA-Z0-9\-]{0,64}\.)+(?:(?:aero|arpa|asia|a[cdefgilmnoqrstuwxz])|(?:biz|b[abdefghijmnorstvwyz])|(?:cat|com|coop|c[acdfghiklmnoruvxyz])|d[ejkmoz]|(?:edu|e[cegrstu])|f[ijkmor]|(?:gov|g[abdefghilmnpqrstuwy])|h[kmnrtu]|(?:info|int|i[delmnoqrst])|(?:jobs|j[emop])|k[eghimnrwyz]|l[abcikrstuvy]|(?:mil|mobi|museum|m[acdghklmnopqrstuvwxyz])|(?:name|net|n[acefgilopruz])|(?:org|om)|(?:pro|p[aefghklmnrstwy])|qa|r[eouw]|s[abcdeghijklmnortuvyz]|(?:tel|travel|t[cdfghjklmnoprtvwz])|u[agkmsyz]|v[aceginu]|w[fs]|y[etu]|z[amw]))|(?:(?:25[0-5]|2[0-4][0-9]|[0-1][0-9]{2}|[1-9][0-9]|[1-9])\.(?:25[0-5]|2[0-4][0-9]|[0-1][0-9]{2}|[1-9][0-9]|[1-9]|0)\.(?:25[0-5]|2[0-4][0-9]|[0-1][0-9]{2}|[1-9][0-9]|[1-9]|0)\.(?:25[0-5]|2[0-4][0-9]|[0-1][0-9]{2}|[1-9][0-9]|[0-9])))(?:\:\d{1,5})?)(\/(?:(?:[a-zA-Z0-9\;\/\?\:\@\&\=\#\~\-\.\+\!\*\'\(\)\,\_])|(?:\%[a-fA-F0-9]{2}))*)?(?:\b|$)/gi;
+        return text.replace(urlRegex, '<a href="$1">$1</a>');
+    };
+
     function objToList(obj, levels) { 
         if(levels===undefined) levels = 3;
         console.log(levels);
@@ -129,7 +134,8 @@ Graffeine.util = (function() {
                 var value = $("<div>").addClass("strong").html(obj[key].toString()); 
             }
             else { 
-                var value = $("<div>").html(obj[key]);
+                var text = (type==="string") ? anchorHyperlinks(obj[key]) : obj[key];
+                var value = $("<div>").html(text);
             }
             value.addClass("list-group-field-value")
             if((type==="object"||type==="array")&&(obj[key] !== null)) { 
@@ -148,24 +154,27 @@ Graffeine.util = (function() {
         return ul;
     };
 
-    return { 
+    function debug() { 
+        if(!G.config.debug) return;
+        var args = Array.prototype.slice.call(arguments);
+        var text = args[0];
+        var opts = args.splice(1);
+        var output = sprintf(text, opts);
+        console.log("-- %c debug: " + output, "color: #1398E4");
+    };
 
+    return { 
         getType: getType,
         addURLTags: addURLTags,
         objectLength: objectLength,
         rowify: rowify,
         objToForm: objToForm,
         objToList: objToList,
-
         warning: function(text) { 
             var caller = (arguments.callee.caller.name) ? arguments.callee.caller.name+":" : "";
             console.warn("%c warning: " + caller + text, "color: #C62C17");
         },
-
-        debug: function(text) { 
-            var caller = (arguments.callee.caller.name) ? arguments.callee.caller.name+":" : "";
-            console.log("-- %c debug:" + caller + text, "color: #1398E4");
-        }
+        debug: debug
     };
 
-}());
+}(Graffeine));

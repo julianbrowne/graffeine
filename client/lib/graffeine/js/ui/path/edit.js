@@ -49,7 +49,7 @@ Graffeine.ui.pathEdit = (function(G) {
             save();
         });
 
-        ui.util.event(data.selectors.content, "keypress", function(e) { 
+        ui.util.event(data.selectors.target, "keypress", function(e) { 
             if (e.keyCode === 13) save();
         });
 
@@ -57,6 +57,10 @@ Graffeine.ui.pathEdit = (function(G) {
             ui.state.selectTargetNode(ui.state.getHoveredNode());
             var options = ui.util.selectize(data.selectors.fields.relationship);
             ui.util.addOptionsToSelectize(options, graph.getPathTypes());
+        });
+
+        ui.util.event(data.selectors.content, "shown.bs.modal", function(e) { 
+            $("div.selectize-input > input[type=text]").focus();
         });
 
         ui.util.event(data.selectors.content, "hidden.bs.modal", function(e) { 

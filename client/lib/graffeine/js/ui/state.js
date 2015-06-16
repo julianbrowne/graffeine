@@ -19,6 +19,7 @@ Graffeine.ui.state = (function(G) {
         this.countOfNodesOnDeck = 0;
         this.menuActivated = false;
         this.forceActivated = false;
+        this.dbConnected = false;
 
         this.dragNode = function(node, element) { 
             var nodeClone = $.extend({}, node);
@@ -45,6 +46,28 @@ Graffeine.ui.state = (function(G) {
 
         this.nodeDragged = function() { 
          return (this.draggedNode===null) ? false : true;
+        };
+
+        this.nodeDragged = function() { 
+         return (this.draggedNode===null) ? false : true;
+        };
+
+        this.connectDB = function() { 
+            this.dbConnected = true;
+            $(".db-indicator")
+                .removeClass("label-default")
+                .addClass("label-success");
+        };
+
+        this.connected = function() { 
+            return this.dbConnected;
+        };
+
+        this.disconnectDB = function() { 
+            this.dbConnected = false;
+            $(".db-indicator")
+                .removeClass("label-success")
+                .addClass("label-default");
         };
 
         this.nodesOnDeck = function(count) { 
@@ -172,13 +195,13 @@ Graffeine.ui.state = (function(G) {
         this.setForceActive = function() { 
             this.forceActivated = true;
             console.log("force: active");
-            $("#graph-force").text("stop"); // @todo: tidy up selector reference
+            G.ui.util.forceButton("on");
         };
 
         this.unsetForceActive = function() { 
             this.forceActivated = false;
             console.log("force: inactive");
-            $("#graph-force").text("force"); // @todo: tidy up selector reference
+            G.ui.util.forceButton("off");
         };
 
         this.forceActive = function() { 

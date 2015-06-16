@@ -34,6 +34,10 @@ Graffeine.command = (function(G) {
         send('graph-fetch', data);
     };
 
+    function gatherDBStats() { 
+        send("path-all");
+    };
+
     function registerReceivers() { 
 
         var ui = G.ui;
@@ -64,12 +68,19 @@ Graffeine.command = (function(G) {
             Graffeine.ui.graphStats.update('nodeCount', data.count);
         });
 
-        // stats - path count
+        /**
+         *  Path (Relationship) Commands
+        **/
 
         recv('path-count', function (data) { 
             util.debug("(path-count) processing");
             Graffeine.ui.graphStats.update('pathCount', data.count);
         });
+
+        recv("path-all", function (data) { 
+            util.debug("command: path-all: processing %s", data.data.join(","));
+            Graffeine.ui.graphStats.update("dbPathTypes", data.data);
+        }, true);
 
         // delete existing node
 
@@ -142,7 +153,8 @@ Graffeine.command = (function(G) {
     return { 
         init: registerReceivers,
         send: send,
-        connectNodes: connectNodes
+        connectNodes: connectNodes,
+        gatherDBStats: gatherDBStats
     };
 
 }(Graffeine));

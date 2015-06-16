@@ -21,14 +21,6 @@ Graffeine.svg = (function(G) {
         definitions: null
     };
 
-    var state = { 
-        selectedNode: null,    // ref to currently selected/highlighted node
-        sourceNode: null,      // ref to origin node of draglet drag
-        draggedNode: null,     // ref to currently dragged draglet node
-        newPathActive: false,  // ref to flag showing whether new relationship dialog is up
-        hoveredNode: null      // ref to currently hovered over node during a drag
-    };
-
     function makeLabelsRoot() { 
         data.labels.text = svg.append("svg:g").attr("class", "node-labels").selectAll("g");
         data.labels.icon = svg.append("svg:g").attr("class", "node-icons").selectAll("g");
@@ -117,8 +109,6 @@ Graffeine.svg = (function(G) {
                 ui.state.undragNode();
             });
 
-        console.log(nodeDragger);
-
         /**
          *  Bring on the nodes
         **/
@@ -129,7 +119,7 @@ Graffeine.svg = (function(G) {
                 .attr("class", function(d) { 
                     var css = "node";
                     if(d.isEdgeNode) css += " edge";
-                    css += " " + this.cssClass;
+                    css += " " + ui.util.suggestLabelCSS(d);
                     return css;
                 })
                 .attr("r", config.node.radius)
@@ -145,7 +135,7 @@ Graffeine.svg = (function(G) {
                         console.log("node: click: aborted (menu active)");
                         return;
                     }
-                    force.stop();
+                    forceStop();
                     // node node currently selected
                     if(!ui.state.nodeSelected()) { 
                         console.log("node: click: selecting node %d", d.id);
@@ -248,7 +238,7 @@ Graffeine.svg = (function(G) {
         var ui = G.ui;
 
         d3.select(this).attr('pointer-events', 'none');
-        force.stop();
+        forceStop();
 
         var svgPos = $('svg').offset();
 
@@ -386,7 +376,7 @@ Graffeine.svg = (function(G) {
         drawLabels();
         ui.state.nodesOnDeck(nodeCount);
         ui.graphStats.refresh();
-        force.start();
+        forceStart();
     };
 
     function init() { 
@@ -400,16 +390,14 @@ Graffeine.svg = (function(G) {
         ui.state.selectSourceNode(null);
         ui.state.selectTargetNode(null);
 
-        console.log(force);
-
         force = d3.layout.force();
 //            .nodes(d3.values(graph.nodes()), function(n) { return n.id; })
 //            .links(graph.paths(), function(p) { return p.source.id + "-" + p.target.id; })
         force.size([config.graphSettings.width, config.graphSettings.height])
         force.linkDistance(config.graphSettings.linkDistance)
         force.charge(config.graphSettings.charge)
-        force.on('start', function() { ui.state.setForceActive(); })
-        force.on('end', function() { ui.state.unsetForceActive(); })
+        force.on('start', function() { if(!G.ui.state.forceActive()) G.ui.state.setForceActive(); })
+        force.on('end', function() { if(G.ui.state.forceActive()) G.ui.state.unsetForceActive(); })
         force.on("tick", forceTick);
 
         svg = d3
@@ -417,7 +405,7 @@ Graffeine.svg = (function(G) {
             .append("svg:svg")
             .on('click', function() { 
                 console.log("svg: click");
-                force.stop();
+                forceStop();
                 if(ui.state.nodeSelected()) ui.state.unselectNode();
             })
             .on('contextmenu', function() { 
@@ -481,11 +469,13 @@ Graffeine.svg = (function(G) {
     function forceStart(d) { 
         if(G.ui.state.forceActive()||force===null) return;
         force.start();
+        G.ui.state.setForceActive();
     };
 
     function forceStop(d) { 
         if(!G.ui.state.forceActive()||force===null) return;
         force.stop();
+        G.ui.state.unsetForceActive();
     };
 
     function forceTick(d) { 

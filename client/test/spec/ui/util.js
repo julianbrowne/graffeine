@@ -26,6 +26,22 @@ describe("UI Util", function() {
         });
     });
 
+    it("should choose a node background based on the label", function() { 
+        var node = { labels: ["b"] };
+        spyOn(Graffeine.graph, "getNodeLabels").and.returnValue(["a","b","c"]);
+        var css = Graffeine.ui.util.suggestLabelCSS(node);
+        expect(css).toEqual("bg2");
+        node = { labels: ["a"] };
+        css = Graffeine.ui.util.suggestLabelCSS(node);
+        expect(css).toEqual("bg1");
+        node = { labels: ["c"] };
+        css = Graffeine.ui.util.suggestLabelCSS(node);
+        expect(css).toEqual("bg3");
+        node = { labels: [] };
+        css = Graffeine.ui.util.suggestLabelCSS(node);
+        expect(css).toEqual("");
+    });    
+
     // @todo: check ui.util.event balks when no selector for event
 
     it("should toggle buttons", function() { 

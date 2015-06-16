@@ -18,6 +18,11 @@ Graffeine.ui.nodeEdit = (function(G) {
                 save: "#node-edit-save",
                 cancel: "#node-edit-cancel"
             },
+            sections: { 
+                data: "#node-edit-data",
+                labels: "#node-edit-labels",
+                paths: "#node-edit-paths"
+            },
             fields: { 
                 form: "#node-edit-body",
                 nodeName: "#node-edit-name",
@@ -41,6 +46,30 @@ Graffeine.ui.nodeEdit = (function(G) {
     function handler() { 
 
         ui.util.modal(data.selectors.content);
+
+        ui.util.event(data.selectors.content, "show.bs.modal", function(e) { 
+
+            var node = ui.state.getSelectedNode();
+
+            $(data.selectors.sections.data).html(renderData(node));
+            $(data.selectors.sections.labels).html(renderLabels(node));
+            $(data.selectors.sections.paths).html(renderPaths(node));
+
+            /**
+
+            addEvents();
+
+            if(!node) node = new Graffeine.model.Node();
+            $(data.selectors.fields.form).html(
+                Graffeine.util.objToForm(node.data, { type: { 
+                    data: graph.getNodeTypes(), 
+                    user: true, selected: node.type 
+                }})
+            );
+            ui.util.disableActionButtons();
+
+            **/
+        });
 
         /// @todo: add node to ..
 
@@ -145,27 +174,12 @@ Graffeine.ui.nodeEdit = (function(G) {
     };
 
     function renderData(node) { 
-        console.log(util);
-        return util.objToForm(node.data);
+        return G.util.objToForm(node.data);
     };
 
     return { 
 
         show: function(node) { 
-            ui.state.setMenuActive();
-            var graph = G.graph;
-            //$(data.selectors.fields.data).html(renderData(node));
-            //$(data.selectors.fields.labels).html(renderLabels(node));
-            //$(data.selectors.fields.paths).html(renderPaths(node));
-            //addEvents();
-            if(!node) node = new Graffeine.model.Node();
-            $(data.selectors.fields.form).html(
-                Graffeine.util.objToForm(node.data, { type: { 
-                    data: graph.getNodeTypes(), 
-                    user: true, selected: node.type 
-                }})
-            );
-            ui.util.disableActionButtons();
             $(data.selectors.content).modal('show');
         },
 

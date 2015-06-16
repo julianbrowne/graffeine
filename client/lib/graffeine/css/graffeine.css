@@ -31,7 +31,36 @@
 .list-group-field-value { padding: 2px; float: left; width: 300px; }
 .list-group-field-name.list-group-section { width: inherit; }
 
-/**   **/
+/**
+ *  Disabled menu items
+**/
+
+.dropdown-menu > .disabled > a:hover,
+.dropdown-menu > .disabled > a:focus { 
+  cursor: pointer;
+}
+
+/**
+ *  Force button
+**/
+
+button.force.off { 
+    background: #D8EECF;
+}
+
+button.force.on {
+    background: #EFD6D6;
+}
+
+/**
+ *  DB Connection Indicator light
+**/
+
+.db-indicator { 
+    display: inline-block;
+    margin: 8px;
+    padding: 12px;
+}
 
 #node-info-content > div.arrow { 
     top: 55px;

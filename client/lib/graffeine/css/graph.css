@@ -48,6 +48,14 @@ circle.node.fixed {
   stroke: #0000FF;
 }
 
+circle.bg1 { fill: #376DC1 }
+circle.bg2 { fill: #3F6CAF }
+circle.bg3 { fill: #B34143 }
+circle.bg4 { fill: #8AB047 }
+circle.bg5 { fill: #725495 }
+circle.bg6 { fill: #3E9CB9 }
+circle.bg7 { fill: #F38337 }
+
 .control.glyphicon {
   position: static;
 }
@@ -68,14 +76,6 @@ path.connector {
   stroke-width: 4px;
   stroke-dasharray: 5,5;
 }
-
-.bg1 { fill: #214071 }
-.bg2 { fill: #3F6CAF }
-.bg3 { fill: #B34143 }
-.bg4 { fill: #8AB047 }
-.bg5 { fill: #725495 }
-.bg6 { fill: #3E9CB9 }
-.bg7 { fill: #F38337 }
 
 div.tooltip, div.linkMenu {
   position: absolute;

@@ -12,11 +12,10 @@ var Rels = {
      *  @param {function} callback
     **/
 
-    all: function(callback) {
+    all: function(callback) { 
 
-        var cypher = [
-            "START n=node(*)",
-            "MATCH n-[r]-m",
+        var cypher = [ 
+            "MATCH (n)-[r]-(m)",
             "RETURN r"
         ].join("\n");
 

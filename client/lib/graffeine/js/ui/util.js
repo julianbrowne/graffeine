@@ -2,17 +2,31 @@
  *  UI Utilities
 **/
 
-Graffeine.ui.util = (new function(G) { 
+Graffeine.ui.util = (function(G) { 
 
     var ui = G.ui;
+    var graph = G.graph;
 
-    this.init = function() { 
-        console.log("init: ui.util");
+    function yield(f) { 
+        setTimeout(f,0);
     };
 
-    this.init();
+    function suggestLabelCSS(node) { 
+        var nodeLabels = node.labels;
+        var graphLabels = graph.getNodeLabels();
+        if(nodeLabels===[]||graphLabels===[]) return "";
+        // @todo: uses first lable only, maybe a better way
+        // to represent all node labels with a background color?
+        var match = graphLabels.indexOf(nodeLabels[0]);
+        if(match!==-1&&match<=7) { // only 7 bg colours in the stylesheet
+            return "bg"+(match+1).toString();
+        }
+        return "";
+    };
 
     return { 
+
+        suggestLabelCSS: suggestLabelCSS,
 
         loadPartial: function(url, target, callback) { 
             if($(target).length === 0) { 
@@ -25,13 +39,13 @@ Graffeine.ui.util = (new function(G) {
                     console.error("ui.util.loadPartial: error %s: %s", xhr.status, xhr.statusText);
                 }
                 else { 
-                    if(typeof callback === "function" ) setTimeout(callback, 0);
+                    if(typeof callback === "function" ) yield(callback);
                 }
             });
         },
 
         toggleButton: function(selector, values) { 
-            if($(selector).length === 0) G.util.warning("No selector %s to toggle", selector);
+            if($(selector).length === 0) console.warn("No selector %s to toggle", selector);
             var current = $(selector).text();
             var newValue = (current === values[0]) ? values[1] : values[0];
             $(selector).text(newValue);
@@ -40,7 +54,7 @@ Graffeine.ui.util = (new function(G) {
         },
 
         populateSelect: function(selector, items) { 
-            if($(selector).length === 0) G.util.warning("No selector %s to populate", selector);
+            if($(selector).length === 0) console.warn("No selector %s to populate", selector);
             var select = $(selector);
             select.empty();
             //select.append($("<option />").val("").text(""));
@@ -55,6 +69,35 @@ Graffeine.ui.util = (new function(G) {
 
         enableActionButtons: function() { 
             $(".action-button").prop('disabled', false);
+        },
+
+        disableGraphButtons: function() { 
+            yield(function() { 
+                if($(".disable-when-graph-empty").length===0)
+                    console.warn("no graph buttons found");
+                $(".disable-when-graph-empty").addClass("disabled");
+            });
+        },
+
+        forceButton: function(value) { 
+            if(value!=="on"&&value!=="off") { 
+                console.warn("forceButton: called with unknown value %s", value);
+                return;
+            }
+            if(value==="on")
+                $("#graph-force")
+                    .text("off")
+                    .prop("aria-pressed", "true")
+                    .addClass("active")
+                    .addClass("on")
+                    .removeClass("off");
+            else
+                $("#graph-force")
+                    .text("on")
+                    .prop("aria-pressed", "false")
+                    .removeClass("active")
+                    .addClass("off")
+                    .removeClass("on");
         },
 
         selectize: function(selector) { 
@@ -84,7 +127,7 @@ Graffeine.ui.util = (new function(G) {
                 return;
             };
 
-            setTimeout(function() { 
+            yield(function() { 
                 var modal = $(selector).modal({keyboard: true, background: "static", show: false});
                 $(selector).on("show.bs.modal", function() { 
                     ui.state.setMenuActive();
@@ -99,7 +142,7 @@ Graffeine.ui.util = (new function(G) {
                             console.log("%s: registered %s event", selector, event);
                         });
                     });
-            }, 0);
+            });
 
         },
 
@@ -109,6 +152,11 @@ Graffeine.ui.util = (new function(G) {
                 return;
             };
             $(selector).on(event, function(e) { 
+                if($(selector).hasClass("disabled")) { 
+                    console.warn("%s: %s ignored - disabled", selector, event);
+                    return;
+                }
+                console.log("%s: registered %s event", selector, event);
                 callback(e);
             });
         }

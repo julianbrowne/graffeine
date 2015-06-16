@@ -33,6 +33,7 @@ conn.sockets.on('connection', function (socket) {
     socket.on('node-find',     command.nodeFind);
     socket.on('node-delete',   command.nodeDelete);
     socket.on('nodes-orphans', command.nodesOrphans);
+    socket.on('path-all',      command.pathAll);
     socket.on('path-delete',   command.relDelete);
 
 });

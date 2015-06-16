@@ -14,8 +14,8 @@ Graffeine.ui.toolbar = (function(G) {
         selectors: { 
             target:  "#toolbar-container",
             content: "#toolbar-content",
-            logoMenu: {
-
+            logoMenu: { 
+                content: "#about-content"
             },
             graphMenu: { 
                 initGraph: "#init-graph",
@@ -30,7 +30,7 @@ Graffeine.ui.toolbar = (function(G) {
             },
             buttons: { 
                 force: "#graph-force",
-                displayMode: "#graph-mode"
+                mode: "#graph-mode"
             }
         },
         viewURL: G.config.root + "html/toolbar.html"
@@ -52,17 +52,29 @@ Graffeine.ui.toolbar = (function(G) {
         var util = G.util;
 
         /**
+         *  About Menu
+        **/
+
+        ui.util.modal(data.selectors.logoMenu.content);
+
+        /**
          * Toolbar buttons on the top right
         **/
 
-        ui.util.event(data.selectors.buttons.displayMode, "click", function(e) { 
+        ui.util.event(data.selectors.buttons.mode, "click", function(e) { 
             var mode = ui.util.toggleButton(data.selectors.buttons.mode, ["replace", "update"]);
             graph.replace = (mode==="replace") ? true : false;
         });
 
+        /**
+         *  Force Button On/Off
+        **/
+
         ui.util.event(data.selectors.buttons.force, "click", function(e) { 
-            var mode = ui.util.toggleButton(data.selectors.buttons.force, ["force", "stop"]);
-            (mode==="force") ? Graffeine.svg.forceStop() : Graffeine.svg.forceStart();
+            if(ui.state.forceActive())
+                G.svg.forceStop();
+            else
+                G.svg.forceStart();
         });
 
         /**
@@ -118,6 +130,10 @@ Graffeine.ui.toolbar = (function(G) {
         ui.util.event(data.selectors.nodeMenu.nodeOrphans, 'click', function(e) { 
             Graffeine.command.send('nodes-orphans', { });
         });
+
+        /** disable buttons that rely on a graph being present **/
+
+        ui.util.disableGraphButtons();
 
     };
 

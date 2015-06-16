@@ -131,7 +131,19 @@ var Command = {
                     graffeine.log('FAIL: path-delete -> ' + util.inspect(data));
                 }
             });
+        },
+
+        this.pathAll = function() { 
+            graffeine.log("RECV: path-all");
+            model.rels.all(function(result) { 
+                graffeine.log("SEND: path-all");
+                var types = result.map(function(r) { return r.type });
+                var filtered = types.sort().filter(function(el,i,a) { return (i==a.indexOf(el)); });
+                console.log(filtered);
+                socket.emit('path-all', { data: filtered, updatedAt: new Date().getTime() } );
+            });
         }
+
     }
 }
 

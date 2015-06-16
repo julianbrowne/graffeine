@@ -8,3 +8,4 @@ Graffeine
 *   [graffNode](graffNode.md) 
 *   [refactorings](refactorings.md) 
 *   [windows installation](windows-install.md) 
+*   [design](design.md) 

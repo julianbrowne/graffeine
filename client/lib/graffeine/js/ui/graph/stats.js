@@ -14,7 +14,8 @@ Graffeine.ui.graphStats = (function(G) {
             },
             fields: { 
                 nodeCount: "#graph-stats-node-count",
-                pathCount: "#graph-stats-path-count"
+                pathCount: "#graph-stats-path-count",
+                dbPathTypes: "#db-path-types-list"
             }
         },
         viewURL: G.config.root + "html/graph-stats.html"
@@ -44,7 +45,12 @@ Graffeine.ui.graphStats = (function(G) {
             ui.state.unsetMenuActive();
         },
         update: function(key, value) { 
-            if(data.selectors.fields[key] === undefined) return;
+            if(data.selectors.fields[key] === undefined) { 
+                console.warn("graphStats.update: can't update %s with %s: no selector", key, value);
+                return;
+            }
+            if(G.util.getType(value)==="array") var value = value.join(", ");
+            console.log("graphStats.update: updating %s with %s", key, value);
             $(data.selectors.fields[key]).html(value);
         },
         refresh: function() { 

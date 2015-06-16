@@ -211,15 +211,13 @@ Graffeine.graph = (function(G) {
     };
 
     function init() { 
-//        socket = new io.connect(G.config.core.host)
         clearNodeTypes();
         clearPathTypes();
         clearNodes();
         clearPaths();
-        $(".disable-when-graph-empty").addClass("disabled");
     };
 
-    init();
+    // init();
 
     return { 
         nodes: function() { return data.nodes; },

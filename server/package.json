@@ -15,7 +15,7 @@
   ],
   "author": "Julian Browne",
   "dependencies": { 
-    "neo4j": "1.1.0",
+    "neo4j": "2.0.0-RC2",
     "node-static": "0.7.6",
     "socket.io": "1.3.5"
   },

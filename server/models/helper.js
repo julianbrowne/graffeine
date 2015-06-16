@@ -191,7 +191,7 @@ var helper = {
                 var proc = helper.mapCypherQueryResult;
             }
             var timer = { command: cypher, start: new Date().getTime() };
-            g.db.conn.query(cypher, {}, helper.processQueryResult(callback, proc, columns, timer));
+            g.db.conn.cypher(cypher, helper.processQueryResult(callback, proc, columns, timer));
         }
 
     },

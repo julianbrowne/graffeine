@@ -65,10 +65,13 @@ var common = {
         this.db.connectionString = 'http://' + db.neo4j.host + ':' + db.neo4j.port;
         common.log('Connecting to ' + this.db.connectionString)
         try { 
-            this.db.conn = new neo.GraphDatabase(this.db.connectionString);
+            this.db.conn = new neo.GraphDatabase({ 
+                url: this.db.connectionString,
+                auth: {username: db.neo4j.username, password: db.neo4j.password}
+            });
         }
         catch(error) { 
-            console.error(error);
+            console.error("** neo4j connection: %s", error);
             process.exit(-1);
         }
         this.server = {};

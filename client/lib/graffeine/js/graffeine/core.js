@@ -15,7 +15,8 @@ Graffeine = (function() {
         if(typeof io === "undefined")
             throw "No web socket";
         else { 
-            socket = new io.connect(Graffeine.config.core.host);
+            console.log(io);
+            socket = io(Graffeine.config.core.host);
             socket.on("connect", function() { Graffeine.ui.state.connectDB(); });
             socket.on("disconnect", function(error) { Graffeine.ui.state.disconnectDB(); });
             // register all receivers

@@ -1,10 +1,10 @@
 
-var sio        = require('socket.io');
-var http       = require('http');
-var content    = require('node-static');
+var sio = require('socket.io');
+var http = require('http');
+var content = require('node-static');
 
 var commServer = require('./graffeine/command');
-var graffeine  = require('./graffeine/common');
+var graffeine = require('./graffeine/common');
 
 graffeine.log('Starting Graffeine server');
 

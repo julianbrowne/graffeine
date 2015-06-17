@@ -1,113 +1,51 @@
 
 # Graffeine
 
-Caffeinated Graph Exploration for Neo4J
+Caffeinated Graph Exploration for Neo4J.  
 
+Graffeine is a visually interactive client for small [Neo4J](http://neo4j.com/) graph databases.  
 
 ## Update June 2015
 
-Graffeine has been (almost) completely re-written. Some of the major changes include:
+Stay tuned - Graffeine is having a full re-write.  
 
-*   Styling. Swapped out all the JQuery UI styling and replaced with Bootstrap. This gives a much cleaner interface that is clear in HTML terms and also more extendible.
-*   Tests. The original suffered from a lack of them. The new version has far more.
-*   Redesigned. There are now two directories: a server-side component (server) and a client side GUI (client). The client can be run on it's own, which means it's easy to replace the server with another (Ruby, Java) version.
-*   Cleaned. All UI components are now self-contained and follow a similar (JavaScript [Module](http://www.adequatelygood.com/JavaScript-Module-Pattern-In-Depth.html)) pattern.
-*   Functionality. Everything that came up in new feature requests has been added.
+Some of the major changes include:  
 
-## Introduction
-
-Graffeine is a visually interactive client for small [Neo4J](http://neo4j.com/) graph databases.
-
-Here's a screenshot with the, now canonical, Dr Who graph:
-
-![ScreenShot](https://raw.githubusercontent.com/julianbrowne/graffeine/master/public/assets/images/screenshot-drwho.jpeg)
+-   Styling. Swapped out all the JQuery UI styling and replaced with Bootstrap. This gives a much cleaner interface that is clear in HTML terms and also much easier to extend.
+-   Tests. The original suffered from a lack of them. The new version has far more.
+-   Redesigned. There are now two directories:
+    -   a node.js server-side component (/server)
+    -   a client-side GUI (/client) that can run on it's own, which means it's easy to replace the server with another (Ruby, Java) version later. The only connection between the client and the server is an exchange of web socket messages.
+-   Cleaned. All UI components are now self-contained and follow a similar (JavaScript [Module](http://www.adequatelygood.com/JavaScript-Module-Pattern-In-Depth.html)) pattern.
+-   Functionality. Everything that came up in new feature requests for the old version been added.
 
 ## Dependencies
 
--   **node.js** v0.10+
--   **neo4j** v2.0, V2.1
--   a **modern browser** that is happy with [D3](http://d3js.org/) v2, [JQuery](http://jquery.com/) v1.9.1, JQuery UI, Underscore.JS and Font Awesome
+-   node.js 0.12.x or later  
+-   Neo4j 2.2.x or later  
+-   A very modern browser that is happy with:
+    -   [D3](http://d3js.org/) 3.5.5
+    -   [JQuery](http://jquery.com/) 2.1.4
+    -   [Bootstrap]() 3.3.4
 
 ## Installation
 
-from github:
+If you have git installed then just clone the repository:
 
     git clone https://github.com/julianbrowne/graffeine
 
-    cd graffeine
+Or get the latest zip file at:
 
-    node server
+    https://github.com/julianbrowne/graffeine/releases
 
-from npm:
+You should end up with a "readme.md" file and two directories ("client" and "server") in a location we'll call "{HOME}"
 
-    npm install graffeine
+## Running
 
-    npm start graffeine
+You should read the documentation first, but once you've done that here's what you need to do to get started:
 
-point a browser at:
+-   Edit the file {HOME}/server/config/neo4j.json if you have Neo4J running on a port other than 7474, or if you have authentication requirements
+-   Start the server from the {HOME}/server directory by typing ```node server```
+-   If none of the defaults (port etc) have been changed, open your browser at ```http://localhost:8004/```
 
-    http://localhost:8004
-    
-### Background
-
-Graph databases are amazing things.
-
-They should be the easiest of all persistence technologies to understand because graphs think like us - human concepts connect together (Alice _knows_ Bob) and these connections have meaning (Alice knows Bob _since Tuesday_).
-
-Could you get more human than that? And yet, for reasons that are hard to fathom, graphs have taken a back seat to all the other nosql products.
-
-![ScreenShot](https://raw.githubusercontent.com/julianbrowne/graffeine/master/public/assets/images/screenshot-alice-bob.jpeg)
-
-Graffeine was born because I wanted to show people how great graph thinking is and how close to the way we model things in our heads graphs like their data. Neo4J is the best graph tool I know of and despite there being plenty of complimentary tools out there all the ones I played with got in the way a bit when all I wanted to do was add a node (Alice), then another (Bob), and then **feel** all that graph loveliness coming through when I connected them and extended their relationships.
-
-![ScreenShot](https://raw.githubusercontent.com/julianbrowne/graffeine/master/public/assets/images/screenshot-self.jpeg)
-
-I felt there was a tool missing. One that promotes the explaining of graphs, exploring of graphs, and above all the seeing of graphs. Graffeine is an initial attempt at this. It won't ever be a suitable tool for hard core admin tasks on large production systems but it could work for small systems, spikes, demos, and generally helping spread the graph awesomeness.
-
-### What is it?
-
-Graffeine plugs into Neo4J and renders nodes and relationships as an interactive D3 SVG graph so you can add, edit, delete and connect nodes. It's not quite as easy as a whiteboard and a pen, but it's close, and all interactions are persisted in Neo4J.
-
-You can either make a graph from scratch or browse an existing one using search and paging. You can even "fold" your graph to bring different aspects of it together on the same screen.
-
-Nodes can be added, updated, and removed. New relationships can be made using drag and drop and existing relationships broken.
-
-It's by no means phpmyadmin for Neo4J, but one day it could be (maybe).
-
-
-### More Detail?
-
-The schema-less nature of nodes and relationships in Neo4J makes them slightly problematic to model visually without some prior knowledge. Graffeine turns Neo4J nodes and relationships into ```GraffNodes``` which have name and type fields.
-
-These fields are either from the actual name and type fields in the source graph, or inferred from other fields.
-
-For example, Jim Webber's famous [Dr Who](https://github.com/jimwebber/neo4j-tutorial) graph does not use 'type' fields instead nodes are of the form:
-
-    { character: "Rose Tyler" }
-
-![ScreenShot](https://raw.githubusercontent.com/julianbrowne/graffeine/master/public/assets/images/screenshot-draglet.jpeg)
-
-This is a common situation. In fact for many graph applications using types and rigid schemas can be a bit of an anti-pattern (or a smell that the model is trying to be too rdbms-like). In the case of Dr Who, Graffeine uses the field 'character' as the 'type' and the contents ("Rose Tyler") as the display name.
-
-Node-to-GraffNode mappings are done in the ```graph.json``` file in ```{graffeine_home}/conf```. In this case by adding ```character``` to the list of ```nameFields``` (used in priority order to determine names of nodes) and a also setting ```useNameAsType``` to ```true```.
-
-Types are not critical to Graffeine though, they're just useful for applying CSS to make the visualisation look nice. Similarly, names are only important because they're used to label the SVG circles in the UI.
-
-![ScreenShot](https://raw.githubusercontent.com/julianbrowne/graffeine/master/public/assets/images/screenshot-styled.jpeg)
-
-The ```graph.json``` file has a few other visualisation settings to determine which fields do what. These should be self-explanatory.
-
-* Check out the [configuration.md](docs/configuration.md) file for more technical detail
-* Check out the [guide.md](docs/guide.md) file for a basic user guide
-* Check out the [change log](docs/changelog.md) for recent updates
-* Check out the [windows install guide](docs/windows.md) for from-scratch windows installation notes
-
-### Help?
-
-Yes please.
-
-![ScreenShot](https://raw.githubusercontent.com/julianbrowne/graffeine/master/public/assets/images/screenshot-help.jpeg)
-
-This started as a lunchtime play and grew fast. I've cleaned it up in phases but the code is still a bit untidy. Plus, there's always scope for new features.
-
-Feel free to drop me a line via julianbrowne.com or via Github with bugs, questions, features requests, suggestions, offers of help etc.
+![screenshot](client/docs/images/screenshot.jpg?raw=true)

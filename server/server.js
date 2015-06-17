@@ -38,13 +38,15 @@ conn.sockets.on('connection', function (socket) {
     socket.on('path-all',      command.pathAll);
     socket.on('path-delete',   command.relDelete);
 
+    // @todo: refactor into tidier place
+
     fs.readdir("data", function(err, files) { 
         var fileRoots = [];
         files.forEach(function(f) { 
             if(f[0]!==".")
                 fileRoots.push(f.replace(/\.cypher/,""));
         });
-        socket.emit("graph-dbs", { names: fileRoots, updatedAt: new Date().getTime() });
+        socket.emit("graph-gists", { names: fileRoots, updatedAt: new Date().getTime() });
     });
 
 });

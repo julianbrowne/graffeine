@@ -103,10 +103,20 @@ Graffeine.ui.toolbar = (function(G) {
         **/
 
         ui.util.event(data.selectors.graphMenu.setttings, "click", function(e) { 
-            var content = ui.util.prettyObject(Graffeine.settings);
-            var modal = ui.util.dynamicModal("Graffeine Settings", content);
-            ui.util.event(modal, "show.bs.modal", function() { 
+            var container = $("<div>");
+            var select = ui.util.dynamicSelect("graph-gist", G.settings.gists);
+            var button = $("<button>").attr("id", "init-graph-gist").html("load");
+            container.append(select);
+            container.append(button);
+            var modal = ui.util.dynamicModal("Graffeine Settings", container);
+            ui.util.event(modal, "show.bs.modal", function(e) { 
+                var modalId = e.currentTarget.id;
                 ui.util.highlightModalCode(modal);
+                $("#init-graph-gist").on("click", function(e) { 
+                    var gist = $("#graph-gist").val();
+                    G.command.graphLoad(gist);
+                    $("#"+modalId).modal("hide");
+                });
             });
         });
 

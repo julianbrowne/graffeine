@@ -51,7 +51,7 @@ Graffeine.ui.nodeFind = (function(G) {
         /**
         $("#graph-fetch").click(function(e) { 
             var start = $('#graph-start').val();
-            Graffeine.command.send('graph-fetch', { start: start });
+            Graffeine.command.graphFetch(start);
         });
         **/
 

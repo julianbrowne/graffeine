@@ -5,7 +5,7 @@ Graffeine = (function() {
     var socket = null;
 
     var settings = { 
-        dbs: []
+        gists: []
     };
 
     function init() { 

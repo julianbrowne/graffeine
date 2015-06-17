@@ -6,11 +6,12 @@
         "radius": 30,
         "nameFields": [ 
             "name",
+            "qualifier",
             "number"
         ]
     },
     "graphSettings": { 
-        "width": 1200,
+        "width": 1100,
         "height": 800,
         "nodeLimit": 500,
         "dragletOffset": 20,

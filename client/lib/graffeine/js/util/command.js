@@ -17,6 +17,7 @@ Graffeine.command = (function(G) {
         console.log("recv: registering \"%s\" callback", command);
         var visualUpdate = (visualUpdate===undefined) ? false : true;
         G.socket().on(command, function(data) { 
+            console.log("recv: recorded %s event: %s", command, JSON.stringify(data));
             // @todo find a way to make this cleaner
             // if(visualUpdate) send('graph-stats', {});
             callback(data);
@@ -31,12 +32,16 @@ Graffeine.command = (function(G) {
         send('node-join', { source: sourceNode.id, target: targetNode.id, name: name });
     };
 
-    function graphFetch(data) { 
-        send('graph-fetch', data);
+    function graphFetch(start) { 
+        send('graph-fetch', { start: start });
     };
 
     function gatherDBStats() { 
         send("path-all");
+    };
+
+    function graphLoad(name) { 
+        send("graph-load", {name: name});
     };
 
     function registerReceivers() { 
@@ -51,8 +56,8 @@ Graffeine.command = (function(G) {
          *  List the graph databases the server can build
         **/
 
-        recv("graph-dbs", function (data) { 
-            Graffeine.set("dbs", data.names);
+        recv("graph-gists", function (data) { 
+            Graffeine.set("gists", data.names);
         });
 
         recv("data-nodes", function (data) { 
@@ -135,7 +140,8 @@ Graffeine.command = (function(G) {
         **/
 
         recv('server-message', function (data) { 
-            var alertClass = (data.category==="error") ? "alert-danger" : "";
+            // data.category must be one of: success, info, warning, danger
+            var alertClass = "alert-"+(data.category||"info");
             var container = $("<div>")
                 .addClass("alert alert-dismissible " + alertClass)
                 .attr("role", "alert");
@@ -152,7 +158,7 @@ Graffeine.command = (function(G) {
             container.append(closeButton);
             container.append("<strong>"+data.title+": </strong>"+data.message);
             if($("#flash").length===0) util.warning("warning: no flash for server message");
-            $("#flash").append(container);
+            $("#flash").html(container);
         });
 
     }
@@ -161,7 +167,8 @@ Graffeine.command = (function(G) {
         init: registerReceivers,
         send: send,
         connectNodes: connectNodes,
-        gatherDBStats: gatherDBStats
+        gatherDBStats: gatherDBStats,
+        graphLoad: graphLoad
     };
 
 }(Graffeine));

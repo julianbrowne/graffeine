@@ -35,7 +35,7 @@ var Command = {
             model.graph.load(data.name, function(result) { 
                 graffeine.log("SEND: graph-load");
                 socket.emit("server-message", { 
-                    category: "info", 
+                    category: "success", 
                     title: 'database loaded',
                     message: "loaded " + data.name, 
                     updatedAt: new Date().getTime()

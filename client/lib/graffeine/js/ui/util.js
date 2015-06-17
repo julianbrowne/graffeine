@@ -66,12 +66,21 @@ Graffeine.ui.util = (function(G) {
         });
     };
 
+    function dynamicSelect(id, items) { 
+        var select = $("<select>").attr("id", id);
+        items.forEach(function(option){
+            select.append($("<option>").val(option).text(option));
+        });
+        return select;
+    };
+
     return { 
         suggestLabelCSS: suggestLabelCSS,
         dynamicModal: dynamicModal,
         prettyObject: prettyObject,
         event: event,
         highlightModalCode: highlightModalCode,
+        dynamicSelect: dynamicSelect,
         loadPartial: function(url, target, callback) { 
             if($(target).length === 0) { 
                 console.error("ui.util.loadPartial: no target %s for %s", target, url);

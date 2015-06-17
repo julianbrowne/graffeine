@@ -46,13 +46,13 @@ Graffeine.ui.util = (function(G) {
             return;
         };
         console.log("%s: registered callback for %s", selector, event);
-        $(selector).on(event, function(e) { 
+        $(selector).on(event, function(e, data) { 
             if($(selector).hasClass("disabled")) { 
                 console.warn("%s: %s ignored - disabled", selector, event);
                 return;
             }
             console.log("%s: recorded event %s", selector, event);
-            callback(e);
+            callback(e, data);
         });
     };
 

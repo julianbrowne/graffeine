@@ -1,12 +1,3 @@
-/**
- *  Graffeine Node object
- *
- *  @constructor
- *  @this {node}
- *  @param {graffnode} graffnode a graffnode data obj from the server
- *  @return {node} New node object
- *
-**/
 
 Graffeine.model = (typeof Graffeine.model==="undefined") ? {} : Graffeine.model;
 

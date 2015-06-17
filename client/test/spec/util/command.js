@@ -28,7 +28,7 @@ describe("Command", function() {
         var target = graffeineTestHelper.addTargetDomElement("flash");
         var serverMessage = graffeineTestHelper.getSocketEventCallback("server-message");
         serverMessage({ category: "error", title: "test", message: "test" });
-        expect(target.html()).toEqual('<div class="alert alert-dismissible alert-danger" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="close"><span aria-hidden="true">×</span></button><strong>test: </strong>test</div>');
+        expect(target.html()).toEqual('<div class="alert alert-dismissible alert-error" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="close"><span aria-hidden="true">×</span></button><strong>test: </strong>test</div>');
         graffeineTestHelper.removeTargetDomElement(target);
     });
 

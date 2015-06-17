@@ -168,6 +168,8 @@ Graffeine.svg = (function(G) {
                 })
                 .on("mouseover", function(d) { 
                     console.log("node: mouseover");
+                    d3.event.stopPropagation();
+                    d3.event.preventDefault();
                     var ui = G.ui;
                     d3.select(this)
                         .transition()
@@ -178,11 +180,13 @@ Graffeine.svg = (function(G) {
                             ui.state.hoverNode(d, this);
 
                         if(!ui.state.nodeDragged())
-                            ui.nodeInfo.show(d);
+                            ui.nodeInfo.show(d, this);
                 })
                 .on("mouseout", function(d) { 
                     console.log("node: mouseout");
                     var ui = G.ui;
+                    ui.nodeInfo.hide();
+                    d3.event.stopPropagation();
                     d3.select(this)
                         .transition()
                         .attr('r', G.config.node.radius)
@@ -193,8 +197,8 @@ Graffeine.svg = (function(G) {
                      *  Remove this node from the hoveredNode state
                      *  if the ui is in the middle of a drag
                     **/
-                    if(ui.state.sourceNodeSelected()) ui.state.unhoverNode();
-                    ui.nodeInfo.hide();
+                    if(ui.state.sourceNodeSelected())
+                        ui.state.unhoverNode();
                 })
                 .on("contextmenu", function(d) { 
                     console.log("node: right-click");
@@ -391,8 +395,6 @@ Graffeine.svg = (function(G) {
         ui.state.selectTargetNode(null);
 
         force = d3.layout.force();
-//            .nodes(d3.values(graph.nodes()), function(n) { return n.id; })
-//            .links(graph.paths(), function(p) { return p.source.id + "-" + p.target.id; })
         force.size([config.graphSettings.width, config.graphSettings.height])
         force.linkDistance(config.graphSettings.linkDistance)
         force.charge(config.graphSettings.charge)
@@ -406,7 +408,10 @@ Graffeine.svg = (function(G) {
             .on('click', function() { 
                 console.log("svg: click");
                 forceStop();
-                if(ui.state.nodeSelected()) ui.state.unselectNode();
+                if(ui.state.nodeSelected())
+                    ui.state.unselectNode();
+                if(ui.state.menuActive())
+                    ui.state.unsetMenuActive();
             })
             .on('contextmenu', function() { 
                 // don't open browser right-click menu
@@ -485,6 +490,7 @@ Graffeine.svg = (function(G) {
         var r = G.config.node.radius;
         var height = G.config.graphSettings.height;
         var width = G.config.graphSettings.width;
+        var buffer = 3; // pixels away from the edge
 
         if(!ui.state.forceActive()) return;
 
@@ -520,10 +526,10 @@ Graffeine.svg = (function(G) {
 
         data.circle
             .attr("cx", function(d) {
-                return d.x = Math.max(r, Math.min(width - r, d.x)); 
+                return d.x = Math.max(r, Math.min(width - r - buffer, d.x)); 
             })
             .attr("cy", function(d) {
-                return d.y = Math.max(r, Math.min(height - r, d.y)); 
+                return d.y = Math.max(r, Math.min(height - r - buffer, d.y)); 
             });
 
         data.pathIcon

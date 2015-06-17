@@ -172,11 +172,6 @@ var helper = {
     **/
 
     runQuery: function(cypher, callback, columns) { 
-
-        g.debug("(runQuery) : begin");
-        g.debug(cypher);
-        g.debug("(runQuery) : end");
-
         if(columns === undefined) { 
             g.debug("(runQuery) : expecting boolean result");
             g.db.conn.cypher(cypher, helper.booleanResult(callback));
@@ -193,7 +188,6 @@ var helper = {
             var timer = { command: cypher, start: new Date().getTime() };
             g.db.conn.cypher(cypher, helper.processQueryResult(callback, proc, columns, timer));
         }
-
     },
 
     booleanResult: function(callback) { 

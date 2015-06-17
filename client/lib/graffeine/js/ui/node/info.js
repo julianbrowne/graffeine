@@ -36,7 +36,30 @@ Graffeine.ui.nodeInfo = (function(G) {
     };
 
     function handler() { 
+
         $(data.selectors.content).hide();
+
+        //var event = $.Event("show.gf.popup");
+        //$(data.selectors.content).triggerHandler(event);
+
+        ui.util.event(data.selectors.content, "show.gf.popup", function(e, hoverData) { 
+            var node = hoverData.node;
+            var elem = hoverData.element;
+            if(elem===null) return;
+            var pos = $(elem).offset();
+            var pathsHTML = renderPaths(node.id, node.paths(graph));
+            $(data.selectors.fields.paths).html(pathsHTML);
+            var labels = node.labels.join(', ');
+            $(data.selectors.fields.labels).html(labels);
+            $(data.selectors.content).css("left", (pos.left + (2*config.node.radius) + 10) + "px");
+            $(data.selectors.content).css("top", (pos.top - 25) + "px");
+        });
+
+        ui.util.event(data.selectors.content, "hide.gf.popup", function(e) { 
+            $(data.selectors.fields.paths).empty();
+            $(data.selectors.fields.labels).empty();
+        });
+
     };
 
     function renderPaths(nodeIndex, paths) { 
@@ -78,24 +101,18 @@ Graffeine.ui.nodeInfo = (function(G) {
 
     return { 
 
-        show: function(node) { 
+        show: function(node, element) { 
             // don't show if a node drag is in progress
             if(Graffeine.ui.state.nodeDragged()) return;
-            var pathsHTML = renderPaths(node.id, node.paths(graph));
-            $(data.selectors.fields.paths).html(pathsHTML);
-            var labels = node.labels.join(', ');
-            $(data.selectors.fields.labels).html(labels);
-            var left  = node.x + (config.node.radius * 2) - 10;
-            var right = node.y + 35;
-            $(data.selectors.content).css("left", left  + "px");
-            $(data.selectors.content).css("top",  right + "px");
-            $(data.selectors.content).show(50);
+            $(data.selectors.content).show(50, function() { 
+                $(this).trigger("show.gf.popup", {node: node, element: element});
+            });
         },
 
         hide: function() { 
-            $(data.selectors.fields.paths).html("");
-            $(data.selectors.fields.labels).html("");
-            $(data.selectors.content).hide(20);
+            $(data.selectors.content).hide(50, function(e) { 
+                $(this).trigger("hide.gf.popup"); 
+            });
         }
 
     };

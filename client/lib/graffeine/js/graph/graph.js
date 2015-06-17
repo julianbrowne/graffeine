@@ -60,8 +60,8 @@ Graffeine.graph = (function(G) {
     };
 
     function addNode(node) { 
-        if(node===undefined||node.id === undefined||node === null) { 
-            console.warn("graph.addNode: node with bad data: %s", JSON.stringify(node));
+        if(node===undefined||node === null) { 
+            console.warn("graph.addNode: node with bad data");
             return;
         }
         var newNode = new G.model.Node(node);

@@ -2,188 +2,80 @@
  *  Nodes Model
 **/
 
-var db    = require('./helper').conn;
-var util  = require('./helper').utils;
-var g     = require('../graffeine/common.js');
+var util = require("util");
+var db = require('./helper').utils;
 
-var Nodes = { 
+exports.nodes = (function(){ 
 
-    /**
-     *  Retrieve all nodes in the graph
-     *
-     *  @param {function} callback
-    **/
+    function all(callback) { 
+        var cypher = "MATCH (n) RETURN n, labels(n)";
+        db.runQuery(cypher, callback, [ "n", "labels(n)" ]);
+    };
 
-    all: function(callback) { 
+    function count(callback) { 
+        var cypher = "START n=node(*) RETURN count(n)";
+        db.runQuery(cypher, callback, "count(n)");
+    };
 
-        var cypher = [ 
-            "MATCH (n)",
-            "RETURN n, labels(n)"
-        ].join("\n");
+    function from(start, callback) { 
+        var cypher = "OPTIONAL MATCH (n)-[r*1..2]-(m) RETURN n, r, m";
+        db.runQuery(cypher, callback, ["n", "r", "m"]);
+    };
 
-        util.runQuery(cypher, callback, [ "n", "labels(n)" ]);
+    function find(properties, callback) { 
+        var cypher = util.format("MATCH (n %s) RETURN n", JSON.stringify(properties));
+        db.runQuery(cypher, callback, ["n"]);
+    };
 
-    },
+    function orphans(callback) { 
+        var cypher = "OPTIONAL MATCH (n) WHERE NOT (n)--() RETURN distinct n";
+        db.runQuery(cypher, callback, ["n"]);
+    };
 
-    /**
-     *  Get a count of nodes in the graph
-     *
-     *  @param {function} callback
-    **/
+    function add(nodeData, callback) { 
+        var cypher = util.format("CREATE (n %s %s) RETURN n", labels(nodeData), properties(nodeData));
+        db.runQuery(cypher, callback, ["n"]);
+    };
 
-    count: function(callback) { 
+    function remove(id, callback) { 
+        var cypher = util.format("START n=node(%s) OPTIONAL MATCH n-[r]-() DELETE r, n", JSON.stringify({id: id}));
+        db.runQuery(cypher, callback);
+    };
 
-        var cypher = [ 
-            "START n=node(*)",
-            "RETURN count(n)"
-        ].join("\n");
+    function update(id, data, callback) { 
+        // @todo : rewrite for cypher
+    };
 
-        util.runQuery(cypher, callback, "count(n)");
+    function get(id, callback) { 
+        // @todo : rewrite for cypher
+    };
 
-    },
+    function join(sourceId, targetId, name, callback) { 
+        var cypher = util.format("MATCH (a),(b) WHERE a.id = %s AND b.id = %s CREATE (a)-[r:%s]->(b) RETURN r",sourceId, targetId, name);
+        db.runQuery(cypher, callback, ["r"]);
+    };
 
-    /**
-     *  Get a connected nodes from a start node
-     *
-     *  @param {integer} start id of the node to start from
-     *  @param {function} callback
-    **/
+    function labels(nodeData) { 
+        var labels = (typeof nodeData.labels === "undefined") ? [] : nodeData.labels;
+        var cypherLabels = (labels.length > 0) ? ":" + labels.join(":") : "";
+        return cypherLabels;
+    };
 
-    from: function(start, callback) { 
+    function properties(nodeData) { 
+        var properties = (typeof nodeData.data === "undefined") ? {} : nodeData.data;
+        return JSON.stringify(properties);
+    };
 
-        var cypher = [ 
-//            "START n=node(" + start + ")",
-            "OPTIONAL MATCH (n)-[r*1..2]-(m)",
-            "RETURN n, r, m"
-        ].join("\n");
+    return { 
+        all: all,
+        get: get,
+        add: add,
+        join: join,
+        remove: remove,
+        update: update,
+        count: count,
+        find: find,
+        orphans: orphans
+    };
 
-        util.runQuery(cypher, callback, [ "n", "r", "m" ]);
-
-    },
-
-    /**
-     *  Global search for node with specific name and type
-     *
-     *  @param {string} name name of node
-     *  @param {string} type type of node
-     *  @param {function} callback
-    **/
-
-    find: function(name, type, callback) { 
-
-        if(name===''&&type==='') var match = "MATCH (n)";
-        if(name!==''&&type==='') var match = "MATCH (n {name: '"+name+"'})";
-        if(name===''&&type!=='') var match = "MATCH (n {type: '"+type+"'})";
-        if(name!==''&&type!=='') var match = "MATCH (n {name: '"+name+"', type: '"+type+"'})";
-
-        var cypher = [ match, "RETURN n" ].join("\n");
-
-        util.runQuery(cypher, callback, [ "n" ]);
-
-    },
-
-    /**
-     *  Get orphaned (no relationship) nodes
-     *
-     *  @param {function} callback
-    **/
-
-    orphans: function(callback) {
-
-        var cypher = [ 
-            "OPTIONAL MATCH (n)",
-            "WHERE NOT (n)--()",
-            "RETURN distinct n"
-        ].join("\n");
-
-        util.runQuery(cypher, callback, [ "n" ]);
-
-    },
-
-    /**
-     *  Add a single node to the graph
-     *
-     *  @param {node} nodeData
-     *  @param {function} callback
-    **/
-
-    add: function(nodeData, callback) { 
-        g.log("new node data: '%s'", JSON.stringify(nodeData));
-        var newNode = db.createNode(nodeData);
-        newNode.save(util.errorHandler(callback));
-    },
-
-    /**
-     *  Delete a single node from the graph
-     *
-     *  @param {integer} nodeId id value of the node to delete
-     *  @param {function} callback
-    **/
-
-    delete: function(nodeId, callback) {
-
-        var cypher = [ 
-            "START n=node(" + nodeId + ")",
-            "OPTIONAL MATCH n-[r]-()",
-            "DELETE r, n"
-        ].join("\n");
-
-        util.runQuery(cypher, callback);
-
-    },
-
-    /**
-     *  Update node with new data
-     *
-     *  @param {integer} nodeId id value of the node to update
-     *  @param {object} data new node data to apply
-     *  @param {function} callback
-    **/
-
-    update: function(nodeId, data, callback) {
-
-        Nodes.get(nodeId, function(node) {
-            if(node === null)
-                g.die("nodes.update could not find node with id " + nodeId + " to update");
-            else {
-                for (var attr in data) {
-                    node.data[attr] = data[attr];
-                }
-                node.save(util.errorHandler(callback));
-            }
-        });
-    },
-
-    /**
-     *  Fetch a single node from the graph
-     *
-     *  @param {integer} id the identifier of the node
-     *  @param {function} callback
-    **/
-
-    get: function(id, callback) { 
-
-        db.getNodeById(id, function(error, result) { 
-
-            if (error) { 
-                console.error('*** ERROR : get - fetching node > ' + error);
-                callback(null);
-            }
-            else { 
-                callback(result);
-            }
-        });
-
-    },
-
-    join: function(source, target, name, callback) { 
-        Nodes.get(source, function(source) { 
-            Nodes.get(target, function(target) { 
-                source.createRelationshipTo(target, name, {}, util.booleanResult(callback));
-            });
-        });
-    }
-
-};
-
-exports.nodes = Nodes
+}());

@@ -51,6 +51,9 @@ Graffeine.ui.nodeEdit = (function(G) {
 
             var node = ui.state.getSelectedNode();
 
+            if(node===null)
+                var node = new G.model.Node({});
+
             $(data.selectors.sections.data).html(renderData(node));
             $(data.selectors.sections.labels).html(renderLabels(node));
             $(data.selectors.sections.paths).html(renderPaths(node));
@@ -69,6 +72,11 @@ Graffeine.ui.nodeEdit = (function(G) {
             ui.util.disableActionButtons();
 
             **/
+        });
+
+        ui.util.event(data.selectors.content, "hide.bs.modal", function(e) { 
+            ui.util.enableActionButtons();
+            ui.state.setMenuActive();
         });
 
         /// @todo: add node to ..
@@ -185,8 +193,6 @@ Graffeine.ui.nodeEdit = (function(G) {
 
         hide: function() { 
             $(data.selectors.content).modal('hide');
-            ui.util.enableActionButtons();
-            ui.state.setMenuActive();
         },
 
         updateNodeTypes: function() { 

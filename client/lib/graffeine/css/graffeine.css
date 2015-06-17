@@ -1,6 +1,10 @@
 
 @import url("graph.css");
 
+#graph {
+    position: "relative"
+}
+
 .popover { 
   max-width: none;
 }

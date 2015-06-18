@@ -1,9 +1,6 @@
-/**
- *  Graph-wide model
-**/
 
+var db = require('./neo4j');
 var fs = require('fs');
-var util  = require('./helper').utils;
 
 var Graph = {
 
@@ -38,6 +35,7 @@ var Graph = {
 
     load: function(name, callback) { 
         this.delete(function() { 
+            // @todo: move to gutil.loadFile
             var cypherFilePath = "data/"+name+".cypher";
             fs.exists(cypherFilePath, function(exists) { 
                 if(exists) { 

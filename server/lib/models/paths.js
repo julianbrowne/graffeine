@@ -1,8 +1,5 @@
-/**
- *  Relationships Model
-**/
 
-var util  = require('./helper').utils;
+var db = require('./neo4j');
 
 var Rels = {
 

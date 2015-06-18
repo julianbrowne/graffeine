@@ -1,11 +1,9 @@
-/**
- *  Shared common model utility functions for processing results, handling
- *  exceptions, formatting returned output etc.
-**/
 
-var g = require('../graffeine/common');
+module.exports = (function(){ 
 
-var helper = { 
+}());
+
+var trash = { 
 
     command: null,
     before: null,

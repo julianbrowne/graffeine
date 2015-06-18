@@ -1,11 +1,8 @@
-/**
- *  Nodes Model
-**/
 
 var util = require("util");
-var db = require('./helper').utils;
+var db = require('./neo4j');
 
-exports.nodes = (function(){ 
+module.exports = (function(){ 
 
     function all(callback) { 
         var cypher = "MATCH (n) RETURN n, labels(n)";
@@ -13,13 +10,14 @@ exports.nodes = (function(){
     };
 
     function count(callback) { 
-        var cypher = "START n=node(*) RETURN count(n)";
+        var cypher = "MATCH n RETURN count(n)";
         db.runQuery(cypher, callback, "count(n)");
     };
 
     function from(start, callback) { 
-        var cypher = "OPTIONAL MATCH (n)-[r*1..2]-(m) RETURN n, r, m";
-        db.runQuery(cypher, callback, ["n", "r", "m"]);
+        // @todo: update for 2.2
+        // var cypher = "MATCH (n {id: 99}) OPTIONAL MATCH (n)-[r*1..2]-(m) RETURN n, r, m";
+        // db.runQuery(cypher, callback, ["n", "r", "m"]);
     };
 
     function find(properties, callback) { 
@@ -38,16 +36,18 @@ exports.nodes = (function(){
     };
 
     function remove(id, callback) { 
-        var cypher = util.format("START n=node(%s) OPTIONAL MATCH n-[r]-() DELETE r, n", JSON.stringify({id: id}));
+        var cypher = util.format("MATCH n WHERE ID(n) = %s OPTIONAL MATCH n-[r]-() DELETE r, n", id);
         db.runQuery(cypher, callback);
     };
 
     function update(id, data, callback) { 
         // @todo : rewrite for cypher
+        // MATCH (n) WHERE ID(n) = 99 SET n = { a: 10 } RETURN n
     };
 
     function get(id, callback) { 
         // @todo : rewrite for cypher
+        // match n where ID(n) = 99 return n
     };
 
     function join(sourceId, targetId, name, callback) { 

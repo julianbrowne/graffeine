@@ -1,7 +1,16 @@
-{
-    "http": { 
-        "port": 8004,
-        "docRoot": "client"
+{ 
+    "version": [0,1,0],
+    "debug": false,
+    "gists": "data",
+    "neo4j": { 
+        "host": "localhost",
+        "port": 7474,
+        "username": "neo4j",
+        "password": "graffeine"
     },
-    "debug": false
+    "http": { 
+        "host": "127.0.0.1",
+        "port": 8004,
+        "public": "client"
+    }
 }

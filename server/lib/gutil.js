@@ -1,4 +1,5 @@
 
+var fs = require('fs');
 var util = require('util');
 var config = require('../config/server.json');
 
@@ -36,12 +37,21 @@ module.exports = (function() {
         process.exit(-1);
     };
 
+    function getGists() { 
+        var gists = []
+        fs.readdir(config.gists, function(err, files) { 
+            files.forEach(function(f) { if(f[0]!==".") gists.push(f.replace(/\.cypher/,"")); });
+        });
+        return gists;
+    };
+
     return { 
         log: log,
         error: error,
         debug: debug,
         timestamp: timestamp,
-        die: die
+        die: die,
+        getGists: getGists
     };
 
 }());

@@ -1,40 +1,23 @@
 
-var db = require('./neo4j');
+var util = require("util");
 var fs = require('fs');
 
-var Graph = {
+var db = require('./neo4j');
 
-    /**
-     *  Retreive all nodes and relationships up to a reasonable limit
-     *  otherwise it's easy to kill the neo4j server
-     *
-     *  @param {callback} callback function to receive the result
-    **/
+module.exports = (function() { 
 
-    all: function(callback) { 
+    function all(callback) { 
+        var cypher = "MATCH (n) OPTIONAL MATCH (n)-[r]->() RETURN distinct n, labels(n) AS labels, r";
+        db.query(cypher, callback, [ "n", "labels", "r" ]);
+    };
 
-        var cypher = [
-            "MATCH (n)",
-            "OPTIONAL MATCH (n)-[r]->()",
-            "RETURN distinct n, labels(n) AS labels, r"
-//            "LIMIT 200"
-        ].join("\n");
+    function remove(callback) { 
+        var cypher = "MATCH (n) OPTIONAL MATCH (n)-[r]-() DELETE n,r";
+        db.query(cypher, callback);
+    };
 
-        util.runQuery(cypher, callback, [ "n", "labels", "r" ]);
-
-    },
-
-    delete: function(callback) { 
-        var cypher = [ 
-            "MATCH (n)",
-            "OPTIONAL MATCH (n)-[r]-()",
-            "DELETE n,r"
-        ].join("\n");
-        util.runQuery(cypher, callback);
-    },
-
-    load: function(name, callback) { 
-        this.delete(function() { 
+    function load(name, callback) { 
+        remove(function() { 
             // @todo: move to gutil.loadFile
             var cypherFilePath = "data/"+name+".cypher";
             fs.exists(cypherFilePath, function(exists) { 
@@ -49,8 +32,12 @@ var Graph = {
                 }
             });
         });
-    }
+    };
 
-};
+    return { 
+        all: all,
+        remove: remove,
+        load: load
+    };
 
-exports.graph = Graph;
+}());

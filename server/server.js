@@ -8,19 +8,20 @@ graffeine.command.socket.on('connection', function (socket) {
 
     gutil.log('socket: connection');
 
-    socket.on('graph-init',    command.graphInitialise);
-    socket.on("graph-delete",  command.graphDelete);
-    socket.on('graph-stats',   command.graphStatistics);
-    socket.on('graph-fetch',   command.graphFetch);
-    socket.on('graph-load',    command.graphLoad);
-    socket.on('graph-gists',   command.recv.graphGists);
-    socket.on('node-join',     command.nodesJoin);
-    socket.on('node-add',      command.nodeAdd);
-    socket.on('node-update',   command.nodeUpdate);
-    socket.on('node-find',     command.nodeFind);
-    socket.on('node-delete',   command.nodeDelete);
-    socket.on('nodes-orphans', command.nodesOrphans);
-    socket.on('path-all',      command.pathAll);
-    socket.on('path-delete',   command.relDelete);
+    var run = graffeine.command;
+
+    socket.on('graph-init', run.graph.init);
+    socket.on("graph-delete", run.graph.remove);
+    socket.on('graph-stats', run.graph.stats);
+    socket.on('graph-fetch', run.graph.fetch);
+    socket.on('graph-load', run.graph.load);
+    socket.on('node-join', run.node.join);
+    socket.on('node-add', run.node.add);
+    socket.on('node-update', run.node.update);
+    socket.on('node-find', run.node.find);
+    socket.on('node-delete', run.node.remove);
+    socket.on('nodes-orphans', run.node.orphans);
+    socket.on('path-all', run.path.all);
+    socket.on('path-delete', run.path.remove);
 
 });

@@ -1,53 +1,26 @@
 
+var util = require("util");
 var db = require('./neo4j');
 
-var Rels = {
+module.exports = (function() { 
 
-    /**
-     *  Get all rels in the graph
-     *
-     *  @param {function} callback
-    **/
+    return { 
 
-    all: function(callback) { 
+        all: function(callback) { 
+            var cypher = "MATCH (n)-[r]-(m) RETURN r";
+            db.query(cypher, callback, [ "r" ]);
+        },
 
-        var cypher = [ 
-            "MATCH (n)-[r]-(m)",
-            "RETURN r"
-        ].join("\n");
+        count: function(callback) { 
+            var cypher = "START r=rel(*) RETURN count(r)";
+            db.query(cypher, callback, "count(r)");
+        },
 
-        util.runQuery(cypher, callback, [ "r" ]);
+        remove: function(sourceId, targetId, name, callback) { 
+            var cypher = util.format("MATCH (a)-[r:%s]-(b) WHERE ID(a) = %s AND ID(b) = %s DELETE r", name, sourceId, targetId);
+            db.query(cypher, callback);
+        }
 
-    },
+    };
 
-    /**
-     *  Get a count of relationships in the graph
-     *
-     *  @param {function} callback
-    **/
-
-    count: function(callback) {
-
-        var cypher = [
-            "START r=rel(*)",
-            "RETURN count(r)"
-        ].join("\n");
-
-        util.runQuery(cypher, callback, "count(r)");
-    },
-
-    delete: function(source, target, name, callback) {
-
-        var cypher = [
-            "START a = node(" + source + "), b = node(" + target + ")", // injection fix required
-            "MATCH a-[r:`" + name + "`]-b",
-            "DELETE r"
-        ].join("\n");
-
-        util.runQuery(cypher, callback);
-
-    }
-
-}
-
-exports.rels = Rels
+}());

@@ -24,8 +24,10 @@ module.exports = (function() {
     }
 
     function query(cypher, callback, columns) { 
+        gutil.log("db.query: \"%s\"", cypher);
+        var timer = { command: cypher, start: new Date().getTime() };
         if(columns === undefined) { 
-            db.cypher(cypher, result.booleanResult(callback));
+            db.cypher(cypher, result.booleanResult(callback, timer));
         }
         else { 
             if(typeof(columns)=="string") { 
@@ -34,7 +36,6 @@ module.exports = (function() {
             else { // columns is array therefore it's a regular query
                 var proc = result.mapCypherQueryResult;
             }
-            var timer = { command: cypher, start: new Date().getTime() };
             db.cypher(cypher, result.processQueryResult(callback, proc, columns, timer));
         }
     };

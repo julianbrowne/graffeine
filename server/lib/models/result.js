@@ -8,6 +8,10 @@ module.exports = (function() {
         return nodes.map(function (node) { return node.data; });
     };
 
+    function mapCypherAggregateResult(results, key) { 
+        return results[0][key];
+    };
+
     function mapCypherQueryResult(results, columnsWanted) { 
         var items = [];
         columnsWanted = (columnsWanted === undefined) ? [] : columnsWanted;
@@ -43,40 +47,28 @@ module.exports = (function() {
         return items.map(GNode);
     };
 
-    function processQueryResult(callback, processor, columns, timer) { 
-        var self = this;
+    function processQueryResult(callback, processor, columns, clock) { 
         return function(error, results) { 
             if (error) { 
                 gutil.error(error);
             }
             else { 
                 var nodes = processor(results, columns);
-                timer.end = new Date().getTime();
-                console.log((timer.end-timer.start) + ": \"" + timer.command.replace(/\r?\n|\r/g, " ") + "\"");
-                // @todo: refactor out global
-                if(global.graffeineClientSocket!==undefined) { 
-                    global.graffeineClientSocket.emit('query-data', { 
-                        data: timer,
-                        updatedAt: new Date().getTime()
-                    });
-                };
-
-                callback(nodes);
+                clock.end = new Date().getTime();
+                callback(nodes, clock);
             }
         }
     };
 
-    function booleanResult(callback) { 
+    function booleanResult(callback, clock) { 
         return function(error, result) { 
             if(error)
                 gutil.error(error);
-            else
-                callback(true);
+            else { 
+                clock.end = new Date().getTime();
+                callback(true, clock);
+            }
         }
-    };
-
-    function mapCypherAggregateResult(results, key) { 
-        return results[0][key];
     };
 
     return { 

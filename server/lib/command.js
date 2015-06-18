@@ -19,10 +19,14 @@ module.exports = (function() {
     };
 
     return { 
-        socket: socket,
+        // send: send,
+        // socket: socket,
         server: { 
             message: function (category, title, message) { 
                 send("server-message", {category: category, title: title, message: message});
+            },
+            timer: function (message) { 
+                send("server-timer", message);
             }
         },
         graph: { 
@@ -65,7 +69,7 @@ module.exports = (function() {
                 });
             },
             remove: function(data) { 
-                nodes.delete(data.id, function(result) { 
+                nodes.remove(data.id, function(result) { 
                     send('node-delete', { id: data.id, updatedAt: new Date().getTime() } );
                 });
             },

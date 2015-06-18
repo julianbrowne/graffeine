@@ -24,7 +24,8 @@ module.exports = (function() {
                     response.end();
                 }
                 else { 
-                    gutil.log("http: %s: %s", request.url, res.message);
+                    // console gets busy if every http 2xx is logged
+                    // gutil.log("http: %s: %s", request.url, res.message);
                 }
             });
         }

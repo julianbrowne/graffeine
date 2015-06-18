@@ -6,38 +6,38 @@ module.exports = (function(){
 
     function all(callback) { 
         var cypher = "MATCH (n) RETURN n, labels(n)";
-        db.runQuery(cypher, callback, [ "n", "labels(n)" ]);
+        db.query(cypher, callback, [ "n", "labels(n)" ]);
     };
 
     function count(callback) { 
         var cypher = "MATCH n RETURN count(n)";
-        db.runQuery(cypher, callback, "count(n)");
+        db.query(cypher, callback, "count(n)");
     };
 
     function from(start, callback) { 
         // @todo: update for 2.2
         // var cypher = "MATCH (n {id: 99}) OPTIONAL MATCH (n)-[r*1..2]-(m) RETURN n, r, m";
-        // db.runQuery(cypher, callback, ["n", "r", "m"]);
+        // db.query(cypher, callback, ["n", "r", "m"]);
     };
 
     function find(properties, callback) { 
         var cypher = util.format("MATCH (n %s) RETURN n", JSON.stringify(properties));
-        db.runQuery(cypher, callback, ["n"]);
+        db.query(cypher, callback, ["n"]);
     };
 
     function orphans(callback) { 
         var cypher = "OPTIONAL MATCH (n) WHERE NOT (n)--() RETURN distinct n";
-        db.runQuery(cypher, callback, ["n"]);
+        db.query(cypher, callback, ["n"]);
     };
 
     function add(nodeData, callback) { 
         var cypher = util.format("CREATE (n %s %s) RETURN n", labels(nodeData), properties(nodeData));
-        db.runQuery(cypher, callback, ["n"]);
+        db.query(cypher, callback, ["n"]);
     };
 
     function remove(id, callback) { 
         var cypher = util.format("MATCH n WHERE ID(n) = %s OPTIONAL MATCH n-[r]-() DELETE r, n", id);
-        db.runQuery(cypher, callback);
+        db.query(cypher, callback);
     };
 
     function update(id, data, callback) { 
@@ -52,7 +52,7 @@ module.exports = (function(){
 
     function join(sourceId, targetId, name, callback) { 
         var cypher = util.format("MATCH (a),(b) WHERE a.id = %s AND b.id = %s CREATE (a)-[r:%s]->(b) RETURN r",sourceId, targetId, name);
-        db.runQuery(cypher, callback, ["r"]);
+        db.query(cypher, callback, ["r"]);
     };
 
     function labels(nodeData) { 

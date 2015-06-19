@@ -66,6 +66,42 @@ Graffeine.ui.util = (function(G) {
         });
     };
 
+    function updateFlash(category, title, message) { 
+
+        /** category must be one of: "success", "info", "warning" or "danger" **/
+
+        var alertClass = "alert-" + (category||"info");
+
+        var container = $("<div>")
+            .addClass("alert alert-dismissible " + alertClass)
+            .attr("role", "alert");
+
+        var closeButton = $("<button>")
+            .attr("type", "button")
+            .addClass("close")
+            .attr("data-dismiss", "alert")
+            .attr("aria-label", "close");
+
+        var span = $("<span>")
+            .attr("aria-hidden", "true")
+            .html("&times;");
+
+        closeButton.append(span);
+        container.append(closeButton);
+        container.append("<strong>" + title + ": </strong>" + message);
+
+        if($("#flash").length === 0)
+            util.warning("warning: no flash for server message");
+
+        $("#flash").html(container);
+        setTimeout(function() { 
+            $("#flash").fadeOut(5000, function() { 
+                $("#flash").empty();
+                $("#flash").show();
+            });
+        }, 10000)
+    };
+
     function dynamicSelect(id, items) { 
         var select = $("<select>").attr("id", id);
         items.forEach(function(option){
@@ -81,6 +117,7 @@ Graffeine.ui.util = (function(G) {
         event: event,
         highlightModalCode: highlightModalCode,
         dynamicSelect: dynamicSelect,
+        updateFlash: updateFlash,
         loadPartial: function(url, target, callback) { 
             if($(target).length === 0) { 
                 console.error("ui.util.loadPartial: no target %s for %s", target, url);

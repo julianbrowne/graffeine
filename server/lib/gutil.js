@@ -5,30 +5,42 @@ var config = require('../config/server.json');
 
 module.exports = (function() { 
 
+    function gprint(type, message) { 
+        console.log('%s: %s - %s', timestamp(), type, message);
+    };
+
     function log() { 
         var message = util.format.apply(this, arguments);
-        util.log('INF : ' + message);
+        gprint("INF", message);
     };
 
     function error() { 
         var message = util.format.apply(this, arguments);
-        util.log('ERR : ' + message);
+        gprint("ERR", message);
     };
 
     function debug() { 
-        if(!config.debug) return;
+        if(!config.debug) { 
+            console.warn("debug mode not set");
+            return;
+        }
         var message = util.format.apply(this, arguments);
-        if(server.debug) util.log('DBG : ' + message);
+        gprint("DBG", message);
     };
 
     function timestamp() { 
         var now = new Date();
-        return ( 
-            (now.getMonth() + 1) + '/' +
-            (now.getDate()) + '/' + now.getFullYear() + " " + now.getHours() + ':' +
-            ((now.getMinutes() < 10) ? ("0" + now.getMinutes()) : (now.getMinutes())) + ':' +
-            ((now.getSeconds() < 10) ? ("0" + now.getSeconds()) : (now.getSeconds()))
+        return util.format("%s:%s:%s.%s", 
+            format(now.getHours(),2), 
+            format(now.getMinutes(),2), 
+            format(now.getSeconds(),2), 
+            format(now.getMilliseconds(),3)
         );
+    };
+
+    function format(int, zeros) { 
+        var template = "00000"; 
+        return (template+int).slice(0-zeros);
     };
 
     function die() { 
@@ -46,6 +58,8 @@ module.exports = (function() {
     };
 
     return { 
+        gprint: gprint,
+        format: format,
         log: log,
         error: error,
         debug: debug,

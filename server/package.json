@@ -1,27 +1,38 @@
-{ 
-  "name": "graffeine",
-  "version": "0.1.0",
-  "description": "Caffeinated Neo4J Graph Admin",
-  "homepage": "https://github.com/julianbrowne/graffeine",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/julianbrowne/graffeine.git"
-  },
-  "keywords": [
-    "neo4j",
-    "d3",
-    "admin",
-    "graph"
-  ],
-  "author": "Julian Browne",
-  "dependencies": { 
-    "neo4j": "2.0.0-RC2",
-    "node-static": "0.7.6",
-    "socket.io": "1.3.5"
-  },
-  "bundledDependencies": [ 
-    "neo4j",
-    "node-static",
-    "socket.io"
-  ]
+{
+    "name": "graffeine",
+    "version": "0.1.0",
+    "description": "Caffeinated Neo4J Graph Admin",
+    "homepage": "https://github.com/julianbrowne/graffeine",
+    "repository": { 
+        "type": "git",
+        "url": "https://github.com/julianbrowne/graffeine.git"
+    },
+    "keywords": [ 
+        "neo4j",
+        "d3",
+        "admin",
+        "graph"
+    ],
+    "author": "Julian Browne",
+    "dependencies": { 
+        "neo4j": "2.0.0-RC2",
+        "node-static": "0.7.6",
+        "socket.io": "1.3.5"
+    },
+    "bundledDependencies": [ 
+        "neo4j",
+        "node-static",
+        "socket.io"
+    ],
+    "devDependencies": { 
+        "jasmine": "^2.3.1"
+    },
+    "eslintConfig": { 
+        "env": { 
+            "node": true
+        },
+        "rules": { 
+            "no-trailing-spaces": 0
+        }
+    }
 }

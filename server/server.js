@@ -1,12 +1,14 @@
 
-var graffeine = require('./lib/graffeine');
+var graffeine = require("./lib/graffeine");
 var gutil = require("./lib/gutil");
 
-gutil.log('Starting Graffeine Server');
+gutil.log("Starting Graffeine Server");
 
-graffeine.command.socket.on('connection', function (socket) { 
+graffeine.command.socket.on("connection", function (socket) { 
 
-    gutil.log('socket: connection');
+    "use strict";
+
+    gutil.log("socket: connection");
 
     var run = graffeine.command;
     var event = graffeine.eventManager(socket);

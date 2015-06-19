@@ -41,40 +41,40 @@ Graffeine.ui.nodeMenu = (function(G) {
 
         ui.util.modal(data.selectors.content);
 
-        ui.util.event(data.selectors.actions.remove, 'click', function(e) { 
+        ui.util.event(data.selectors.actions.remove, "click", function(e) { 
             if(!ui.state.nodeSelected()) { 
                 console.log("node delete called but no node on the graph selected");
                 return;
             }
             var nodeId = ui.state.getSelectedNode().id;
-            Graffeine.command.send('node-delete', { id: nodeId });
+            Graffeine.command.send("node-remove", { id: nodeId });
             ui.state.unselectNode();
             ui.nodeMenu.hide();
         });
 
-        ui.util.event(data.selectors.actions.clone, 'click', function(e) { 
+        ui.util.event(data.selectors.actions.clone, "click", function(e) { 
             // @todo
             // var newObj = ui.util.formToObject(graph.ui.identifiers.nodeEditableData.replace(/#/,''));
-            // Graffeine.command.send('node-add', newObj);
+            // Graffeine.command.send("node-add", newObj);
         });
 
         /** View node data **/
 
-        ui.util.event(data.selectors.actions.view, 'click', function(e) { 
+        ui.util.event(data.selectors.actions.view, "click", function(e) { 
             ui.nodeMenu.hide();
             ui.nodeView.show();
         });
 
         /** Edit node data **/
 
-        ui.util.event(data.selectors.actions.edit, 'click', function(e) { 
+        ui.util.event(data.selectors.actions.edit, "click", function(e) { 
             ui.nodeMenu.hide();
             ui.nodeEdit.show();
         });
 
         /** Inspect node data **/
 
-        ui.util.event(data.selectors.actions.inspect, 'click', function(e) { 
+        ui.util.event(data.selectors.actions.inspect, "click", function(e) { 
             ui.nodeMenu.hide();
             var content = $("<pre><code>").html(ui.util.prettyObject(ui.state.getSelectedNode()));
             var modal = ui.util.dynamicModal("Node Inspect", content);
@@ -87,10 +87,10 @@ Graffeine.ui.nodeMenu = (function(G) {
 
     return { 
         show: function(node, element) { 
-            $(data.selectors.content).modal('show');
+            $(data.selectors.content).modal("show");
         },
         hide: function() { 
-            $(data.selectors.content).modal('hide');
+            $(data.selectors.content).modal("hide");
         }
     };
 

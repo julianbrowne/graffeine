@@ -1,0 +1,6 @@
+
+$(dirname $0)/../test/lint
+
+cd $(dirname $0)/../test/
+
+node run

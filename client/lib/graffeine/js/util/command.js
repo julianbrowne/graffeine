@@ -17,7 +17,7 @@ Graffeine.command = (function(G) {
         console.log("recv: registering \"%s\" callback", command);
         var visualUpdate = (visualUpdate===undefined) ? false : true;
         G.socket().on(command, function(data) { 
-            console.log("recv: recorded %s event: %s", command, JSON.stringify(data));
+            console.log("recv: recorded %s event", command);
             // @todo find a way to make this cleaner
             // if(visualUpdate) send('graph-stats', {});
             callback(data);
@@ -52,6 +52,11 @@ Graffeine.command = (function(G) {
 
         console.log("command: registerReceivers");
 
+        recv("server-timer", function (timer) { 
+            var message = "last query \"" + timer.data.command + "\" took " + timer.data.time + " ms";
+            ui.util.updateFlash("info", "timer", message);
+        });
+
         /**
          *  List the graph databases the server can build
         **/
@@ -61,12 +66,13 @@ Graffeine.command = (function(G) {
         });
 
         recv("data-nodes", function (data) { 
-            console.log(data);
             graph.addGraphData(data);
             graph.refresh();
         });
 
-        // join nodes
+        /**
+         *  Join nodes
+        **/
 
         recv("node-join", function (data) { 
             graph.addPath(data.source, data.target, data.name);
@@ -76,7 +82,6 @@ Graffeine.command = (function(G) {
         // stats - node count
 
         recv('nodes-count', function (data) { 
-            util.debug("(nodes-count) processing");
             Graffeine.ui.graphStats.update('nodeCount', data.count);
         });
 
@@ -85,19 +90,16 @@ Graffeine.command = (function(G) {
         **/
 
         recv('path-count', function (data) { 
-            util.debug("(path-count) processing");
             Graffeine.ui.graphStats.update('pathCount', data.count);
         });
 
         recv("path-all", function (data) { 
-            util.debug("command: path-all: processing %s", data.data.join(","));
             Graffeine.ui.graphStats.update("dbPathTypes", data.data);
         }, true);
 
         // delete existing node
 
-        recv('node-delete', function (data) { 
-            util.debug("(node-delete) processing");
+        recv('node-remove', function (data) { 
             graph.removeNode(data.id);
             graph.refresh();
         }, true);
@@ -107,8 +109,6 @@ Graffeine.command = (function(G) {
         **/
 
         recv("node-add", function (data) { 
-            console.log("(node-add) processing -->");
-            console.log(data);
             graph.addNode(data.node);
             graph.refresh();
         }, true);
@@ -118,8 +118,6 @@ Graffeine.command = (function(G) {
         **/
 
         recv("node-update", function (data) { 
-            console.log("(node-update) processing -->");
-            console.log(data);
             graph.addNode(data.data);
             graph.resetPaths();
             graph.refresh();
@@ -130,7 +128,6 @@ Graffeine.command = (function(G) {
         **/
 
         recv("path-delete", function (data) { 
-            util.debug("(path-delete) processing");
             graph.removePath(data.source, data.target, data.name);
             graph.refresh();
         }, true);
@@ -140,25 +137,7 @@ Graffeine.command = (function(G) {
         **/
 
         recv('server-message', function (data) { 
-            // data.category must be one of: success, info, warning, danger
-            var alertClass = "alert-"+(data.category||"info");
-            var container = $("<div>")
-                .addClass("alert alert-dismissible " + alertClass)
-                .attr("role", "alert");
-            var closeButton = $("<button>")
-                .attr("type", "button")
-                .addClass("close")
-                .attr("data-dismiss", "alert")
-                .attr("aria-label", "close");
-            var span = $("<span>")
-                .attr("aria-hidden", "true")
-                .html("&times;");
-            var title = $("<h5>").html();
-            closeButton.append(span);
-            container.append(closeButton);
-            container.append("<strong>"+data.title+": </strong>"+data.message);
-            if($("#flash").length===0) util.warning("warning: no flash for server message");
-            $("#flash").html(container);
+            ui.util.updateFlash(data.category, data.title, data.message);
         });
 
     }

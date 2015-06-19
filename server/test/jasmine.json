@@ -1,0 +1,11 @@
+{
+    "spec_dir": "spec",
+    "spec_files": [ 
+        "graffeine.js",
+        "http.js",
+        "gutil.js"
+    ],
+    "helpers": [ 
+        "helper/matchers.js"
+    ]
+}

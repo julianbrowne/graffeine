@@ -2,33 +2,7 @@
 var util = require("util");
 var db = require('./neo4j');
 
-module.exports = (function(){ 
-
-    function all(callback) { 
-        var cypher = "MATCH (n) RETURN n, labels(n)";
-        db.query(cypher, callback, [ "n", "labels(n)" ]);
-    };
-
-    function count(callback) { 
-        var cypher = "MATCH n RETURN count(n)";
-        db.query(cypher, callback, "count(n)");
-    };
-
-    function from(start, callback) { 
-        // @todo: update for 2.2
-        // var cypher = "MATCH (n {id: 99}) OPTIONAL MATCH (n)-[r*1..2]-(m) RETURN n, r, m";
-        // db.query(cypher, callback, ["n", "r", "m"]);
-    };
-
-    function find(properties, callback) { 
-        var cypher = util.format("MATCH (n %s) RETURN n", JSON.stringify(properties));
-        db.query(cypher, callback, ["n"]);
-    };
-
-    function orphans(callback) { 
-        var cypher = "OPTIONAL MATCH (n) WHERE NOT (n)--() RETURN distinct n";
-        db.query(cypher, callback, ["n"]);
-    };
+module.exports = (function() { 
 
     function add(nodeData, callback) { 
         var cypher = util.format("CREATE (n %s %s) RETURN n", labels(nodeData), properties(nodeData));
@@ -40,19 +14,19 @@ module.exports = (function(){
         db.query(cypher, callback);
     };
 
-    function update(id, data, callback) { 
-        // @todo : rewrite for cypher
-        // MATCH (n) WHERE ID(n) = 99 SET n = { a: 10 } RETURN n
+    function count(callback) { 
+        var cypher = "MATCH n RETURN count(n)";
+        db.query(cypher, callback, "count(n)");
     };
 
-    function get(id, callback) { 
-        // @todo : rewrite for cypher
-        // match n where ID(n) = 99 return n
+    function find(properties, callback) { 
+        var cypher = util.format("MATCH (n %s) RETURN n", JSON.stringify(properties));
+        db.query(cypher, callback, ["n"]);
     };
 
-    function join(sourceId, targetId, name, callback) { 
-        var cypher = util.format("MATCH (a),(b) WHERE a.id = %s AND b.id = %s CREATE (a)-[r:%s]->(b) RETURN r",sourceId, targetId, name);
-        db.query(cypher, callback, ["r"]);
+    function orphans(callback) { 
+        var cypher = "OPTIONAL MATCH (n) WHERE NOT (n)--() RETURN distinct n";
+        db.query(cypher, callback, ["n"]);
     };
 
     function labels(nodeData) { 
@@ -67,12 +41,8 @@ module.exports = (function(){
     };
 
     return { 
-        all: all,
-        get: get,
         add: add,
-        join: join,
         remove: remove,
-        update: update,
         count: count,
         find: find,
         orphans: orphans

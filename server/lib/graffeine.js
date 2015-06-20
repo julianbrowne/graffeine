@@ -1,26 +1,56 @@
 
+
 var util = require("util");
-var command = require("./command");
+var sio = require("socket.io");
+var events = require("events");
+var colors = require('colors');
+
+var config = require("../config/server.json");
 var gutil = require("./gutil");
+var Sender = require("./sender/Sender");
+var Receiver = require("./receiver/Receiver");
+var http = require("./http");
 
 module.exports = (function() { 
+
     "use strict";
-    return { 
-        command: command,
-        eventManager: function(socket) { 
+
+    util.inherits(Graffeine, events.EventEmitter);
+
+    return new Graffeine;
+
+    function Graffeine() { 
+
+        var graffeine=this;
+
+        gutil.log("Starting WS server on " + config.http.port);
+        this.socket = sio.listen(http.listener, { log: false });
+
+        this.sender = new Sender(this.socket);
+
+        this.receiver = new Receiver(this.socket);
+
+        this.socket.on("connection", function(client) { 
+            graffeine.emit("client-connected", client);
+        });
+
+        this.eventManager = function(connection) { 
+            if(connection === undefined || connection ===  null) { 
+                gutil.die("invalid client connection passed to event manager");
+            }
             return new function() { 
-                this.socket = socket;
-                function run(tag, action) { 
+                this.connection = connection;
+                function run(event, func) { 
                     return function() { 
-                        gutil.log("event: received: %s: %s", tag, util.format.apply(this, arguments));
-                        action.apply(this, arguments);
+                        gutil.log(colors.blue("event: received: %s: %s"), event, util.format.apply(this, arguments));
+                        func.apply(this, arguments);
                     };
                 }
-                this.on = function(tag, action) { 
-                    this.socket.on(tag, run(tag, action));
+                this.on = function(event, func) { 
+                    this.connection.on(event, run(event, func));
                 };
             };
         }
-    };
+    }
 
 }());

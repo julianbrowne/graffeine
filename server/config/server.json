@@ -12,5 +12,11 @@
         "host": "127.0.0.1",
         "port": 8004,
         "public": "client"
+    },
+    "channels": { 
+        "server": [ "info", "timer" ],
+        "graph": [ "nodes", "paths", "remove", "gists" ],
+        "nodes": [ "add", "remove", "count", "update" ],
+        "paths": [ "add", "remove", "count", "update" ]
     }
 }

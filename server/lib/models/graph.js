@@ -34,7 +34,19 @@ module.exports = (function() {
         });
     };
 
+    function nodes(callback) { 
+        var cypher = "MATCH (n) RETURN n, labels(n)";
+        db.query(cypher, callback, [ "n", "labels(n)" ]);
+    }
+
+    function paths(callback) { 
+        var cypher = "MATCH (n)-[r]-(m) RETURN r";
+        db.query(cypher, callback, [ "r" ]);
+    }
+
     return { 
+        nodes: nodes,
+        paths: paths,
         all: all,
         remove: remove,
         load: load

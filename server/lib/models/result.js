@@ -1,10 +1,18 @@
 
+var util = require("util");
+var bus = require("postal");
+
 var GNode = require("./gnode");
 var gutil = require("../gutil");
 
 module.exports = (function() { 
 
     "use strict";
+
+    function Responder() { };
+    //util.inherits(Responder, events.EventEmitter);
+
+    var responder = new Responder();
 
     function mapIndexQueryResult(nodes) { 
         return nodes.map(function (node) { return node.data; });
@@ -51,8 +59,9 @@ module.exports = (function() {
 
     function processQueryResult(callback, processor, columns, clock) { 
         return function(error, results) { 
+            bus.publish({ channel: "info", topic: "query", data: { message: "processing query" } });
             if (error) { 
-                gutil.error(error);
+                errorResult(error);
             }
             else { 
                 var nodes = processor(results, columns);
@@ -64,15 +73,27 @@ module.exports = (function() {
     }
 
     function booleanResult(callback, clock) { 
-        return function(error) { 
+        return function(error, result) { 
             if(error) { 
-                gutil.error(error);
+                errorResult(error);
             }
             else { 
                 clock.end = new Date().getTime();
-                callback(true, clock);
+                callback(result, clock);
             }
         };
+    }
+
+    function errorResult(error) { 
+        gutil.error(error);
+        if(error.hasOwnProperty("code")) { 
+            if(error.code === "ECONNREFUSED") { 
+                var message = "Can't connect to Neo4J. Is it running?";
+            }
+        }
+        else { 
+
+        }
     }
 
     return { 

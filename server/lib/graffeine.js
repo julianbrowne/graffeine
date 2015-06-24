@@ -1,15 +1,13 @@
 
-
 var util = require("util");
-var sio = require("socket.io");
 var events = require("events");
-var colors = require('colors');
+var colors = require("colors");
 
-var config = require("../config/server.json");
 var gutil = require("./gutil");
+var config = require("../config/server.json");
 var Sender = require("./sender/Sender");
 var Receiver = require("./receiver/Receiver");
-var http = require("./http");
+var socket = require("./listener/socket");
 
 module.exports = (function() { 
 
@@ -24,13 +22,13 @@ module.exports = (function() {
         var graffeine=this;
 
         gutil.log("Starting WS server on " + config.http.port);
-        this.socket = sio.listen(http.listener, { log: false });
+        //this.socket = sio.listen(http.listener, { log: false });
 
-        this.sender = new Sender(this.socket);
+        this.sender = new Sender(socket);
 
-        this.receiver = new Receiver(this.socket);
+        this.receiver = new Receiver(socket);
 
-        this.socket.on("connection", function(client) { 
+        socket.on("connection", function(client) { 
             graffeine.emit("client-connected", client);
         });
 
@@ -41,8 +39,12 @@ module.exports = (function() {
             return new function() { 
                 this.connection = connection;
                 function run(event, func) { 
+                    if(func === undefined) { 
+                        gutil.die("attempt to register undefined callback for %s", event);
+                    }
+                    gutil.debug("event: registered callback %s for %s", func.name, event);
                     return function() { 
-                        gutil.log(colors.blue("event: received: %s: %s"), event, util.format.apply(this, arguments));
+                        gutil.log("event: received: %s: %s".blue, event, util.format.apply(this, arguments));
                         func.apply(this, arguments);
                     };
                 }

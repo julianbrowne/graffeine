@@ -23,6 +23,7 @@ module.exports = (function() {
         graph: { 
             init: function() { 
                 graph.all(function(n, timer) { 
+                    gutil.log(gutil.getGists());
                     send("graph", "nodes", { nodes: n, count: n.length });
                     send("server", "timer", { data: timer } );
                     send("graph", "gists", { names: gutil.getGists() });
@@ -30,6 +31,14 @@ module.exports = (function() {
             },
             nodes: function() { 
                 graph.nodes(function(result, timer) { 
+                    var types = result.map(function(r) { return r.type });
+                    var filtered = types.sort().filter(function(el,i,a) { return (i==a.indexOf(el)); });
+                    send("graph", "nodes", { data: filtered } );
+                    send("server", "timer", { data: timer } );
+                });
+            },
+            paths: function() { 
+                graph.paths(function(result, timer) { 
                     var types = result.map(function(r) { return r.type });
                     var filtered = types.sort().filter(function(el,i,a) { return (i==a.indexOf(el)); });
                     send("graph", "paths", { data: filtered } );
@@ -42,7 +51,7 @@ module.exports = (function() {
                     send("server", "timer", { data: timer } );
                 });
             },
-            load: function(name) { 
+            load: function(data) { 
                 graph.load(data.name, function(result, timer) { 
                     send("server","info", { 
                         category: "success", 
@@ -105,7 +114,7 @@ module.exports = (function() {
         },
         paths: { 
             add: function(data) { 
-                paths.join(data.source, data.target, data.name, function(success, timer) { 
+                paths.add(data.source, data.target, data.name, function(success, timer) { 
                     if(success) { 
                         send("paths","add", { source: data.source, target: data.target, name: data.name } );
                         send("server","timer", { data: timer } );

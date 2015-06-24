@@ -59,7 +59,7 @@ describe('gutil', function() {
         expect(console.log.calls.mostRecent().args[0]).toEqual("%s: %s - %s");
         expect(console.log.calls.mostRecent().args[1]).toMatch(match.timestamp());
         expect(console.log.calls.mostRecent().args[2]).toEqual("DBG");
-        expect(console.log.calls.mostRecent().args[3]).toEqual("1 2");
+        expect(console.log.calls.mostRecent().args[3]).toEqual("\u001b[33m1 2\u001b[39m");
     });
 
     it('should log information correctly', function() { 
@@ -75,6 +75,6 @@ describe('gutil', function() {
         expect(console.log.calls.mostRecent().args[0]).toEqual("%s: %s - %s");
         expect(console.log.calls.mostRecent().args[1]).toMatch(match.timestamp());
         expect(console.log.calls.mostRecent().args[2]).toEqual("ERR");
-        expect(console.log.calls.mostRecent().args[3]).toEqual("1 2");
+        expect(console.log.calls.mostRecent().args[3]).toEqual("\u001b[31m1 2\u001b[39m");
     });
 });

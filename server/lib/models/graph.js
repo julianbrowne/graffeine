@@ -24,7 +24,7 @@ module.exports = (function() {
                 if(exists) { 
                     fs.readFile(cypherFilePath, "utf-8", function (err, cypher) { 
                         if (err) throw err;
-                        util.runQuery(cypher, callback);
+                        db.query(cypher, callback);
                     });
                 }
                 else { 

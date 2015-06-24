@@ -1,6 +1,7 @@
 
 var fs = require('fs');
 var util = require('util');
+var colors = require('colors');
 
 var config = require('../config/server.json');
 
@@ -11,23 +12,22 @@ module.exports = (function() {
         console.log('%s: %s - %s', timestamp(), type, message);
     };
 
-    function log() { 
+    function log(message) { 
         var message = util.format.apply(this, arguments);
         gprint("INF", message);
     };
 
-    function error() { 
+    function error(message) { 
         var message = util.format.apply(this, arguments);
-        gprint("ERR", message);
+        gprint("ERR", message.red);
     };
 
-    function debug() { 
+    function debug(message) { 
         if(!config.debug) { 
-            console.warn("debug mode not set");
             return;
         }
         var message = util.format.apply(this, arguments);
-        gprint("DBG", message);
+        gprint("DBG", message.yellow);
     };
 
     function timestamp() { 
@@ -52,11 +52,12 @@ module.exports = (function() {
     };
 
     function getGists() { 
-        var gists = []
-        fs.readdir(config.gists, function(err, files) { 
-            files.forEach(function(f) { if(f[0]!==".") gists.push(f.replace(/\.cypher/,"")); });
-        });
-        return gists;
+        var gists = [];
+        var files = fs.readdirSync(config.gists);
+        for(var i=0; i<files.length; i++) { 
+            if(files[i][0]!==".") { gists.push(files[i].replace(/\.cypher/,"")); }
+        }
+        return gists;                
     };
 
     return { 

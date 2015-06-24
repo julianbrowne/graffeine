@@ -1,16 +1,18 @@
 
-var path = require('path');
-var appDir = path.dirname(require.main.filename);
-var http = require('http');
-var content = require('node-static');
-var gutil = require("./gutil");
-var config = require("../config/server.json");
+var path = require("path");
+var http = require("http");
+var content = require("node-static");
+
+var config = require("../../config/server.json");
+var gutil = require("../gutil");
 
 module.exports = (function() { 
 
+    var appDir = path.dirname(require.main.filename);
     var rootDir = appDir + "/../" + config.http.public;
     var docs = new(content.Server)(rootDir);
     var app = http.createServer(requestHandler(docs));
+
     gutil.log("http: starting server for %s", rootDir);
     app.listen(config.http.port);
     gutil.log("http: open browser to %s:%s", config.http.host, config.http.port);

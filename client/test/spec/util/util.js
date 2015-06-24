@@ -26,12 +26,20 @@ describe("Graffeine Util", function() {
     });
 
     it("should convert object to form", function() { 
+        /**
+         *  <div class="form-group">
+         *      <label class="col-sm-3">id</label>
+         *      <input class="col-sm-8" type="number" data-json-type="number" name="id" value="123">
+         *  </div>
+        **/
         expect(Graffeine.util.objToForm).toBeDefined();
         var form = Graffeine.util.objToForm();
         expect(form).toEqual('');
         // @todo: add more variations here
         var form = Graffeine.util.objToForm({id: 123});
-        expect(form[0].innerHTML).toEqual('<div class="form-group"><label class="col-sm-3">id</label><input class="col-sm-8" type="number" data-json-type="number" name="id" value="123"></div>');
+        expect($(form).find("label").length).toEqual(1);
+        expect($(form).find("input").length).toEqual(1);
+        expect($(form).find("input").attr("type")).toEqual("number");
     });
 
     it("should insert anchor tags for URLs", function() { 

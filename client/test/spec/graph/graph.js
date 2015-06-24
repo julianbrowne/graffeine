@@ -56,6 +56,28 @@ describe("Graph", function() {
         expect(graffeineTestHelper.objectLength(Graffeine.graph.nodes())).toEqual(0);
     });
 
+    it("should add labels", function() { 
+        Graffeine.init();
+        Graffeine.graph.addNodeLabels(["a","b","c"]);
+        var labels = Graffeine.graph.getNodeLabels();
+        expect(labels).toEqual(["a","b","c"]);
+        Graffeine.graph.addNodeLabels("d");
+        Graffeine.graph.addNodeLabels("e");
+        labels = Graffeine.graph.getNodeLabels();
+        expect(labels).toEqual(["a","b","c","d","e"]);
+        //console.log(labels);
+    });
+
+    it("should clear all labels", function() { 
+        Graffeine.init();
+        Graffeine.graph.addNodeLabels(["a","b","c"]);
+        var labels = Graffeine.graph.getNodeLabels();
+        expect(labels).toEqual(["a","b","c"]);
+        Graffeine.graph.clearLabels();
+        labels = Graffeine.graph.getNodeLabels();
+        expect(labels).toEqual([]);
+    });
+
     it("should clear all nodes", function() { 
         Graffeine.init();
         var nodeData1 = { id: 1, name: "a" };
@@ -239,7 +261,7 @@ describe("Graph", function() {
         expect(Graffeine.graph.nodeCount()).toEqual(0);
         var data = JSON.parse(graffeineTestData.oneNode);
         console.log(Graffeine.socket());
-        Graffeine.socket()._callbacks["node-add"][0](data);
+        Graffeine.socket()._callbacks["nodes:add"][0](data);
         Graffeine.svg.forceStop();
         expect(Graffeine.graph.nodeCount()).toEqual(1);
         Graffeine.graph.clear();

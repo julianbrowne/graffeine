@@ -19,7 +19,7 @@ Graffeine.command = (function(G) {
         G.socket().on(command, function(data) { 
             console.log("recv: recorded %s event", command);
             // @todo find a way to make this cleaner
-            // if(visualUpdate) send('graph-stats', {});
+            // if(visualUpdate) send('graph:stats', {});
             callback(data);
         });
     };
@@ -29,19 +29,15 @@ Graffeine.command = (function(G) {
             console.warn("connectNodes: can't join nodes %s to %s with %s", sourceNode, targetNode, name);
             return;
         }
-        send('node-join', { source: sourceNode.id, target: targetNode.id, name: name });
-    };
-
-    function graphFetch(start) { 
-        send('graph-fetch', { start: start });
+        send('paths:add', { source: sourceNode.id, target: targetNode.id, name: name });
     };
 
     function gatherDBStats() { 
-        send("path-all");
+        send("graph:paths");
     };
 
     function graphLoad(name) { 
-        send("graph-load", {name: name});
+        send("graph:load", {name: name});
     };
 
     function registerReceivers() { 
@@ -52,7 +48,7 @@ Graffeine.command = (function(G) {
 
         console.log("command: registerReceivers");
 
-        recv("server-timer", function (timer) { 
+        recv("server:timer", function (timer) { 
             var message = "last query \"" + timer.data.command + "\" took " + timer.data.time + " ms";
             ui.util.updateFlash("info", "timer", message);
         });
@@ -61,11 +57,11 @@ Graffeine.command = (function(G) {
          *  List the graph databases the server can build
         **/
 
-        recv("graph-gists", function (data) { 
+        recv("graph:gists", function (data) { 
             Graffeine.set("gists", data.names);
         });
 
-        recv("data-nodes", function (data) { 
+        recv("graph:nodes", function (data) { 
             graph.addGraphData(data);
             graph.refresh();
         });
@@ -74,14 +70,14 @@ Graffeine.command = (function(G) {
          *  Join nodes
         **/
 
-        recv("node-join", function (data) { 
+        recv("paths:add", function (data) { 
             graph.addPath(data.source, data.target, data.name);
             graph.refresh();
         }, true);
 
         // stats - node count
 
-        recv('nodes-count', function (data) { 
+        recv('nodes:count', function (data) { 
             Graffeine.ui.graphStats.update('nodeCount', data.count);
         });
 
@@ -89,17 +85,17 @@ Graffeine.command = (function(G) {
          *  Path (Relationship) Commands
         **/
 
-        recv('path-count', function (data) { 
+        recv('paths:count', function (data) { 
             Graffeine.ui.graphStats.update('pathCount', data.count);
         });
 
-        recv("path-all", function (data) { 
+        recv("graph:paths", function (data) { 
             Graffeine.ui.graphStats.update("dbPathTypes", data.data);
         }, true);
 
         // delete existing node
 
-        recv('node-remove', function (data) { 
+        recv('nodes:remove', function (data) { 
             graph.removeNode(data.id);
             graph.refresh();
         }, true);
@@ -108,7 +104,7 @@ Graffeine.command = (function(G) {
          *  New node
         **/
 
-        recv("node-add", function (data) { 
+        recv("nodes:add", function (data) { 
             graph.addNode(data.node);
             graph.refresh();
         }, true);
@@ -117,7 +113,7 @@ Graffeine.command = (function(G) {
          *  Update node
         **/
 
-        recv("node-update", function (data) { 
+        recv("nodes:update", function (data) { 
             graph.addNode(data.data);
             graph.resetPaths();
             graph.refresh();
@@ -127,7 +123,7 @@ Graffeine.command = (function(G) {
          *  Delete path
         **/
 
-        recv("path-delete", function (data) { 
+        recv("paths:remove", function (data) { 
             graph.removePath(data.source, data.target, data.name);
             graph.refresh();
         }, true);
@@ -136,7 +132,7 @@ Graffeine.command = (function(G) {
          *  handle server-side messages (errors, alerts, warnings)
         **/
 
-        recv('server-message', function (data) { 
+        recv('server:info', function (data) { 
             ui.util.updateFlash(data.category, data.title, data.message);
         });
 

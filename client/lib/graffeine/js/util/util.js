@@ -106,7 +106,11 @@ Graffeine.util = (function(G) {
         var form = $("<form>");
         Object.keys(obj).forEach(function(k) { 
             var group = $("<div>").addClass("form-group");
-            var label = $("<label>").addClass("col-sm-3").html(k);
+            var label = $("<label>")
+                .addClass("col-sm-3")
+                .addClass("control-label")
+                .addClass("text-right")
+                .html(k+":");
             var field = (opts[k] === undefined) ? objToField(obj[k], k) : objToField(opts[k].data, k);
             group.append(label);
             group.append(field);

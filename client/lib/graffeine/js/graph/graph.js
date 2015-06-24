@@ -198,13 +198,19 @@ Graffeine.graph = (function(G) {
         data.pathTypes=[];
     };
 
+    function clearLabels() { 
+        data.labels=[];
+    };
+
     function debugMesg(mesg) { 
         if(debug) console.log("DEBUG : %s", mesg);
     };
 
     function clear() { 
+        var ui = G.ui;
         Graffeine.svg.forceStop();
         init();
+        ui.graphStats.clear();
         refresh();
     };
 
@@ -213,6 +219,7 @@ Graffeine.graph = (function(G) {
         clearPathTypes();
         clearNodes();
         clearPaths();
+        clearLabels();
     };
 
     // init();
@@ -223,6 +230,8 @@ Graffeine.graph = (function(G) {
         getNodeTypes: function() { return data.nodeTypes; },
         getPathTypes: function() { return data.pathTypes; },
         getNodeLabels: function() { return data.labels; },
+        addNodeLabels: addNodeLabels,
+        clearLabels: clearLabels,
         init: init,
         clear: clear,
         addNode: addNode,

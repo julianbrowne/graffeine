@@ -28,7 +28,6 @@ Graffeine = (function() {
             socket.on("disconnect", function(error) { Graffeine.ui.state.disconnectDB(); });
             // register all receivers
             Graffeine.command.init();
-            Graffeine.command.gatherDBStats();
         }
     };
 

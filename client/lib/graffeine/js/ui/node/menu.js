@@ -47,7 +47,7 @@ Graffeine.ui.nodeMenu = (function(G) {
                 return;
             }
             var nodeId = ui.state.getSelectedNode().id;
-            Graffeine.command.send("node-remove", { id: nodeId });
+            Graffeine.command.send("nodes:remove", { id: nodeId });
             ui.state.unselectNode();
             ui.nodeMenu.hide();
         });
@@ -55,7 +55,7 @@ Graffeine.ui.nodeMenu = (function(G) {
         ui.util.event(data.selectors.actions.clone, "click", function(e) { 
             // @todo
             // var newObj = ui.util.formToObject(graph.ui.identifiers.nodeEditableData.replace(/#/,''));
-            // Graffeine.command.send("node-add", newObj);
+            // Graffeine.command.send("nodes:add", newObj);
         });
 
         /** View node data **/

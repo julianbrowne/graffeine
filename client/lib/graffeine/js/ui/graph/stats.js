@@ -53,6 +53,10 @@ Graffeine.ui.graphStats = (function(G) {
             console.log("graphStats.update: updating %s with %s", key, value);
             $(data.selectors.fields[key]).html(value);
         },
+        clear: function() { 
+            console.log("clearing graph stats");
+            $(".stats").empty();
+        },
         refresh: function() { 
             var graph = G.graph;
             $("#graph-node-count").html(Object.keys(graph.nodes()).length);

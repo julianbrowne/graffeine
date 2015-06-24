@@ -87,11 +87,13 @@ Graffeine.ui.toolbar = (function(G) {
         **/
 
         ui.util.event(data.selectors.graphMenu.initGraph, "click", function(e) { 
-            Graffeine.command.send("graph-init", {});
+            G.command.send("graph:init", {});
+            G.command.gatherDBStats();
         });
 
         ui.util.event(data.selectors.graphMenu.clearGraph, "click", function(e) { 
             graph.clear();
+            ui.graphStats.clear();
         });
 
         ui.util.event(data.selectors.graphMenu.initStats, "click", function(e) { 
@@ -116,6 +118,7 @@ Graffeine.ui.toolbar = (function(G) {
                     var gist = $("#graph-gist").val();
                     G.command.graphLoad(gist);
                     $("#"+modalId).modal("hide");
+                    G.graph.clear();
                 });
             });
         });
@@ -135,7 +138,7 @@ Graffeine.ui.toolbar = (function(G) {
         });
 
         ui.util.event(data.selectors.nodeMenu.nodeOrphans, 'click', function(e) { 
-            Graffeine.command.send('nodes-orphans', { });
+            Graffeine.command.send('nodes:orphans', { });
         });
 
         /** disable buttons that rely on a graph being present **/

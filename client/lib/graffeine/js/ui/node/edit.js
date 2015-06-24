@@ -84,7 +84,7 @@ Graffeine.ui.nodeEdit = (function(G) {
         ui.util.event(data.selectors.buttons.save, 'click', function(e) { 
             var nodeName = $(data.selectors.fields.nodeName).val();
             var nodeType = $(data.selectors.fields.nodeTypeInput).val() !== '' ? $(data.selectors.fields.nodeTypeInput).val() : $(data.selectors.fields.nodeTypeSelect).find(":selected").text();
-            Graffeine.command.send('node-add', { type: nodeType, name: nodeName });
+            Graffeine.command.send('nodes:add', { type: nodeType, name: nodeName });
             $(data.selectors.fields.nodeName).val('');
             $(data.selectors.fields.nodeTypeInput).val('');
             Graffeine.ui.nodeEdit.hide();
@@ -96,7 +96,7 @@ Graffeine.ui.nodeEdit = (function(G) {
         $("#node-edit-update").click(function(e) {
             var newObj = Graffeine.util.formToObject('node-data');
             var nodeId = graph.state.selectedNode.data.id;
-            Graffeine.command.send('node-update', { id: nodeId, data: newObj });
+            Graffeine.command.send('node:update', { id: nodeId, data: newObj });
         });
 
     };

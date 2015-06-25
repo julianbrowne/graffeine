@@ -194,13 +194,13 @@ Graffeine.ui.state = (function(G) {
 
         this.setForceActive = function() { 
             this.forceActivated = true;
-            console.log("force: active");
+            console.log("force: active: %s", G.util.timestamp());
             G.ui.util.forceButton("on");
         };
 
         this.unsetForceActive = function() { 
             this.forceActivated = false;
-            console.log("force: inactive");
+            console.log("force: inactive: %s", G.util.timestamp());
             G.ui.util.forceButton("off");
         };
 

@@ -15,6 +15,16 @@ Graffeine.util = (function(G) {
         return s;
     };
 
+    function format(int, zeros) { 
+        var template = "00000"; 
+        return (template+int).slice(0-zeros);
+    }
+
+    function timestamp() { 
+        var now = new Date();
+        return format(now.getHours(),2)+":"+format(now.getMinutes(),2)+":"+format(now.getSeconds(),2)+"."+format(now.getMilliseconds(),3);
+    }
+
     function objectLength(o) { 
         if (typeof o.length === 'number' && !(o.propertyIsEnumerable('length')) && typeof o.splice === 'function')
             return o.length;
@@ -174,6 +184,7 @@ Graffeine.util = (function(G) {
         rowify: rowify,
         objToForm: objToForm,
         objToList: objToList,
+        timestamp: timestamp,
         warning: function(text) { 
             var caller = (arguments.callee.caller.name) ? arguments.callee.caller.name+":" : "";
             console.warn("%c warning: " + caller + text, "color: #C62C17");

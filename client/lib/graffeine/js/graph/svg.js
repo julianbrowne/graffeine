@@ -380,7 +380,7 @@ Graffeine.svg = (function(G) {
         drawLabels();
         ui.state.nodesOnDeck(nodeCount);
         ui.graphStats.refresh();
-        forceStart();
+        if(nodeCount > 0) { setTimeout(forceStart,0); }
     };
 
     function init() { 
@@ -394,12 +394,18 @@ Graffeine.svg = (function(G) {
         ui.state.selectSourceNode(null);
         ui.state.selectTargetNode(null);
 
+        if(force!==null) { 
+            console.log("clearing old force");
+            forceStop();
+            force = null;
+        }
+
         force = d3.layout.force();
-        force.size([config.graphSettings.width, config.graphSettings.height])
-        force.linkDistance(config.graphSettings.linkDistance)
-        force.charge(config.graphSettings.charge)
-        force.on('start', function() { if(!G.ui.state.forceActive()) G.ui.state.setForceActive(); })
-        force.on('end', function() { if(G.ui.state.forceActive()) G.ui.state.unsetForceActive(); })
+        force.size([config.graphSettings.width, config.graphSettings.height]);
+        force.linkDistance(config.graphSettings.linkDistance);
+        force.charge(config.graphSettings.charge);
+        force.on('start', function() { }); //if(!G.ui.state.forceActive()) G.ui.state.setForceActive(); })
+        force.on('end', function() { if(G.ui.state.forceActive()) G.ui.state.unsetForceActive(); });
         force.on("tick", forceTick);
 
         svg = d3

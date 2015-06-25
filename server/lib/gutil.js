@@ -2,6 +2,7 @@
 var fs = require('fs');
 var util = require('util');
 var colors = require('colors');
+var path = require('path');
 
 var config = require('../config/server.json');
 
@@ -53,7 +54,9 @@ module.exports = (function() {
 
     function getGists() { 
         var gists = [];
-        var files = fs.readdirSync(config.gists);
+        var root = path.dirname(require.main.filename);
+        var dataDir = root+"/"+config.gists;
+        var files = fs.readdirSync(dataDir);
         for(var i=0; i<files.length; i++) { 
             if(files[i][0]!==".") { gists.push(files[i].replace(/\.cypher/,"")); }
         }

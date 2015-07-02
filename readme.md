@@ -5,7 +5,7 @@ Caffeinated Graph Exploration for Neo4J.
 
 Graffeine is a visually interactive client for small [Neo4J](http://neo4j.com/) graph databases.  
 
-## Update June 2015
+## Update July 2015
 
 Stay tuned - Graffeine is having a full re-write.  
 
@@ -48,4 +48,4 @@ You should read the documentation first, but once you've done that here's what y
 -   Start the server from the {HOME}/server directory by typing ```node server```
 -   If none of the defaults (port etc) have been changed, open your browser at ```http://localhost:8004/```
 
-![screenshot](client/docs/images/screenshot.jpg?raw=true)
+![screenshot](https://raw.githubusercontent.com/julianbrowne/graffeine/v0.1/client/docs/images/screenshot-home.jpeg)

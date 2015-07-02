@@ -111,12 +111,13 @@ Graffeine.command = (function(G) {
 
         /**
          *  Update node
+         *  @payload { id: 999, properties: {} }
         **/
 
-        recv("nodes:update", function (data) { 
-            graph.addNode(data.data);
+        recv("nodes:update", function (payload) { 
+            graph.updateNode(payload.id, payload.properties);
             graph.resetPaths();
-            graph.refresh();
+            graph.refresh(false);       // refresh the screen but without a force start
         }, false);
 
         /**

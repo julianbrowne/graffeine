@@ -1,7 +1,6 @@
 
 Graffeine.graph = (function(G) { 
 
-//    var socket = null;
     var ui = G.ui;
     var debug = false;
     var updateMode = 'replace'; // {'update'|'replace'} for new svg data
@@ -14,19 +13,33 @@ Graffeine.graph = (function(G) {
         labels: []      // node labels
     };
 
+    /**
+     *  Ensure all paths in the client data have paths that
+     *  refer to nodes that are also in the client data store
+     *  i.e. not nodes that are in neo4j but not retreived, so
+     *  we don't have any dangling paths
+    **/
+
     function checkPaths() { 
         var nodes = data.nodes;
         data.paths = $.grep(data.paths, function(path) { 
+            console.log(path);
             return (nodes[path.source.id]!==undefined && nodes[path.target.id]!==undefined)
         });
     };
 
+    /**
+     *  After any node data changes reset all paths to point
+     *  to actual instances of nodes in client data store
+    **/
+
     function resetPaths() { 
-        var self = this;
-        data.paths.forEach(function(path) { 
-            path.source = self.getNode[path.source.id];
-            path.target = self.getNode[path.target.id];
-        });
+        for(var i=0; i<data.paths.length; i++) { 
+            var path = data.paths[i];
+            console.log("resetPaths: %s", JSON.stringify(path));
+            path.source = getNode(path.source.id);
+            path.target = getNode(path.target.id);
+        }
     };
 
     function addGraphData(graphData) { 
@@ -49,14 +62,14 @@ Graffeine.graph = (function(G) {
         console.log("populated graph with %s paths", pathCount());
     };
 
-    function refresh() { 
+    function refresh(forceAfterRefresh) { 
         var ui = G.ui;
-        ui.nodeEdit.updateNodeTypes();
+        //ui.nodeEdit.updateNodeTypes();
         if(updateMode==='replace'||$(G.config.graphTargetDiv).length === 0) { 
             G.svg.init();
         }
         checkPaths();
-        G.svg.refresh();
+        G.svg.refresh(forceAfterRefresh);
     };
 
     function addNode(node) { 
@@ -70,6 +83,20 @@ Graffeine.graph = (function(G) {
         data.nodes[newNode.id] = newNode;
         addNodeType(newNode.type);
         addNodeLabels(newNode.labels);
+    };
+
+    function updateNode(id, props) { 
+        if(typeof id === "undefined" || typeof props === "undefined") { 
+            console.warn("graph.updateNode: node with bad data: %s, %s", id, JSON.stringify(props));
+            return;
+        }
+        console.log("updateNode (before): %s", JSON.stringify(data.nodes[id]));
+        var node = new G.model.Node(props);
+        node.transferD3Data(getNode(id));
+        data.nodes[id] = node;
+        console.log("updateNode (after): %s", JSON.stringify(data.nodes[id]));
+        //addNodeType(node.type);
+        addNodeLabels(node.labels);
     };
 
     function getNode(id) { 
@@ -235,6 +262,7 @@ Graffeine.graph = (function(G) {
         init: init,
         clear: clear,
         addNode: addNode,
+        updateNode: updateNode,
         getNode: getNode,
         nodeExists: nodeExists,
         removeNode: removeNode,

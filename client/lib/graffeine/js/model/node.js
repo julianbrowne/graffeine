@@ -66,8 +66,8 @@ Graffeine.model.Node = function(graffnode) {
      * transfer over d3 force fields to smooth updates
     **/
 
-    this.transferD3Data = function(oldNode) {
-        fields = [ 'x', 'y', 'px', 'py', 'weight', 'index']
+    this.transferD3Data = function(oldNode) { 
+        fields = [ "x", "y", "px", "py", "weight", "index", "fixed"]
         var node = this;
         fields.forEach(function(field) {
             node[field] = oldNode[field];

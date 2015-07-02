@@ -1,5 +1,4 @@
 
-var util = require("util");
 var bus = require("postal");
 
 var GNode = require("./gnode");
@@ -10,19 +9,22 @@ module.exports = (function() {
     "use strict";
 
     function Responder() { };
-    //util.inherits(Responder, events.EventEmitter);
 
     var responder = new Responder();
 
+/**
     function mapIndexQueryResult(nodes) { 
         return nodes.map(function (node) { return node.data; });
     }
+**/
 
     function mapCypherAggregateResult(results, key) { 
+        gutil.log("aggregate result: %s", JSON.stringify(results));
         return results[0][key];
     }
 
     function mapCypherQueryResult(results, columnsWanted) { 
+        gutil.log("mapCypherQueryResult: raw: %s", JSON.stringify(results));
         var items = [];
         columnsWanted = (columnsWanted === undefined) ? [] : columnsWanted;
         results.forEach(function(resultObj) {
@@ -54,7 +56,14 @@ module.exports = (function() {
 
             });
         });
+        gutil.log("mapCypherQueryResult: items: %s", JSON.stringify(items));
         return items.map(GNode);
+    }
+
+    function recordEndTime(clock) {
+        clock.end = new Date().getTime();
+        clock.time = clock.end - clock.start;
+        return clock;
     }
 
     function processQueryResult(callback, processor, columns, clock) { 
@@ -65,9 +74,7 @@ module.exports = (function() {
             }
             else { 
                 var nodes = processor(results, columns);
-                clock.end = new Date().getTime();
-                clock.time = clock.end - clock.start;
-                callback(nodes, clock);
+                callback(nodes, recordEndTime(clock));
             }
         };
     }
@@ -78,8 +85,7 @@ module.exports = (function() {
                 errorResult(error);
             }
             else { 
-                clock.end = new Date().getTime();
-                callback(result, clock);
+                callback(result, recordEndTime(clock));
             }
         };
     }
@@ -97,7 +103,7 @@ module.exports = (function() {
     }
 
     return { 
-        mapIndexQueryResult: mapIndexQueryResult,
+       // mapIndexQueryResult: mapIndexQueryResult,
         mapCypherQueryResult: mapCypherQueryResult,
         processQueryResult: processQueryResult,
         booleanResult: booleanResult,

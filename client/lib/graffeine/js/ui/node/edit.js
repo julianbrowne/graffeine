@@ -19,15 +19,10 @@ Graffeine.ui.nodeEdit = (function(G) {
                 cancel: "#node-edit-cancel"
             },
             sections: { 
-                data: "#node-edit-data",
                 labels: "#node-edit-labels",
-                paths: "#node-edit-paths"
-            },
-            fields: { 
-                form: "#node-edit-body",
-                nodeName: "#node-edit-name",
-                nodeTypeInput: "#node-edit-type-input",
-                nodeTypeSelect: "#node-edit-type-select"
+                paths: "#node-edit-paths",
+                properties: "#node-edit-properties",
+                form: "#node-edit-form"
             }
         },
         viewURL: G.config.root + "html/node-edit.html"
@@ -48,30 +43,27 @@ Graffeine.ui.nodeEdit = (function(G) {
         ui.util.modal(data.selectors.content);
 
         ui.util.event(data.selectors.content, "show.bs.modal", function(e) { 
-
-            var node = ui.state.getSelectedNode();
-
-            if(node===null)
-                var node = new G.model.Node({});
-
-            $(data.selectors.sections.data).html(renderData(node));
+            var node = ui.state.nodeSelected() ? ui.state.getSelectedNode() : new G.model.Node({})
             $(data.selectors.sections.labels).html(renderLabels(node));
             $(data.selectors.sections.paths).html(renderPaths(node));
-
-            /**
-
-            addEvents();
-
-            if(!node) node = new Graffeine.model.Node();
-            $(data.selectors.fields.form).html(
-                Graffeine.util.objToForm(node.data, { type: { 
-                    data: graph.getNodeTypes(), 
-                    user: true, selected: node.type 
-                }})
-            );
-            ui.util.disableActionButtons();
-
-            **/
+            $(data.selectors.sections.properties)
+                .medea(node.data, { 
+                    id: "node-edit-form", 
+                    buttons: false,
+                    labelColumns: 3,
+                    inputColumns: 8,
+                    noForm: true
+                }) 
+                .one("submit.medea.form", function (e, objectData) { 
+                    e.preventDefault();
+                    if(objectData === undefined) {
+                        console.error("no form data found")
+                        console.error(arguments);
+                    }
+                    else {
+                        createOrUpdateNode(objectData);
+                    }
+                });
         });
 
         ui.util.event(data.selectors.content, "hide.bs.modal", function(e) { 
@@ -79,25 +71,22 @@ Graffeine.ui.nodeEdit = (function(G) {
             ui.state.setMenuActive();
         });
 
-        /// @todo: add node to ..
-
-        ui.util.event(data.selectors.buttons.save, 'click', function(e) { 
-            var nodeName = $(data.selectors.fields.nodeName).val();
-            var nodeType = $(data.selectors.fields.nodeTypeInput).val() !== '' ? $(data.selectors.fields.nodeTypeInput).val() : $(data.selectors.fields.nodeTypeSelect).find(":selected").text();
-            Graffeine.command.send('nodes:add', { type: nodeType, name: nodeName });
-            $(data.selectors.fields.nodeName).val('');
-            $(data.selectors.fields.nodeTypeInput).val('');
-            Graffeine.ui.nodeEdit.hide();
-            graph.addNodeType(nodeType);
+        ui.util.event(data.selectors.buttons.save, "click", function(e) { 
+            e.preventDefault();
+            $(data.selectors.sections.form).trigger("submit");
+            G.ui.nodeEdit.hide();
+            G.ui.state.unselectNode();
         });
 
-        // @todo: .. merge with change node ..
-
-        $("#node-edit-update").click(function(e) {
-            var newObj = Graffeine.util.formToObject('node-data');
-            var nodeId = graph.state.selectedNode.data.id;
-            Graffeine.command.send('node:update', { id: nodeId, data: newObj });
-        });
+        function createOrUpdateNode(nodeObject) { 
+            var nodeId = G.ui.state.nodeSelected ? G.ui.state.getSelectedNode().id : null;
+            if(nodeId!==null) { 
+                G.command.send("nodes:update", { id: nodeId, data: nodeObject });
+            }
+            else { 
+                G.command.send("nodes:add", { data: nodeObject });
+            }
+        }
 
     };
 
@@ -195,6 +184,7 @@ Graffeine.ui.nodeEdit = (function(G) {
             $(data.selectors.content).modal('hide');
         },
 
+        /**
         updateNodeTypes: function() { 
             var graph = G.graph;
             $(data.selectors.fields.nodeTypeSelect).empty();
@@ -202,6 +192,7 @@ Graffeine.ui.nodeEdit = (function(G) {
                 addUniqueSelectOption(data.selectors.fields.nodeTypeSelect, key, value);
             });
         }
+        **/
 
     };
 

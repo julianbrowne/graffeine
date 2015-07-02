@@ -1,6 +1,6 @@
 
 console.log = function() {};
-var http = require("../../lib/http");
+var http = require("../../lib/listener/http");
 
 describe('http', function() { 
 

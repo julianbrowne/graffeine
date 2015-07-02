@@ -68,7 +68,10 @@ Graffeine.ui.util = (function(G) {
 
     function updateFlash(category, title, message) { 
 
-        /** category must be one of: "success", "info", "warning" or "danger" **/
+        if(["success","info","warning","danger"].indexOf(category) === -1) { 
+            console.warn("util.updateFlash: unknown category %s, switching to info", category);
+            category = "info";
+        }
 
         var alertClass = "alert-" + (category||"info");
 
@@ -93,12 +96,9 @@ Graffeine.ui.util = (function(G) {
         if($("#flash").length === 0)
             util.warning("warning: no flash for server message");
 
-        $("#flash").html(container);
+        $("#flash").append(container);
         setTimeout(function() { 
-            $("#flash").fadeOut(5000, function() { 
-                $("#flash").empty();
-                $("#flash").show();
-            });
+            container.fadeOut(5000, function() { });
         }, 10000)
     };
 

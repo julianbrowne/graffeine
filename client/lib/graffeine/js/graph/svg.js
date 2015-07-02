@@ -93,6 +93,9 @@ Graffeine.svg = (function(G) {
                 ui.nodeInfo.hide();
                 ui.state.dragNode(d, this);
             })
+            .on("drag", function() { 
+                console.log("drag");
+            })
             .on("dragend", function(d) { 
                 // ignore right-click
                 if(d3.event.sourceEvent.button===2) return;
@@ -366,7 +369,8 @@ Graffeine.svg = (function(G) {
             .remove();
     };
 
-    function refresh() { 
+    function refresh(forceAfterRefresh) { 
+        if(typeof forceAfterRefresh === "undefined") { forceAfterRefresh = true; }
         var graph = G.graph;
         var ui = G.ui;
         var nodeCount = G.util.objectLength(graph.nodes());
@@ -380,7 +384,7 @@ Graffeine.svg = (function(G) {
         drawLabels();
         ui.state.nodesOnDeck(nodeCount);
         ui.graphStats.refresh();
-        if(nodeCount > 0) { setTimeout(forceStart,0); }
+        if(nodeCount > 0 && forceAfterRefresh) { setTimeout(forceStart,0); }
     };
 
     function init() { 
@@ -394,11 +398,13 @@ Graffeine.svg = (function(G) {
         ui.state.selectSourceNode(null);
         ui.state.selectTargetNode(null);
 
+        /**
         if(force!==null) { 
             console.log("clearing old force");
             forceStop();
             force = null;
         }
+        **/
 
         force = d3.layout.force();
         force.size([config.graphSettings.width, config.graphSettings.height]);
@@ -565,7 +571,8 @@ Graffeine.svg = (function(G) {
         refresh: refresh,
         endDraglet: endDraglet,
         forceStart: forceStart,
-        forceStop: forceStop
+        forceStop: forceStop,
+        drawNodes, drawNodes
     };
 
 }(Graffeine));

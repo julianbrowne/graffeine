@@ -1,17 +1,24 @@
 
-var util = require("util");
 var db = require('./neo4j');
 
 module.exports = (function() { 
 
     function add(nodeData, callback) { 
-        var cypher = util.format("CREATE (n %s %s) RETURN n", labels(nodeData), properties(nodeData));
-        db.query(cypher, callback, ["n"]);
+        var cypher = "CREATE (n {labels} {props}) RETURN n";
+        var params = { labels: labels(nodeData), props: properties(nodeData)};
+        db.query({query: cypher, params: params}, callback, ["n"]);
     };
 
     function remove(id, callback) { 
-        var cypher = util.format("MATCH n WHERE ID(n) = %s OPTIONAL MATCH n-[r]-() DELETE r, n", id);
-        db.query(cypher, callback);
+        var cypher = "MATCH n WHERE ID(n) = {id} OPTIONAL MATCH n-[r]-() DELETE r, n";
+        var params = { id: id };
+        db.query({query: cypher, params: params}, callback);
+    };
+
+    function update(id, properties, callback) { 
+        var cypher = "MATCH n WHERE ID(n) = {id} SET n = {props} RETURN n";
+        var params = { id: id, props: properties };
+        db.query({query: cypher, params: params}, callback, ["n"]);
     };
 
     function count(callback) { 
@@ -20,8 +27,9 @@ module.exports = (function() {
     };
 
     function find(properties, callback) { 
-        var cypher = util.format("MATCH (n %s) RETURN n", JSON.stringify(properties));
-        db.query(cypher, callback, ["n"]);
+        var cypher = "MATCH (n {props}) RETURN n";
+        var params = { props: properties };
+        db.query({query: cypher, params: params}, callback, ["n"]);
     };
 
     function orphans(callback) { 
@@ -43,6 +51,7 @@ module.exports = (function() {
     return { 
         add: add,
         remove: remove,
+        update: update,
         count: count,
         find: find,
         orphans: orphans

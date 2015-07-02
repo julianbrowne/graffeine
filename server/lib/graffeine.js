@@ -44,7 +44,7 @@ module.exports = (function() {
                     }
                     gutil.debug("event: registered callback %s for %s", func.name, event);
                     return function() { 
-                        gutil.log("event: received: %s: %s".blue, event, util.format.apply(this, arguments));
+                        gutil.log("< event: received: %s: %s".blue, event, util.format.apply(this, arguments));
                         func.apply(this, arguments);
                     };
                 }

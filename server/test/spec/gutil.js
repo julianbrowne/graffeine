@@ -26,9 +26,7 @@ describe('gutil', function() {
     });
 
     it("should get gists", function() { 
-        fsStub.readdir = function(dir, callback) { 
-            callback(null, ["a","b","c"]);
-        };
+        fsStub.readdirSync = function(dir) { return ["a","b","c"]; };
         var gists = gutil.getGists();
         expect(gists).toBeDefined();
         expect(gists).not.toBe(null);
@@ -51,6 +49,13 @@ describe('gutil', function() {
     it("should create timestamp", function() { 
         var ts = gutil.timestamp();
         expect(ts).toEqual(jasmine.stringMatching(match.timestamp()));
+    });
+
+    it("should supplant string templates", function() { 
+        var str = "my name is {name}, my age is {age}";
+        var obj = { name: "bob", age: 99 };
+        var output = gutil.supplant(str, obj);
+        expect(output).toEqual("my name is bob, my age is 99");
     });
 
     it("should log debug correctly", function() { 

@@ -29,8 +29,8 @@ module.exports = (function() {
         });
 
         this.send = function(event, payload) { 
-            gutil.log("sending %s", event);
-            gutil.log("payload %s", JSON.stringify(payload).substring(0,50));
+            gutil.log("> sending: %s", event);
+            gutil.log("> payload: %s", JSON.stringify(payload));
             payload.timestamp = gutil.timestamp();
             socket.emit(event, payload);
         };

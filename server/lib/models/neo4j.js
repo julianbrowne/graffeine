@@ -25,8 +25,15 @@ module.exports = (function() {
     }
 
     function query(cypher, callback, columns) { 
-        gutil.log("db.query: \"%s\"".gray, cypher.substring(0,100));
-        var timer = { command: cypher, start: new Date().getTime() };
+        if(cypher.query) { 
+            var q = cypher.query;
+            var logOutput = gutil.supplant(cypher.query, cypher.params);
+        }
+        else { 
+            var q = logOutput = cypher;
+        }
+        gutil.log("db.query: \"%s\"".gray, logOutput);
+        var timer = { command: q, start: new Date().getTime() };
         if(columns === undefined) { 
             db.cypher(cypher, result.booleanResult(callback, timer));
         }

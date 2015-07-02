@@ -109,11 +109,13 @@ ul.dropdown-menu li a {
     cursor: pointer;
 }
 
+/**
 input {
     margin: 2px;
     padding-left: 2px !important;
     padding-right: 2px !important;
 }
+**/
 
 .table>tbody>tr>td, .table>tbody>tr>th, .table>tfoot>tr>td, .table>tfoot>tr>th, .table>thead>tr>td, .table>thead>tr>th { 
     padding: 2px;

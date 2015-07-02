@@ -27,14 +27,20 @@ module.exports = (function() {
                     send("graph", "nodes", { nodes: n, count: n.length });
                     send("server", "timer", { data: timer } );
                     send("graph", "gists", { names: gutil.getGists() });
+                    if(n.length === 0) { 
+                        send("server", "info", {category: "info", title: "Query", message: "last query had 0 results"});
+                    }
                 });
             },
             nodes: function() { 
                 graph.nodes(function(result, timer) { 
                     var types = result.map(function(r) { return r.type });
                     var filtered = types.sort().filter(function(el,i,a) { return (i==a.indexOf(el)); });
-                    send("graph", "nodes", { data: filtered } );
+                    send("graph", "nodes", { nodes: filtered, count: n.length } );
                     send("server", "timer", { data: timer } );
+                    if(filtered.length === 0) { 
+                        send("server", "info", {category: "info", title: "Query", message: "last query had 0 results"});
+                    }
                 });
             },
             paths: function() { 
@@ -88,10 +94,17 @@ module.exports = (function() {
                 });
             },
             update: function(data) { 
-                nodes.update(data.id, data.data, function(result, timer) { 
-                    send("nodes","update", { id: data.id, data: result } );
-                    send("server","timer", { data: timer } );
-                });
+                if(!("id" in data)||!("data" in data)) { 
+                    gutil.error("nodes:update got bad data: %s", JSON.stringify(data));
+                }
+                else { 
+                    nodes.update(data.id, data.data, function(result, timer) { 
+                        //[{"n":{"_id":405,"labels":["Sparkling"],"properties":{"name":"Champagnez"}}}]
+                        gutil.log("> nodes:update: %s", JSON.stringify(result));
+                        send("nodes","update", { id: data.id, properties: result[0] } );
+                        send("server","timer", { data: timer } );
+                    });
+                }
             },
             find: function(data) { 
                 nodes.find(data.name, data.type, function(nodes, timer) { 
@@ -119,8 +132,8 @@ module.exports = (function() {
                         send("paths","add", { source: data.source, target: data.target, name: data.name } );
                         send("server","timer", { data: timer } );
                     }
-                    else {
-                         graffeine.log("FAIL: node-join -> " + util.inspect(data));
+                    else { 
+                         gutil.log("FAIL: node-join -> " + util.inspect(data));
                     }
                 });
             },

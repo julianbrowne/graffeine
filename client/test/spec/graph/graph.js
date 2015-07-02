@@ -32,6 +32,19 @@ describe("Graph", function() {
         expect(node.getName()).toEqual("a");
     });
 
+    it("should update a node", function() { 
+        Graffeine.init();
+        Graffeine.graph.addNode({ id: 1, name: "a" });
+        Graffeine.graph.addNode({ id: 2, name: "b" });
+        Graffeine.graph.addNode({ id: 3, name: "c" });
+        Graffeine.graph.addNode({ id: 4, name: "d" });
+        var node = Graffeine.graph.getNode(1);
+        expect(node.getName()).toEqual("a");
+        Graffeine.graph.updateNode(1, { name: "a2" });
+        node = Graffeine.graph.getNode(1);
+        expect(node.getName()).toEqual("a2");        
+    });
+
     it("should know if a node exists", function() { 
         Graffeine.init();
         var nodeData = { id: 99, name: "a" };

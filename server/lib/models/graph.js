@@ -1,8 +1,9 @@
 
 var util = require("util");
-var fs = require('fs');
+var fs = require("fs");
 
-var db = require('./neo4j');
+var db = require("./neo4j");
+var gutil = require("../gutil");
 
 module.exports = (function() { 
 
@@ -18,19 +19,9 @@ module.exports = (function() {
 
     function load(name, callback) { 
         remove(function() { 
-            // @todo: move to gutil.loadFile
-            var cypherFilePath = "data/"+name+".cypher";
-            fs.exists(cypherFilePath, function(exists) { 
-                if(exists) { 
-                    fs.readFile(cypherFilePath, "utf-8", function (err, cypher) { 
-                        if (err) throw err;
-                        db.query(cypher, callback);
-                    });
-                }
-                else { 
-                    console.warn("** no such file: %s", cypherFilePath);
-                }
-            });
+            var fileName = util.format("data/%s.cypher", name);
+            var cypher = gutil.loadRelativeFile(fileName);
+            db.query(cypher, callback);
         });
     };
 

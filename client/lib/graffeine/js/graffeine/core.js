@@ -9,7 +9,6 @@ Graffeine = (function() {
     };
 
     function init() { 
-        console.log("graffeine: init");
         Graffeine.graph.init();
         connect();
     };
@@ -19,7 +18,7 @@ Graffeine = (function() {
     };
 
     function connect() { 
-        console.log("graffeine: connecting to web socket");
+        Graffeine.util.log("core.connect: connecting to web socket");
         if(typeof io === "undefined")
             throw "No web socket";
         else { 

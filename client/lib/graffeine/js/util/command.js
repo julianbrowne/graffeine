@@ -14,12 +14,12 @@ Graffeine.command = (function(G) {
             console.warn("recv: \"%s\" callback already registered", command);
             return;
         }
-        console.log("recv: registering \"%s\" callback", command);
+        G.util.debug("util.command.recv: register: \"%s\" callback", command);
         var visualUpdate = (visualUpdate===undefined) ? false : true;
         G.socket().on(command, function(data) { 
             console.log("recv: recorded %s event", command);
             // @todo find a way to make this cleaner
-            // if(visualUpdate) send('graph:stats', {});
+            // if(visualUpdate) send("graph:stats", {});
             callback(data);
         });
     };
@@ -29,7 +29,7 @@ Graffeine.command = (function(G) {
             console.warn("connectNodes: can't join nodes %s to %s with %s", sourceNode, targetNode, name);
             return;
         }
-        send('paths:add', { source: sourceNode.id, target: targetNode.id, name: name });
+        send("paths:add", { source: sourceNode.id, target: targetNode.id, name: name });
     };
 
     function gatherDBStats() { 
@@ -40,13 +40,29 @@ Graffeine.command = (function(G) {
         send("graph:load", {name: name});
     };
 
+    function graphPing() { 
+        send("graph:ping", {});
+    };
+
     function registerReceivers() { 
 
         var ui = G.ui;
         var util = G.util;
         var graph = G.graph;
 
-        console.log("command: registerReceivers");
+        graphPing();
+
+        /**
+         *  server messages (errors, alerts, warnings)
+        **/
+
+        recv("server:info", function (data) { 
+            ui.util.updateFlash(data.category, data.title, data.message);
+        });
+
+        /**
+         *  server timers for command latency
+        **/
 
         recv("server:timer", function (timer) { 
             var message = "last query \"" + timer.data.command + "\" took " + timer.data.time + " ms";
@@ -54,48 +70,35 @@ Graffeine.command = (function(G) {
         });
 
         /**
-         *  List the graph databases the server can build
+         *  list graph databases the server can build
         **/
 
         recv("graph:gists", function (data) { 
             Graffeine.set("gists", data.names);
         });
 
+        /**
+         *  incoming graph data
+        **/
+
         recv("graph:nodes", function (data) { 
             graph.addGraphData(data);
             graph.refresh();
-        });
-
-        /**
-         *  Join nodes
-        **/
-
-        recv("paths:add", function (data) { 
-            graph.addPath(data.source, data.target, data.name);
-            graph.refresh();
-        }, true);
-
-        // stats - node count
-
-        recv('nodes:count', function (data) { 
-            Graffeine.ui.graphStats.update('nodeCount', data.count);
-        });
-
-        /**
-         *  Path (Relationship) Commands
-        **/
-
-        recv('paths:count', function (data) { 
-            Graffeine.ui.graphStats.update('pathCount', data.count);
         });
 
         recv("graph:paths", function (data) { 
             Graffeine.ui.graphStats.update("dbPathTypes", data.data);
         }, true);
 
+        // stats - node count
+
+        recv("nodes:count", function (data) { 
+            Graffeine.ui.graphStats.update("nodeCount", data.count);
+        });
+
         // delete existing node
 
-        recv('nodes:remove', function (data) { 
+        recv("nodes:remove", function (data) { 
             graph.removeNode(data.id);
             graph.refresh();
         }, true);
@@ -121,7 +124,16 @@ Graffeine.command = (function(G) {
         }, false);
 
         /**
-         *  Delete path
+         *  add new path between nodes
+        **/
+
+        recv("paths:add", function (data) { 
+            graph.addPath(data.source, data.target, data.name);
+            graph.refresh();
+        }, true);
+
+        /**
+         *  remove path
         **/
 
         recv("paths:remove", function (data) { 
@@ -130,11 +142,11 @@ Graffeine.command = (function(G) {
         }, true);
 
         /**
-         *  handle server-side messages (errors, alerts, warnings)
+         *  incoming count of number of relationships in the db
         **/
 
-        recv('server:info', function (data) { 
-            ui.util.updateFlash(data.category, data.title, data.message);
+        recv("paths:count", function (data) { 
+            Graffeine.ui.graphStats.update("pathCount", data.count);
         });
 
     }

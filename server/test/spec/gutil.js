@@ -51,11 +51,27 @@ describe('gutil', function() {
         expect(ts).toEqual(jasmine.stringMatching(match.timestamp()));
     });
 
+    it("should discern types", function() { 
+        expect(gutil.getType("abc")).toEqual("string");
+        expect(gutil.getType(123)).toEqual("number");
+        expect(gutil.getType({})).toEqual("object");
+        expect(gutil.getType([])).toEqual("array");
+        expect(gutil.getType(false)).toEqual("boolean");
+        expect(gutil.getType(function() {})).toEqual("function");
+    });
+
     it("should supplant string templates", function() { 
         var str = "my name is {name}, my age is {age}";
         var obj = { name: "bob", age: 99 };
         var output = gutil.supplant(str, obj);
         expect(output).toEqual("my name is bob, my age is 99");
+    });
+
+    it("should supplant string templates with deep objects", function() { 
+        var str = "my name is {name}, my age is {age}, my address is {address}";
+        var obj = { name: "bob", age: 99, address: { number: 52, road: "Festive Road" } };
+        var output = gutil.supplant(str, obj);
+        expect(output).toEqual("my name is bob, my age is 99, my address is { number: 52, road: 'Festive Road' }");
     });
 
     it("should log debug correctly", function() { 

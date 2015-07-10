@@ -68,6 +68,23 @@ Graffeine.svg = (function(G) {
         data.draglet = svg.append("svg:g").attr("class", "draglets").selectAll("circle");
     };
 
+    function makeForce() { 
+
+        if(force!==null) return;
+
+        force = d3.layout.force()
+            .size([config.graphSettings.width, config.graphSettings.height])
+            .linkDistance(config.graphSettings.linkDistance)
+            .charge(config.graphSettings.charge)
+            //.on('start', function() { })
+            .on('end', function() { 
+                if(G.ui.state.forceActive()) { 
+                    G.ui.state.unsetForceActive(); 
+                }
+            })
+            .on("tick", forceTick);
+    }
+
     function drawNodes() { 
 
         var ui = G.ui;
@@ -87,12 +104,14 @@ Graffeine.svg = (function(G) {
         var nodeDragger = force.drag()
             .on("dragstart", function(d) { 
                 // ignore right-click
-                if(d3.event.sourceEvent.button===2) return;
+                //if(d3.event.sourceEvent.button===2) return;
                 console.log("node: dragstart");
-                d3.event.sourceEvent.stopPropagation();
-                ui.nodeInfo.hide();
-                ui.state.dragNode(d, this);
-            })
+                //d3.event.sourceEvent.stopPropagation();
+                d3.select(this).classed("fixed", d.fixed = true);
+                //ui.nodeInfo.hide();
+                //ui.state.dragNode(d, this);
+            });
+/**
             .on("drag", function() { 
                 console.log("drag");
             })
@@ -101,6 +120,7 @@ Graffeine.svg = (function(G) {
                 if(d3.event.sourceEvent.button===2) return;
                 console.log("node: dragend");
                 // check for no drag (i.e. click)
+                
                 var originalPosition = ui.state.getDraggedOrigin();
                 if(originalPosition.x!==d.x&&originalPosition.y!==d.y) { 
                     console.log("node: dragend: fixing node position");
@@ -109,8 +129,10 @@ Graffeine.svg = (function(G) {
                 else {
                     console.log("node: dragend: ignored (click)");
                 }
+                
                 ui.state.undragNode();
             });
+**/
 
         /**
          *  Bring on the nodes
@@ -161,13 +183,7 @@ Graffeine.svg = (function(G) {
                 })
                 .on("dblclick", function(d) { 
                     console.log("node: double-click");
-                    var ui = G.ui;
-                    if(ui.state.menuActive()) { 
-                        console.log("node: double-click: aborted (menu active)");
-                        return;
-                    }
                     d3.select(this).classed("fixed", d.fixed = false);
-                    //G.command.graphFetch({ start: d.id });
                 })
                 .on("mouseover", function(d) { 
                     console.log("node: mouseover");
@@ -398,21 +414,7 @@ Graffeine.svg = (function(G) {
         ui.state.selectSourceNode(null);
         ui.state.selectTargetNode(null);
 
-        /**
-        if(force!==null) { 
-            console.log("clearing old force");
-            forceStop();
-            force = null;
-        }
-        **/
-
-        force = d3.layout.force();
-        force.size([config.graphSettings.width, config.graphSettings.height]);
-        force.linkDistance(config.graphSettings.linkDistance);
-        force.charge(config.graphSettings.charge);
-        force.on('start', function() { }); //if(!G.ui.state.forceActive()) G.ui.state.setForceActive(); })
-        force.on('end', function() { if(G.ui.state.forceActive()) G.ui.state.unsetForceActive(); });
-        force.on("tick", forceTick);
+        makeForce();
 
         svg = d3
             .select(G.config.graphTargetDiv)
@@ -503,8 +505,6 @@ Graffeine.svg = (function(G) {
         var height = G.config.graphSettings.height;
         var width = G.config.graphSettings.width;
         var buffer = 3; // pixels away from the edge
-
-        if(!ui.state.forceActive()) return;
 
         data.path
             .attr("d", function(d) { 

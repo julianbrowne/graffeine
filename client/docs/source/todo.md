@@ -1,16 +1,15 @@
 
 ## TODO
 
-*   BUG: Drag feature doesn't work
-*   Walk through all console.log statements and remove or refactor to util.log
+*   Walk through all c*nsole.log statements and remove or refactor to util.log
 *   When adding a new node to a screen where the maximum nodes is already displayed need a better way of handling the new node after it's added
 *   all IIFE to refer to G rather than Graffeine
 *   Documentation update
+*   Add schema validator to all server commands, receivers should error and log if they don't get correct data elements
 *   Move documentation to WIKI
 *   Clean up all dom element selectors, matching .html to .js references and making consistent use of "#blah" and "blah" using extra util functions where necessary
 *   Server side - change all references to "data" to "properties" and make sure client side matches in commands
-*   Server side - command receivers should error and log if they don't get correct data elements
-*   Debug output of queries to use supplant to render accurate query string
+*   Commands - use payload to refer to message data and data for keys within the payload
 
 ## DONE
 
@@ -18,8 +17,10 @@
 *   if a node name field is an array then .join(' ') the elements in the visualisation
 *   get graph metadata *after* connect, not before
 *   on node menu replace the -> crappy arrow with a nice multi-glyph version
+*   BUG: Drag feature doesn't work
 *   smooth force layout on start
 *   Remove all css/styling from server side 
+*   Client side ping to see if neo4j is up
 *   Add highlight.js and ability to view node source
 *   No labels alone (except maybe as stats)
 *   SVG on click event should remove any active popover
@@ -36,6 +37,7 @@
 *   Where a query returns 0 results the client flash should show some kind of useful message
 *   Add support for editing labels
 *   When neo4j is connected change status of graph.state.connected
+*   Debug output of queries to use supplant to render accurate query string
 
 ## NEXT VERSION
 

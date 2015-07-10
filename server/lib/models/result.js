@@ -19,12 +19,12 @@ module.exports = (function() {
 **/
 
     function mapCypherAggregateResult(results, key) { 
-        gutil.log("aggregate result: %s", JSON.stringify(results));
+        //gutil.log("aggregate result: %s", JSON.stringify(results));
         return results[0][key];
     }
 
     function mapCypherQueryResult(results, columnsWanted) { 
-        gutil.log("mapCypherQueryResult: raw: %s", JSON.stringify(results));
+        //gutil.log("mapCypherQueryResult: raw: %s", JSON.stringify(results));
         var items = [];
         columnsWanted = (columnsWanted === undefined) ? [] : columnsWanted;
         results.forEach(function(resultObj) {
@@ -56,7 +56,7 @@ module.exports = (function() {
 
             });
         });
-        gutil.log("mapCypherQueryResult: items: %s", JSON.stringify(items));
+        //gutil.log("mapCypherQueryResult: items: %s", JSON.stringify(items));
         return items.map(GNode);
     }
 
@@ -94,16 +94,43 @@ module.exports = (function() {
         gutil.error(error);
         if(error.hasOwnProperty("code")) { 
             if(error.code === "ECONNREFUSED") { 
-                var message = "Can't connect to Neo4J. Is it running?";
+                bus.publish({ 
+                    channel: "server", 
+                    topic: "info", 
+                    data: { 
+                        category: "warning", 
+                        title: "Neo4J Error", 
+                        message: "Can't connect to Neo4J. Is it running?" 
+                    }
+                });
+            }
+            else { 
+                bus.publish({ 
+                    channel: "server", 
+                    topic: "info", 
+                    data: { 
+                        category: "warning", 
+                        title: "Neo4J Error", 
+                        message: "Error: " + error.code
+                    }
+                });
             }
         }
         else { 
-
+            bus.publish({ 
+                channel: "server", 
+                topic: "info", 
+                data: { 
+                    category: "warning", 
+                    title: "Neo4J Error", 
+                    message: JSON.stringify(error) 
+                }
+            });
         }
     }
 
     return { 
-       // mapIndexQueryResult: mapIndexQueryResult,
+        // mapIndexQueryResult: mapIndexQueryResult,
         mapCypherQueryResult: mapCypherQueryResult,
         processQueryResult: processQueryResult,
         booleanResult: booleanResult,

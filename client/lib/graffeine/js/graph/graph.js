@@ -23,7 +23,6 @@ Graffeine.graph = (function(G) {
     function checkPaths() { 
         var nodes = data.nodes;
         data.paths = $.grep(data.paths, function(path) { 
-            console.log(path);
             return (nodes[path.source.id]!==undefined && nodes[path.target.id]!==undefined)
         });
     };
@@ -36,7 +35,6 @@ Graffeine.graph = (function(G) {
     function resetPaths() { 
         for(var i=0; i<data.paths.length; i++) { 
             var path = data.paths[i];
-            console.log("resetPaths: %s", JSON.stringify(path));
             path.source = getNode(path.source.id);
             path.target = getNode(path.target.id);
         }
@@ -242,6 +240,7 @@ Graffeine.graph = (function(G) {
     };
 
     function init() { 
+        G.util.log("graph.init")
         clearNodeTypes();
         clearPathTypes();
         clearNodes();

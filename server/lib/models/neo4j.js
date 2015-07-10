@@ -25,17 +25,22 @@ module.exports = (function() {
     }
 
     function query(cypher, callback, columns) { 
+
         if(cypher.query) { 
-            var q = cypher.query;
-            var logOutput = gutil.supplant(cypher.query, cypher.params);
+            var expandedCypher = gutil.supplant(cypher.query, cypher.params);
         }
         else { 
-            var q = logOutput = cypher;
+            var expandedCypher = cypher;
         }
-        gutil.log("db.query: \"%s\"".gray, logOutput);
-        var timer = { command: q, start: new Date().getTime() };
+
+        gutil.log("db.query: cypher - \"%s\"".gray, expandedCypher);
+
+        var timer = { command: expandedCypher, start: new Date().getTime() };
+
+        gutil.log("db.query: executing - %s", util.inspect(expandedCypher));
+
         if(columns === undefined) { 
-            db.cypher(cypher, result.booleanResult(callback, timer));
+            db.cypher(expandedCypher, result.booleanResult(callback, timer));
         }
         else { 
             if(typeof(columns)=="string") { 
@@ -44,8 +49,9 @@ module.exports = (function() {
             else { // columns is array therefore it's a regular query
                 var proc = result.mapCypherQueryResult;
             }
-            db.cypher(cypher, result.processQueryResult(callback, proc, columns, timer));
+            db.cypher(expandedCypher, result.processQueryResult(callback, proc, columns, timer));
         }
+
     };
 
     return { 

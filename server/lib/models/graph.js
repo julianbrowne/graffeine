@@ -12,6 +12,11 @@ module.exports = (function() {
         db.query(cypher, callback, [ "n", "labels", "r" ]);
     };
 
+    function ping(callback) { 
+        var cypher = "MATCH n RETURN count(n)";
+        db.query(cypher, callback, "count(n)");
+    };
+
     function remove(callback) { 
         var cypher = "MATCH (n) OPTIONAL MATCH (n)-[r]-() DELETE n,r";
         db.query(cypher, callback);
@@ -36,6 +41,7 @@ module.exports = (function() {
     }
 
     return { 
+        ping: ping,
         nodes: nodes,
         paths: paths,
         all: all,

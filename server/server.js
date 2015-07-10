@@ -12,6 +12,7 @@ graffeine.on("client-connected", function (client) {
 
     var event = graffeine.eventManager(client);
 
+    event.on("graph:ping", graffeine.receiver.commands.graph.ping);
     event.on("graph:init", graffeine.receiver.commands.graph.init);
     event.on("graph:nodes", graffeine.receiver.commands.graph.nodes);
     event.on("graph:paths", graffeine.receiver.commands.graph.paths);

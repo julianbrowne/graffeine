@@ -45,13 +45,13 @@ Graffeine.ui.util = (function(G) {
             console.error("ui.util.event: No DOM elements found matching " + selector);
             return;
         };
-        console.log("%s: registered callback for %s", selector, event);
+        G.util.debug("%s: registered callback for %s", selector, event);
         $(selector).on(event, function(e, data) { 
             if($(selector).hasClass("disabled")) { 
                 console.warn("%s: %s ignored - disabled", selector, event);
                 return;
             }
-            console.log("%s: recorded event %s", selector, event);
+            G.util.debug("%s: recorded event %s", selector, event);
             callback(e, data);
         });
     };
@@ -67,6 +67,9 @@ Graffeine.ui.util = (function(G) {
     };
 
     function updateFlash(category, title, message) { 
+
+        var fadeAfterMs = 20000;
+        var fadeDuration = 8000;
 
         if(["success","info","warning","danger"].indexOf(category) === -1) { 
             console.warn("util.updateFlash: unknown category %s, switching to info", category);
@@ -98,8 +101,8 @@ Graffeine.ui.util = (function(G) {
 
         $("#flash").append(container);
         setTimeout(function() { 
-            container.fadeOut(5000, function() { });
-        }, 10000)
+            container.fadeOut(fadeDuration, function() { });
+        }, fadeAfterMs)
     };
 
     function dynamicSelect(id, items) { 
@@ -124,7 +127,7 @@ Graffeine.ui.util = (function(G) {
                 return;
             }
             $(target).load(url, function(response, status, xhr) { 
-                console.log("loaded: %s: [%s]", url, status);
+                G.util.debug("ui.util.loadPartial: %s", url);
                 if (status==="error") { 
                     console.error("ui.util.loadPartial: error %s: %s", xhr.status, xhr.statusText);
                 }
@@ -225,7 +228,7 @@ Graffeine.ui.util = (function(G) {
                 $(selector).on("hide.bs.modal", function() { 
                     ui.state.unsetMenuActive();
                 });
-                console.log("ui.util.modal: set modal for %s", selector);
+                G.util.debug("ui.util.modal: set modal for %s", selector);
                 ["show.bs.modal", "shown.bs.modal", "hidden.bs.modal", "hide.bs.modal", "loaded.bs.modal"]
                     .forEach(function(event) { 
                         $(selector).on(event, function(e) { 

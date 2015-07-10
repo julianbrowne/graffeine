@@ -15,10 +15,23 @@ module.exports = (function() {
         db.query({query: cypher, params: params}, callback);
     };
 
-    function update(id, properties, callback) { 
-        var cypher = "MATCH n WHERE ID(n) = {id} SET n = {props} RETURN n";
+    function update(id, properties, labels, callback) { 
+
+        var properties = properties || {};
+        var labels = labels || [];
+
+        if(labels.length > 0) { 
+            var labelsCypher = "";
+            labels.forEach(function(l) { labelsCypher += ":" + l; });
+            var cypher = "MATCH n WHERE ID(n) = {id} SET n " + labelsCypher + " SET n = {props} RETURN n";
+        }
+        else {
+            var cypher = "MATCH n WHERE ID(n) = {id} SET n = {props} RETURN n";
+        }
         var params = { id: id, props: properties };
+
         db.query({query: cypher, params: params}, callback, ["n"]);
+
     };
 
     function count(callback) { 

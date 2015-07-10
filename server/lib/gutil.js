@@ -1,30 +1,46 @@
 
-var fs = require('fs');
-var util = require('util');
-var colors = require('colors');
-var path = require('path');
+var fs = require("fs");
+var util = require("util");
+var path = require("path");
 
-var config = require('../config/server.json');
+var config = require("../config/server.json");
 
 module.exports = (function() { 
 
+    "use strict";
+
     var appRoot = path.dirname(require.main.filename);
 
-    function gprint(type, message) { 
-        console.log('%s: %s - %s', timestamp(), type, message);
+    function format(int, zeros) { 
+        var template = "00000"; 
+        return (template + int).slice(0 - zeros);
     }
 
-    function log(message) { 
+    function timestamp() { 
+        var now = new Date();
+        return util.format("%s:%s:%s.%s", 
+            format(now.getHours(), 2), 
+            format(now.getMinutes(), 2), 
+            format(now.getSeconds(), 2), 
+            format(now.getMilliseconds(), 3)
+        );
+    }
+
+    function gprint(type, message) { 
+        console.log("%s: %s - %s", timestamp(), type, message);
+    }
+
+    function log() { 
         var message = util.format.apply(this, arguments);
         gprint("INF", message);
     }
 
-    function error(message) { 
+    function error() { 
         var message = util.format.apply(this, arguments);
         gprint("ERR", message.red);
     }
 
-    function debug(message) { 
+    function debug() { 
         if(!config.debug) { 
             return;
         }
@@ -33,29 +49,38 @@ module.exports = (function() {
     }
 
     /**
-     * Doug Crockford's useful string template hydrator
+     * Doug Crockford's useful type determinator
+    **/
+
+    function getType(value) { 
+        var s = typeof value;
+        if (s === "object") { 
+            if (value) { 
+                if (Object.prototype.toString.call(value) === "[object Array]") { 
+                    s = 'array';
+                }
+            } else { 
+                s = 'null';
+            }
+        }
+        return s;
+    }
+
+    /**
+     * Doug Crockford's useful string template hydrator (modified)
     **/
 
     function supplant(s, o) { 
         return s.replace(/{([^{}]*)}/g, function (a, b) { 
             var r = o[b];
-            return typeof r === 'string' || typeof r === 'number' ? r : a;
+            if(getType(r) === "string") return r;
+            if(getType(r) === "number") return r;
+            if(getType(r) === "object") return util.inspect(r);
+            if(getType(r) === "array") return r.join(",");
+            if(getType(r) === "boolean") return r.toString();
+            if(getType(r) === "function") return "function";
+            return a;
         });
-    }
-
-    function timestamp() { 
-        var now = new Date();
-        return util.format("%s:%s:%s.%s", 
-            format(now.getHours(),2), 
-            format(now.getMinutes(),2), 
-            format(now.getSeconds(),2), 
-            format(now.getMilliseconds(),3)
-        );
-    }
-
-    function format(int, zeros) { 
-        var template = "00000"; 
-        return (template+int).slice(0-zeros);
     }
 
     function die() { 
@@ -96,6 +121,7 @@ module.exports = (function() {
         timestamp: timestamp,
         die: die,
         getGists: getGists,
+        getType: getType,
         supplant: supplant,
         loadRelativeFile: loadRelativeFile
     };

@@ -44,17 +44,18 @@ Graffeine.ui.nodeEdit = (function(G) {
 
         ui.util.event(data.selectors.content, "show.bs.modal", function(e) { 
             var node = ui.state.nodeSelected() ? ui.state.getSelectedNode() : new G.model.Node({})
-            $(data.selectors.sections.labels).html(renderLabels(node));
             $(data.selectors.sections.paths).html(renderPaths(node));
             $(data.selectors.sections.properties)
-                .medea(node.data, { 
+                .medea({ properties: node.data, labels: node.labels }, { 
                     id: "node-edit-form", 
                     buttons: false,
-                    labelColumns: 3,
+                    labelColumns: 2,
                     inputColumns: 8,
                     noForm: true
                 }) 
-                .one("submit.medea.form", function (e, objectData) { 
+                .on("medea.submit", function (e, objectData) { 
+                    $(data.selectors.sections.properties).off("medea.submit");
+                    console.log("submitting node edit form");
                     e.preventDefault();
                     if(objectData === undefined) {
                         console.error("no form data found")
@@ -67,13 +68,16 @@ Graffeine.ui.nodeEdit = (function(G) {
         });
 
         ui.util.event(data.selectors.content, "hide.bs.modal", function(e) { 
+            $(data.selectors.sections.labels).empty();
+            $(data.selectors.sections.paths).empty();
+            $(data.selectors.sections.properties).empty();
             ui.util.enableActionButtons();
-            ui.state.setMenuActive();
+            ui.state.unsetMenuActive();
         });
 
         ui.util.event(data.selectors.buttons.save, "click", function(e) { 
             e.preventDefault();
-            $(data.selectors.sections.form).trigger("submit");
+            $(data.selectors.sections.properties).trigger("submit");
             G.ui.nodeEdit.hide();
             G.ui.state.unselectNode();
         });
@@ -101,39 +105,6 @@ Graffeine.ui.nodeEdit = (function(G) {
             var dp = e.target.attributes["data-path"].value;
             console.log(JSON.parse(decodeURI(dp)));
         });
-    };
-
-    function renderLabels(node) { 
-        var container = (node.labels.length===0) ? $("<span>no labels</span>") : $("<table></table>");
-        container.attr("class", "table");
-        node.labels.forEach(function(label) { 
-            var row = $("<tr></tr>");
-            var c1  = $("<td></td>");
-            var spn = $("<span></span>")
-                .addClass("node-menu-label-name");
-            var input = $("<input>")
-                .addClass("col-sm-8")
-                .attr("type", "text")
-                .attr("name", label)
-                .attr("value", label);
-            spn.append(input);
-            c1.append(spn).appendTo(row);
-            var actionTD = $('<td></td>')
-                .addClass("text-right");
-            var btn = $('<button/>', { 
-                // click: function(e) { graph.handler.deleteLabelButtonClick(node.id, label); } 
-            });
-            btn.prop("type", "button");
-            btn.addClass("btn btn-danger btn-xs");
-            var btnSpan = $('<span/></span>')
-                .addClass("glyphicon glyphicon-trash")
-                .attr("aria-label", "delete")
-                .attr("aria-hidden", "true");
-            btn.append(btnSpan);
-            actionTD.append(btn).appendTo(row);
-            container.append(row);
-        });
-        return container;
     };
 
     function renderPaths(node) { 

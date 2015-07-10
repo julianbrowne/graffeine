@@ -1,7 +1,6 @@
 
 var util = require("util");
 var events = require("events");
-var colors = require("colors");
 
 var gutil = require("./gutil");
 var config = require("../config/server.json");
@@ -13,13 +12,9 @@ module.exports = (function() {
 
     "use strict";
 
-    util.inherits(Graffeine, events.EventEmitter);
-
-    return new Graffeine;
-
     function Graffeine() { 
 
-        var graffeine=this;
+        var graffeine = this;
 
         gutil.log("Starting WS server on " + config.http.port);
         //this.socket = sio.listen(http.listener, { log: false });
@@ -33,7 +28,7 @@ module.exports = (function() {
         });
 
         this.eventManager = function(connection) { 
-            if(connection === undefined || connection ===  null) { 
+            if(connection === undefined || connection === null) { 
                 gutil.die("invalid client connection passed to event manager");
             }
             return new function() { 
@@ -44,7 +39,7 @@ module.exports = (function() {
                     }
                     gutil.debug("event: registered callback %s for %s", func.name, event);
                     return function() { 
-                        gutil.log("< event: received: %s: %s".blue, event, util.format.apply(this, arguments));
+                        gutil.log("< event: '%s': %s".blue, event, JSON.stringify(arguments[0]));
                         func.apply(this, arguments);
                     };
                 }
@@ -52,7 +47,11 @@ module.exports = (function() {
                     this.connection.on(event, run(event, func));
                 };
             };
-        }
+        };
     }
+
+    util.inherits(Graffeine, events.EventEmitter);
+
+    return new Graffeine();
 
 }());

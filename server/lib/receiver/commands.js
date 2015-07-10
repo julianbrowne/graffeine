@@ -1,5 +1,6 @@
 
 var bus = require("postal");
+var schema = require("js-schema");
 
 var gutil = require("../gutil");
 var graph = require("../models/graph");
@@ -21,6 +22,13 @@ module.exports = (function() {
             }
         },
         graph: { 
+
+            ping: function() { 
+                graph.ping(function(nodes) { 
+                    send("server", "info", {category: "info", title: "Ping", message: "Neo4J is alive"});
+                });
+            },
+
             init: function() { 
                 graph.all(function(n, timer) { 
                     gutil.log(gutil.getGists());
@@ -93,19 +101,30 @@ module.exports = (function() {
                     send("server","timer", { data: timer } );
                 });
             },
-            update: function(data) { 
-                if(!("id" in data)||!("data" in data)) { 
-                    gutil.error("nodes:update got bad data: %s", JSON.stringify(data));
+
+            update: function(payload) { 
+                var validSchema = schema({ id: Number, data: { "?properties": Object, "?labels": Array } });
+                if(!validSchema(payload)) { 
+                    gutil.error("nodes:update - got bad data: %s", JSON.stringify(payload));
+                    gutil.error("nodes:update - %s", JSON.stringify(validSchema.errors(payload)));
                 }
                 else { 
-                    nodes.update(data.id, data.data, function(result, timer) { 
-                        //[{"n":{"_id":405,"labels":["Sparkling"],"properties":{"name":"Champagnez"}}}]
-                        gutil.log("> nodes:update: %s", JSON.stringify(result));
-                        send("nodes","update", { id: data.id, properties: result[0] } );
-                        send("server","timer", { data: timer } );
+                    nodes.update(payload.id, payload.data.properties, payload.data.labels, function(resultList, timer) { 
+                        var updatedNode = resultList[0];
+                        var validResultSchema = schema({ data: Object, id: Number, labels: Array, node: String });
+                        if(!validResultSchema(updatedNode)) { 
+                            gutil.error("nodes:update - unexpected result: %s", JSON.stringify(updatedNode));
+                            gutil.error("nodes:update - %s", JSON.stringify(validResultSchema.errors(updatedNode)));
+                        }
+                        else { 
+                            gutil.log("nodes:update - result: %s", JSON.stringify(updatedNode));
+                            send("nodes","update", { id: updatedNode.id, properties: updatedNode } );
+                            send("server","timer", { data: timer } );
+                        }
                     });
                 }
             },
+
             find: function(data) { 
                 nodes.find(data.name, data.type, function(nodes, timer) { 
                     if(nodes.length > 0) { 
@@ -125,18 +144,27 @@ module.exports = (function() {
                 });
             },
         },
+
         paths: { 
-            add: function(data) { 
-                paths.add(data.source, data.target, data.name, function(success, timer) { 
-                    if(success) { 
-                        send("paths","add", { source: data.source, target: data.target, name: data.name } );
-                        send("server","timer", { data: timer } );
-                    }
-                    else { 
-                         gutil.log("FAIL: node-join -> " + util.inspect(data));
-                    }
-                });
+            add: function(payload) { 
+                var validSchema = schema({ source: Number, target: Number, name: String });
+                if(!validSchema(payload)) { 
+                    gutil.error("paths:add - got bad data: %s", JSON.stringify(payload));
+                    gutil.error("paths:add - %s", JSON.stringify(validSchema.errors(payload)));                    
+                }
+                else { 
+                    paths.add(payload.source, payload.target, payload.name, function(success, timer) { 
+                        if(success) { 
+                            send("paths","add", { source: payload.source, target: payload.target, name: payload.name } );
+                            send("server","timer", { data: timer } );
+                        }
+                        else { 
+                             gutil.log("paths:add - error: " + util.inspect(payload));
+                        }
+                    });
+                }
             },
+
             remove: function(data) { 
                 paths.remove(data.source, data.target, data.name, function(success, timer) { 
                     if(success) { 

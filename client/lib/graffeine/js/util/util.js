@@ -168,13 +168,21 @@ Graffeine.util = (function(G) {
         return ul;
     };
 
+    function log() { 
+        var args = Array.prototype.slice.call(arguments);
+        var text = args[0];
+        var opts = args.splice(1);
+        var output = sprintf(text, opts);
+        console.log("graffeine: %c" + output, "color: #0A245B");
+    };
+
     function debug() { 
         if(!G.config.debug) return;
         var args = Array.prototype.slice.call(arguments);
         var text = args[0];
         var opts = args.splice(1);
         var output = sprintf(text, opts);
-        console.log("-- %c debug: " + output, "color: #1398E4");
+        console.log("debug: %c" + output, "color: #1398E4");
     };
 
     return { 
@@ -189,6 +197,7 @@ Graffeine.util = (function(G) {
             var caller = (arguments.callee.caller.name) ? arguments.callee.caller.name+":" : "";
             console.warn("%c warning: " + caller + text, "color: #C62C17");
         },
+        log: log,
         debug: debug
     };
 

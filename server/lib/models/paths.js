@@ -3,9 +3,9 @@ var db = require('./neo4j');
 
 module.exports = (function() { 
 
-    function add(sourceId, targetId, name, callback) { 
-        var cypher = "MATCH (a),(b) WHERE ID(a) = {sourceId} AND ID(b) = {targetId} CREATE (a)-[r:{name}]->(b) RETURN r"
-        var params = {sourceId: sourceId, targetId: targetId, name: name};
+    function add(sourceId, targetId, pathName, callback) { 
+        var cypher = "MATCH (a),(b) WHERE ID(a) = {source} AND ID(b) = {target} CREATE (a)-[ r:{pathName} ]->(b) RETURN r"
+        var params = {source: sourceId, target: targetId, pathName: pathName};
         db.query({query: cypher, params: params}, callback, ["r"]);
     }
 

@@ -105,7 +105,7 @@ Graffeine.svg = (function(G) {
             .on("dragstart", function(d) { 
                 // ignore right-click
                 //if(d3.event.sourceEvent.button===2) return;
-                console.log("node: dragstart");
+                G.util.debug("node: dragstart");
                 //d3.event.sourceEvent.stopPropagation();
                 d3.select(this).classed("fixed", d.fixed = true);
                 //ui.nodeInfo.hide();
@@ -113,21 +113,18 @@ Graffeine.svg = (function(G) {
             });
 /**
             .on("drag", function() { 
-                console.log("drag");
             })
             .on("dragend", function(d) { 
                 // ignore right-click
                 if(d3.event.sourceEvent.button===2) return;
-                console.log("node: dragend");
                 // check for no drag (i.e. click)
                 
                 var originalPosition = ui.state.getDraggedOrigin();
                 if(originalPosition.x!==d.x&&originalPosition.y!==d.y) { 
-                    console.log("node: dragend: fixing node position");
                     d3.select(this).classed("fixed", d.fixed = true);
                 }
-                else {
-                    console.log("node: dragend: ignored (click)");
+                else { 
+
                 }
                 
                 ui.state.undragNode();
@@ -154,39 +151,39 @@ Graffeine.svg = (function(G) {
                 .on("click", function(d, i) { 
                     if (d3.event.defaultPrevented) return;
                     d3.event.stopPropagation();
-                    console.log("node: click");
+                    G.util.debug("node: click");
                     var ui = G.ui;
                     if(ui.state.menuActive()) { 
-                        console.log("node: click: aborted (menu active)");
+                        G.util.debug("node: click: aborted (menu active)");
                         return;
                     }
                     forceStop();
                     // node node currently selected
                     if(!ui.state.nodeSelected()) { 
-                        console.log("node: click: selecting node %d", d.id);
+                        G.util.debug("node: click: selecting node %d", d.id);
                         ui.state.selectNode(d, this);
                     }
                     else { 
                         // node selected but not this one
                         if(ui.state.getSelectedElement()!==this) { 
-                            console.log("node: click: switching nodes");
+                            G.util.debug("node: click: switching nodes");
                             ui.state.unselectNode();
                             ui.state.selectNode(d, this);
                         }
                         // node selected is this one,
                         // so unselect it
                         else { 
-                            console.log("node: click: toggling node");
+                            G.util.debug("node: click: toggling node");
                             ui.state.unselectNode();
                         }
                     }
                 })
                 .on("dblclick", function(d) { 
-                    console.log("node: double-click");
+                    G.util.debug("node: double-click");
                     d3.select(this).classed("fixed", d.fixed = false);
                 })
                 .on("mouseover", function(d) { 
-                    console.log("node: mouseover");
+                    G.util.debug("node: mouseover");
                     d3.event.stopPropagation();
                     d3.event.preventDefault();
                     var ui = G.ui;
@@ -202,7 +199,7 @@ Graffeine.svg = (function(G) {
                             ui.nodeInfo.show(d, this);
                 })
                 .on("mouseout", function(d) { 
-                    console.log("node: mouseout");
+                    G.util.debug("node: mouseout");
                     var ui = G.ui;
                     ui.nodeInfo.hide();
                     d3.event.stopPropagation();
@@ -220,10 +217,10 @@ Graffeine.svg = (function(G) {
                         ui.state.unhoverNode();
                 })
                 .on("contextmenu", function(d) { 
-                    console.log("node: right-click");
+                    G.util.debug("node: right-click");
                     var ui = G.ui;
                     if(ui.state.menuActive()) { 
-                        console.log("node: right-click: aborted (menu active)");
+                        G.util.debug("node: right-click: aborted (menu active)");
                         return;
                     }
                     ui.state.selectNode(d, this);
@@ -390,7 +387,7 @@ Graffeine.svg = (function(G) {
         var graph = G.graph;
         var ui = G.ui;
         var nodeCount = G.util.objectLength(graph.nodes());
-        console.log("svg: refreshing the display with %s nodes", nodeCount);
+        G.util.debug("svg: refreshing the display with %s nodes", nodeCount);
         force
             .nodes(d3.values(graph.nodes()), function(n) { return n.id; })
             .links(graph.paths(), function(p) { return p.source.id + "-" + p.target.id; });
@@ -405,7 +402,7 @@ Graffeine.svg = (function(G) {
 
     function init() { 
 
-        console.log("svg: init()");
+        G.util.debug("svg: init()");
 
         var graph = G.graph;
         var ui = G.ui;
@@ -420,7 +417,7 @@ Graffeine.svg = (function(G) {
             .select(G.config.graphTargetDiv)
             .append("svg:svg")
             .on('click', function() { 
-                console.log("svg: click");
+                G.util.debug("svg: click");
                 forceStop();
                 if(ui.state.nodeSelected())
                     ui.state.unselectNode();
@@ -449,7 +446,9 @@ Graffeine.svg = (function(G) {
                 .attr("refX", 5)
                 .attr("refY", 5)
                 .attr("orient", "auto")
-                .on("mouseover", function() { console.log("marker hover"); })
+                .on("mouseover", function() { 
+                    G.util.debug("marker hover"); 
+                })
             .append("svg:polygon")
                 .attr("points", "0,0 10,5 0,10")
                 .attr("class", "arrowhead");
@@ -509,14 +508,12 @@ Graffeine.svg = (function(G) {
         data.path
             .attr("d", function(d) { 
 
-                if(d.source.x === undefined || d.source.x === null) {
-                    console.log("(force.tick) d.source - data error :");
-                    console.log(d.source);
+                if(d.source.x === undefined || d.source.x === null) { 
+                    console.error("force.tick: d.source - data error: %s", d.source);
                     throw "tick data error";
                 }
                 if(d.target.x === undefined || d.target.x === null) {
-                    console.log("(force.tick) d.target - data error :");
-                    console.log(d.target);
+                    console.error("force.tick: d.target - data error: %s", d.target);
                     throw "tick data error";
                 }
                 var dx = d.target.x - d.source.x;

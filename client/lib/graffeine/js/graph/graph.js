@@ -53,11 +53,11 @@ Graffeine.graph = (function(G) {
         graphData.nodes.forEach(function(n) {
             if(n.node === 'n') addNode(n);
         });
-        console.log("populated graph with %s nodes", nodeCount());
+        G.util.debug("populated graph with %s nodes", nodeCount());
         graphData.nodes.forEach(function(p) { 
             if(p.node === 'r') addPath(p.start, p.end, p.type);
         });
-        console.log("populated graph with %s paths", pathCount());
+        G.util.debug("populated graph with %s paths", pathCount());
     };
 
     function refresh(forceAfterRefresh) { 
@@ -88,11 +88,9 @@ Graffeine.graph = (function(G) {
             console.warn("graph.updateNode: node with bad data: %s, %s", id, JSON.stringify(props));
             return;
         }
-        console.log("updateNode (before): %s", JSON.stringify(data.nodes[id]));
         var node = new G.model.Node(props);
         node.transferD3Data(getNode(id));
         data.nodes[id] = node;
-        console.log("updateNode (after): %s", JSON.stringify(data.nodes[id]));
         //addNodeType(node.type);
         addNodeLabels(node.labels);
     };
@@ -225,10 +223,6 @@ Graffeine.graph = (function(G) {
 
     function clearLabels() { 
         data.labels=[];
-    };
-
-    function debugMesg(mesg) { 
-        if(debug) console.log("DEBUG : %s", mesg);
     };
 
     function clear() { 

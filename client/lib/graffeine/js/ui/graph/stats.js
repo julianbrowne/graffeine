@@ -50,11 +50,11 @@ Graffeine.ui.graphStats = (function(G) {
                 return;
             }
             if(G.util.getType(value)==="array") var value = value.join(", ");
-            console.log("graphStats.update: updating %s with %s", key, value);
+            G.util.debug("graphStats.update: updating %s with %s", key, value);
             $(data.selectors.fields[key]).html(value);
         },
         clear: function() { 
-            console.log("clearing graph stats");
+            G.util.debug("clearing graph stats");
             $(".stats").empty();
         },
         refresh: function() { 

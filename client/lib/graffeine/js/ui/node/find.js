@@ -43,7 +43,6 @@ Graffeine.ui.nodeFind = (function(G) {
         /**
             var name = $(graph.ui.labels.nodeFindName).val();
             var type = $(graph.ui.labels.nodeFindTypes).find(":selected").text();
-            graph.debugMesg("(click:node:find) finding node : " + name + " of type " + type);
             Graffeine.command.send('node:find', { name: name, type: type });
         **/
         });

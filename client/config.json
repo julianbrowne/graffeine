@@ -1,7 +1,7 @@
 { 
     "root": "/lib/graffeine/",
     "graphTargetDiv": "#graph",
-    "debug": true,
+    "debug": false,
     "node": { 
         "radius": 30,
         "nameFields": [ 

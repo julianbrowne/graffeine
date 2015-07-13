@@ -55,7 +55,6 @@ Graffeine.ui.nodeEdit = (function(G) {
                 }) 
                 .on("medea.submit", function (e, objectData) { 
                     $(data.selectors.sections.properties).off("medea.submit");
-                    console.log("submitting node edit form");
                     e.preventDefault();
                     if(objectData === undefined) {
                         console.error("no form data found")
@@ -119,8 +118,10 @@ Graffeine.ui.nodeEdit = (function(G) {
             c1.append(spn).appendTo(row);
             var actionTD = $('<td></td>')
                 .addClass("text-right");
-            var btn = $('<button/>', { 
-                // click: function(e) { graph.handler.deleteLabelButtonClick(node.id, path); } 
+            var btn = $('<button/>');
+            btn.on("click", function(e) { 
+                G.command.send("paths:remove", { source: path.source.id, target: path.target.id, name: path.name });
+                spn.html("-deleted-");
             });
             btn.prop("type", "button");
             btn.addClass("btn btn-danger btn-xs");

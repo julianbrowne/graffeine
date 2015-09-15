@@ -17,7 +17,7 @@ Graffeine.command = (function(G) {
         G.util.debug("util.command.recv: register: \"%s\" callback", command);
         var visualUpdate = (visualUpdate===undefined) ? false : true;
         G.socket().on(command, function(data) { 
-            console.log("recv: recorded %s event", command);
+            G.util.debug("recv: recorded %s event", command);
             // @todo find a way to make this cleaner
             // if(visualUpdate) send("graph:stats", {});
             callback(data);

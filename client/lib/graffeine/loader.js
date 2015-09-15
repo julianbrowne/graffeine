@@ -59,7 +59,7 @@ define([
         "ui/graph/stats"
     ],
     function() { 
-        console.log("loaded: Graffeine");
+        Graffeine.util.log("loaded dependencies");
         return(Graffeine);
     }
 );

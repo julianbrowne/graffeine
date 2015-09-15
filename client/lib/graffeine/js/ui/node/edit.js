@@ -16,7 +16,8 @@ Graffeine.ui.nodeEdit = (function(G) {
             content: "#node-edit-content",
             buttons: { 
                 save: "#node-edit-save",
-                cancel: "#node-edit-cancel"
+                cancel: "#node-edit-cancel",
+                add: "#node-edit-addfield"
             },
             sections: { 
                 labels: "#node-edit-labels",
@@ -79,6 +80,11 @@ Graffeine.ui.nodeEdit = (function(G) {
             $(data.selectors.sections.properties).trigger("submit");
             G.ui.nodeEdit.hide();
             G.ui.state.unselectNode();
+        });
+
+        ui.util.event(data.selectors.buttons.add, "click", function(e) { 
+            e.preventDefault();
+            $(data.selectors.sections.properties).trigger("medea.add");
         });
 
         function createOrUpdateNode(nodeObject) { 

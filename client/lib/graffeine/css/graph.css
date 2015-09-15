@@ -15,7 +15,7 @@ circle.node {
   fill: #3FB6C0;
   stroke-width: 2px;
   stroke: #FFFFFF;
-  filter: url(#dropshadow);
+  /*filter: url(#dropshadow);*/
 }
 
 circle.node.edge {

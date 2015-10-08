@@ -45,7 +45,7 @@ You should end up with a "readme.md" file and two directories ("client" and "ser
 You should read the documentation first, but once you've done that here's what you need to do to get started:
 
 -   Edit the file {HOME}/server/config/neo4j.json if you have Neo4J running on a port other than 7474, or if you have authentication requirements
--   Start the server from the {HOME}/server directory by typing ```node server```
--   If none of the defaults (port etc) have been changed, open your browser at ```http://localhost:8004/```
+-   Start the server from the {HOME}/server directory by typing ``node server``
+-   If none of the defaults (port etc) have been changed, open your browser at ``http://localhost:8004/``
 
 ![screenshot](https://raw.githubusercontent.com/julianbrowne/graffeine/v0.1/client/docs/images/screenshot-home.jpeg)

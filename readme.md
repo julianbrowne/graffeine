@@ -12,7 +12,7 @@ See [change log](changes.md)
 *   node.js 0.12.x or later  
 *   Neo4j 2.2.x or later  
 *   A very modern browser that is happy with:
-    -   [D3](http://d3js.org/) 3.5.5
+    -   [D3](http://d3js.org/) 3.5.17
     -   [JQuery](http://jquery.com/) 2.1.4
     -   [Bootstrap]() 3.3.4
 

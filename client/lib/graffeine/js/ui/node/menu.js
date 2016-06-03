@@ -65,7 +65,7 @@ Graffeine.ui.nodeMenu = (function(G) {
             ui.nodeView.show();
         });
 
-        /** Edit node data **/
+        /** Edit node **/
 
         ui.util.event(data.selectors.actions.edit, "click", function(e) { 
             ui.nodeMenu.hide();

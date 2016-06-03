@@ -7,8 +7,6 @@ var gutil = require("../gutil");
 module.exports = (function() { 
 
     "use strict";
-
-    return Sender;
     
     function Sender(socket) { 
 
@@ -19,8 +17,8 @@ module.exports = (function() {
         var channelData = config.channels;
 
         function sendy(message, envelope) { 
-            sender.send(envelope.channel+":"+envelope.topic, message);
-        };
+            sender.send(envelope.channel + ":" + envelope.topic, message);
+        }
 
         Object.getOwnPropertyNames(channelData).forEach(function(channel) { 
             channelData[channel].forEach(function(topic) { 
@@ -36,5 +34,7 @@ module.exports = (function() {
         };
 
     }
+
+    return Sender;
 
 }());

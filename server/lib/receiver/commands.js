@@ -1,4 +1,6 @@
 
+var util = require("util");
+
 var bus = require("postal");
 var schema = require("js-schema");
 
@@ -155,8 +157,8 @@ module.exports = (function() {
                 else { 
                     paths.add(payload.source, payload.target, payload.name, function(success, timer) { 
                         if(success) { 
-                            send("paths","add", { source: payload.source, target: payload.target, name: payload.name } );
-                            send("server","timer", { data: timer } );
+                            send("paths", "add", { source: payload.source, target: payload.target, name: payload.name } );
+                            send("server", "timer", { data: timer } );
                         }
                         else { 
                              gutil.log("paths:add - error: " + util.inspect(payload));
@@ -178,8 +180,8 @@ module.exports = (function() {
             },
             count: function() { 
                 paths.count(function(count, timer) { 
-                    send("paths","count", { count: count });
-                    send("server","timer", { data: timer } );
+                    send("paths", "count", { count: count });
+                    send("server", "timer", { data: timer } );
                 });
             }
         }

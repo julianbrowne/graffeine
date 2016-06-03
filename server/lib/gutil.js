@@ -57,10 +57,10 @@ module.exports = (function() {
         if (s === "object") { 
             if (value) { 
                 if (Object.prototype.toString.call(value) === "[object Array]") { 
-                    s = 'array';
+                    s = "array";
                 }
             } else { 
-                s = 'null';
+                s = "null";
             }
         }
         return s;
@@ -73,12 +73,12 @@ module.exports = (function() {
     function supplant(s, o) { 
         return s.replace(/{([^{}]*)}/g, function (a, b) { 
             var r = o[b];
-            if(getType(r) === "string") return r;
-            if(getType(r) === "number") return r;
-            if(getType(r) === "object") return util.inspect(r);
-            if(getType(r) === "array") return r.join(",");
-            if(getType(r) === "boolean") return r.toString();
-            if(getType(r) === "function") return "function";
+            if(getType(r) === "string") { return r; }
+            if(getType(r) === "number") { return r };
+            if(getType(r) === "object") { return util.inspect(r) };
+            if(getType(r) === "array") { return r.join(",") };
+            if(getType(r) === "boolean") { return r.toString() };
+            if(getType(r) === "function") { return "function" };
             return a;
         });
     }

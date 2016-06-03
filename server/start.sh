@@ -1,6 +1,12 @@
 #!/bin/bash
 
-#NODE_VERSION="`node -v`"
+NODE_VERSION="`node -v 2> /dev/null`"
+if [ "${NODE_VERSION}" = "" ]
+then
+    echo "node executable not found"
+    exit 1
+fi
+
 NODE_SERVER_PORT=8004
 
 NEO4J_HOME="/usr/local/neo4j"
@@ -31,6 +37,6 @@ if [ ${nodepid} ]
 then
     echo "Graffeine already running (pid: ${nodepid})"
 else
-    echo "Starting ${GRAFF_HOME}/server/server.js"
+    echo "Starting ${GRAFF_HOME}/server/server.js (node ${NODE_VERSION})"
     node ${GRAFF_HOME}/server/server.js
 fi

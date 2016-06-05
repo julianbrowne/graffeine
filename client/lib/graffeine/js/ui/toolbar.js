@@ -115,10 +115,15 @@ Graffeine.ui.toolbar = (function(G) {
                 var modalId = e.currentTarget.id;
                 ui.util.highlightModalCode(modal);
                 $("#init-graph-gist").on("click", function(e) { 
-                    var gist = $("#graph-gist").val();
-                    G.command.graphLoad(gist);
                     $("#"+modalId).modal("hide");
-                    G.graph.clear();
+                    var gistName = $("#graph-gist").val();
+                    if(!G.util.isEmpty(gistName)) { 
+                        G.command.graphLoad(gistName);
+                        G.graph.clear();
+                    }
+                    else { 
+                        G.util.log("Tried to load gist '%s'", gistName);
+                    }
                 });
             });
         });

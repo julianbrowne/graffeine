@@ -55,6 +55,17 @@ describe("Graffeine Util", function() {
             .toEqual("<tr><th>a</th><td data-type=\"string\">abc</td></tr>");
     });
 
+    it("should determine empty variable", function() { 
+        expect(Graffeine.util.isEmpty).toBeDefined();
+        expect(Graffeine.util.isEmpty("a")).toBe(false);
+        expect(Graffeine.util.isEmpty(123)).toBe(false);
+        expect(Graffeine.util.isEmpty({a:10})).toBe(false);
+        expect(Graffeine.util.isEmpty(null)).toBe(true);
+        expect(Graffeine.util.isEmpty(undefined)).toBe(true);
+        expect(Graffeine.util.isEmpty("")).toBe(true);
+        expect(Graffeine.util.isEmpty('')).toBe(true);
+    });
+
     it("should make list from an object", function() { 
         expect(Graffeine.util.objToList).toBeDefined();
         expect(Graffeine.util.objToList({id: 123}).prop('outerHTML'))

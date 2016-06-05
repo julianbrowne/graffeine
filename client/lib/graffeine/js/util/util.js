@@ -185,6 +185,10 @@ Graffeine.util = (function(G) {
         console.log("debug: %c" + output, "color: #1398E4");
     };
 
+    function isEmpty(testVar) { 
+        return (testVar===null||testVar===""||testVar===undefined)
+    }
+
     return { 
         getType: getType,
         addURLTags: addURLTags,
@@ -197,6 +201,7 @@ Graffeine.util = (function(G) {
             var caller = (arguments.callee.caller.name) ? arguments.callee.caller.name+":" : "";
             console.warn("%c warning: " + caller + text, "color: #C62C17");
         },
+        isEmpty: isEmpty,
         log: log,
         debug: debug
     };

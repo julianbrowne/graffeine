@@ -104,8 +104,19 @@ module.exports = (function() {
 
     function getGists() { 
         var gists = [];
-        var dataDir = appRoot+"/"+config.gists;
+        var dataDir = appRoot + "/" + config.gists;
+        try { 
+            fs.accessSync(dataDir, fs.F_OK);
+        }
+        catch (e) { 
+            error("** gists directory %s not accessible", dataDir);
+            return [];
+        }
         var files = fs.readdirSync(dataDir);
+        if(files.length===0) { 
+            error("** no gists in: %s", dataDir);
+            return [];
+        }
         for(var i=0; i<files.length; i++) { 
             if(files[i][0]!==".") { gists.push(files[i].replace(/\.cypher/,"")); }
         }

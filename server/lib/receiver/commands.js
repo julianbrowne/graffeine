@@ -33,7 +33,6 @@ module.exports = (function() {
 
             init: function() { 
                 graph.all(function(n, timer) { 
-                    gutil.log(gutil.getGists());
                     send("graph", "nodes", { nodes: n, count: n.length });
                     send("server", "timer", { data: timer } );
                     send("graph", "gists", { names: gutil.getGists() });
@@ -42,6 +41,11 @@ module.exports = (function() {
                     }
                 });
             },
+
+            gists: function() { 
+                send("graph", "gists", { names: gutil.getGists() });
+            },
+
             nodes: function() { 
                 graph.nodes(function(result, timer) { 
                     var types = result.map(function(r) { return r.type });
@@ -53,6 +57,7 @@ module.exports = (function() {
                     }
                 });
             },
+
             paths: function() { 
                 graph.paths(function(result, timer) { 
                     var types = result.map(function(r) { return r.type });

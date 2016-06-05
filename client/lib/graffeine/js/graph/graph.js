@@ -234,15 +234,13 @@ Graffeine.graph = (function(G) {
     };
 
     function init() { 
-        G.util.log("graph.init")
+        G.util.log("graph.init");
         clearNodeTypes();
         clearPathTypes();
         clearNodes();
         clearPaths();
         clearLabels();
     };
-
-    // init();
 
     return { 
         nodes: function() { return data.nodes; },

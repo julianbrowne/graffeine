@@ -12,22 +12,28 @@ graffeine.on("client-connected", function (client) {
 
     var event = graffeine.eventManager(client);
 
-    event.on("graph:ping", graffeine.receiver.commands.graph.ping);
-    event.on("graph:init", graffeine.receiver.commands.graph.init);
-    event.on("graph:nodes", graffeine.receiver.commands.graph.nodes);
-    event.on("graph:paths", graffeine.receiver.commands.graph.paths);
-    event.on("graph:remove", graffeine.receiver.commands.graph.remove);
-    event.on("graph:stats", graffeine.receiver.commands.graph.stats);
-    event.on("graph:fetch", graffeine.receiver.commands.graph.fetch);
-    event.on("graph:load", graffeine.receiver.commands.graph.load);
+    // @todo - refactor this into just the list of events
+    // and automatically map the command using the event name
 
-    event.on("nodes:add", graffeine.receiver.commands.nodes.add);
-    event.on("nodes:update", graffeine.receiver.commands.nodes.update);
-    event.on("nodes:find", graffeine.receiver.commands.nodes.find);
-    event.on("nodes:remove", graffeine.receiver.commands.nodes.remove);
-    event.on("nodes:orphans", graffeine.receiver.commands.nodes.orphans);
+    var cmd = graffeine.receiver.commands;
 
-    event.on("paths:add", graffeine.receiver.commands.paths.add);
-    event.on("paths:remove", graffeine.receiver.commands.paths.remove);
+    event.on("graph:ping", cmd.graph.ping);
+    event.on("graph:init", cmd.graph.init);
+    event.on("graph:nodes", cmd.graph.nodes);
+    event.on("graph:paths", cmd.graph.paths);
+    event.on("graph:remove", cmd.graph.remove);
+    event.on("graph:stats", cmd.graph.stats);
+    event.on("graph:fetch", cmd.graph.fetch);
+    event.on("graph:load", cmd.graph.load);
+    event.on("graph:gists", cmd.graph.gists);
+
+    event.on("nodes:add", cmd.nodes.add);
+    event.on("nodes:update", cmd.nodes.update);
+    event.on("nodes:find", cmd.nodes.find);
+    event.on("nodes:remove", cmd.nodes.remove);
+    event.on("nodes:orphans", cmd.nodes.orphans);
+
+    event.on("paths:add", cmd.paths.add);
+    event.on("paths:remove", cmd.paths.remove);
 
 });

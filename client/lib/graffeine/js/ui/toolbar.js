@@ -106,17 +106,19 @@ Graffeine.ui.toolbar = (function(G) {
 
         ui.util.event(data.selectors.graphMenu.setttings, "click", function(e) { 
             var container = $("<div>");
-            var select = ui.util.dynamicSelect("graph-gist", G.settings.gists);
-            var button = $("<button>").attr("id", "init-graph-gist").html("load");
+            if(G.settings.gists.length===0) { 
+                G.util.log("No gists received from server");
+            }
+            var select = ui.util.dynamicSelect("graph-gist-name", G.settings.gists);
+            var button = $("<button>").attr("id", "init-graph-gist-load").html("initialise");
             container.append(select);
             container.append(button);
             var modal = ui.util.dynamicModal("Graffeine Settings", container);
             ui.util.event(modal, "show.bs.modal", function(e) { 
                 var modalId = e.currentTarget.id;
                 ui.util.highlightModalCode(modal);
-                $("#init-graph-gist").on("click", function(e) { 
-                    $("#"+modalId).modal("hide");
-                    var gistName = $("#graph-gist").val();
+                $("#init-graph-gist-load").on("click", function(e) { 
+                    var gistName = $("#graph-gist-name").val();
                     if(!G.util.isEmpty(gistName)) { 
                         G.command.graphLoad(gistName);
                         G.graph.clear();
@@ -124,6 +126,7 @@ Graffeine.ui.toolbar = (function(G) {
                     else { 
                         G.util.log("Tried to load gist '%s'", gistName);
                     }
+                    $("#"+modalId).modal("hide");
                 });
             });
         });

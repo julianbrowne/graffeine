@@ -40,6 +40,10 @@ Graffeine.command = (function(G) {
         send("graph:load", {name: name});
     };
 
+    function graphGists() { 
+        send("graph:gists", {});
+    };
+
     function graphPing() { 
         send("graph:ping", {});
     };
@@ -76,6 +80,8 @@ Graffeine.command = (function(G) {
         recv("graph:gists", function (data) { 
             Graffeine.set("gists", data.names);
         });
+
+        graphGists(); // ask for available gists
 
         /**
          *  incoming graph data

@@ -88,13 +88,21 @@ Graffeine.ui.nodeEdit = (function(G) {
         });
 
         function createOrUpdateNode(nodeObject) { 
-            var nodeId = G.ui.state.nodeSelected ? G.ui.state.getSelectedNode().id : null;
-            if(nodeId!==null) { 
+
+            console.log("createOrUpdateNode");
+            console.log("selected node:")
+            console.log(ui.state.getSelectedNode());
+            console.log("node data:");
+            console.log(nodeObject);
+
+            if(G.ui.state.nodeSelected()) {
+                var nodeId = G.ui.state.getSelectedNode().id;
                 G.command.send("nodes:update", { id: nodeId, data: nodeObject });
             }
-            else { 
+            else {
                 G.command.send("nodes:add", { data: nodeObject });
             }
+
         }
 
     };
@@ -154,7 +162,8 @@ Graffeine.ui.nodeEdit = (function(G) {
 
     return { 
 
-        show: function(node) { 
+        show: function(createNewNode) { 
+            if(createNewNode) { G.ui.state.unselectNode(); }
             $(data.selectors.content).modal('show');
         },
 

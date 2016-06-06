@@ -25,4 +25,12 @@ describe("graffeine", function() {
         expect(event.on).toBeDefined();
     });
 
+    it("should catch event wiring to nonexistent functions", function() { 
+        spyOn(process, 'exit');
+        var socket = { on: function(){} };
+        var event = graffeine.eventManager(socket);
+        event.on("my-event", undefined);
+        expect(process.exit).toHaveBeenCalledWith(-1);
+    });
+
 });

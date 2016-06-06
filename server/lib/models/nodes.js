@@ -1,11 +1,12 @@
 
 var db = require('./neo4j');
+var utils = require('./utils');
 
 module.exports = (function() { 
 
     function add(nodeData, callback) { 
         var cypher = "CREATE (n {labels} {props}) RETURN n";
-        var params = { labels: labels(nodeData), props: properties(nodeData)};
+        var params = { labels: labels(nodeData), props: utils.extractProperties(nodeData)};
         db.query({query: cypher, params: params}, callback, ["n"]);
     };
 
@@ -54,11 +55,6 @@ module.exports = (function() {
         var labels = (typeof nodeData.labels === "undefined") ? [] : nodeData.labels;
         var cypherLabels = (labels.length > 0) ? ":" + labels.join(":") : "";
         return cypherLabels;
-    };
-
-    function properties(nodeData) { 
-        var properties = (typeof nodeData.data === "undefined") ? {} : nodeData.data;
-        return JSON.stringify(properties);
     };
 
     return { 

@@ -110,12 +110,16 @@ Graffeine.command = (function(G) {
         }, true);
 
         /**
-         *  New node
+         *  New node(s)
+         *
+         *  data: {"node":[{"data":{"name":"frank"},"id":969,"labels":[],"node":"n"}]}
         **/
 
         recv("nodes:add", function (data) { 
-            graph.addNode(data.node);
-            graph.refresh();
+            data.node.forEach(function(nodeData) { 
+                graph.addNode(nodeData.data);
+                graph.refresh();
+            });
         }, true);
 
         /**
@@ -126,7 +130,8 @@ Graffeine.command = (function(G) {
         recv("nodes:update", function (payload) { 
             graph.updateNode(payload.id, payload.properties);
             graph.resetPaths();
-            graph.refresh(false);       // refresh the screen but without a force start
+            //graph.refresh(false);       // refresh the screen but without a force start
+            graph.refresh();
         }, false);
 
         /**

@@ -27,10 +27,24 @@ describe('gutil', function() {
 
     it("should get gists", function() { 
         fsStub.readdirSync = function(dir) { return ["a","b","c"]; };
+        fsStub.accessSync = function() { return true; };
         var gists = gutil.getGists();
         expect(gists).toBeDefined();
         expect(gists).not.toBe(null);
         expect(gists).toEqual(["a","b","c"]);
+    });
+
+    it("should return empty set if no gists", function() { 
+        fsStub.accessSync = function() { return true; };
+        fsStub.readdirSync = function(dir) { return []; };
+        var gists = gutil.getGists();
+        expect(gists).toEqual([]);
+    });
+
+    it("should return empty set if gists not accessible", function() { 
+        fsStub.accessSync = function() { throw "error"; };
+        var gists = gutil.getGists();
+        expect(gists).toEqual([]);
     });
 
     it("should die", function() { 

@@ -3,7 +3,8 @@
     "spec_files": [ 
         "graffeine.js",
         "http.js",
-        "gutil.js"
+        "gutil.js",
+        "models.js"
     ],
     "helpers": [ 
         "helper/matchers.js"

@@ -89,6 +89,12 @@ module.exports = (function() {
         process.exit(-1);
     }
 
+    function registerEvent(manager, commands, channel, action) { 
+        var eventTag = channel + ":" + action;
+        log("registering %s", eventTag);
+        manager.on(eventTag, commands[channel][action]);
+    }
+
     function loadRelativeFile(pathname) { 
         var fullPathName = appRoot+"/"+pathname;
         log("loading: %s", fullPathName);
@@ -134,6 +140,7 @@ module.exports = (function() {
         getGists: getGists,
         getType: getType,
         supplant: supplant,
+        registerEvent: registerEvent,
         loadRelativeFile: loadRelativeFile
     };
 

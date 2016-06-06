@@ -131,14 +131,19 @@ Graffeine.ui.toolbar = (function(G) {
             });
         });
 
+        /** Node Menu drop-down options **/
+
         /**
-         *  Node Menu drop-down options
+         *  Add New Node
         **/
 
         ui.util.event(data.selectors.nodeMenu.nodeAdd, 'click', function(e) { 
-            // @todo: set up new (empty) node here;
-            ui.nodeEdit.show();
+            ui.nodeEdit.show(true);
         });
+
+        /**
+         *  Find Existing Node via properties
+        **/
 
         ui.util.event(data.selectors.nodeMenu.nodeFind, 'click', function(e) { 
             // show find node menu

@@ -32,17 +32,22 @@ module.exports = (function() {
                 gutil.die("invalid client connection passed to event manager");
             }
             return new function() { 
+                
                 this.connection = connection;
+
                 function run(event, func) { 
                     if(func === undefined) { 
                         gutil.die("attempt to register undefined callback for %s", event);
                     }
-                    gutil.debug("event: registered callback %s for %s", func.name, event);
-                    return function() { 
-                        gutil.log("< event: '%s': %s".blue, event, JSON.stringify(arguments[0]));
-                        func.apply(this, arguments);
-                    };
+                    else { 
+                        gutil.debug("event: registered callback %s for %s", func.name, event);
+                        return function() { 
+                            gutil.log("< event: '%s': %s".blue, event, JSON.stringify(arguments[0]));
+                            func.apply(this, arguments);
+                        }
+                    }
                 }
+
                 this.on = function(event, func) { 
                     this.connection.on(event, run(event, func));
                 };

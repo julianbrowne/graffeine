@@ -4,6 +4,7 @@ var util = require("util");
 var bus = require("postal");
 var schema = require("js-schema");
 
+var config = require("../../config/server.json");
 var gutil = require("../gutil");
 var graph = require("../models/graph");
 var nodes = require("../models/nodes");
@@ -19,8 +20,14 @@ module.exports = (function() {
 
     return { 
         server: { 
-            message: function (category, title, message) { 
+            message: function(category, title, message) { 
                 send("server", "info", {category: category, title: title, message: message});
+            },
+            info: function() { 
+                send("server", "info", {category: "info", title: "Server", message: config.version.join(".") })
+            },
+            timer: function() { 
+                send("server", "timer", { data: graffeine.timestamp() } );
             }
         },
         graph: { 

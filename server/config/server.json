@@ -15,8 +15,8 @@
     },
     "channels": { 
         "server": [ "info", "timer" ],
-        "graph": [ "nodes", "paths", "remove", "gists" ],
-        "nodes": [ "add", "remove", "count", "update" ],
-        "paths": [ "add", "remove", "count", "update" ]
+        "graph": [ "init", "ping", "fetch", "load", "stats", "nodes", "paths", "remove", "gists" ],
+        "nodes": [ "find", "add", "remove", "update", "orphans" ],
+        "paths": [ "add", "remove" ]
     }
 }

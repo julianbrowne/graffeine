@@ -130,7 +130,6 @@ Graffeine.command = (function(G) {
         recv("nodes:update", function (payload) { 
             graph.updateNode(payload.id, payload.properties);
             graph.resetPaths();
-            //graph.refresh(false);       // refresh the screen but without a force start
             graph.refresh();
         }, false);
 

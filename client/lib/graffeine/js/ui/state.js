@@ -55,7 +55,7 @@ Graffeine.ui.state = (function(G) {
         this.connectDB = function() { 
             this.dbConnected = true;
             $(".db-indicator")
-                .removeClass("label-default")
+                .removeClass("label-danger")
                 .addClass("label-success");
         };
 
@@ -67,7 +67,7 @@ Graffeine.ui.state = (function(G) {
             this.dbConnected = false;
             $(".db-indicator")
                 .removeClass("label-success")
-                .addClass("label-default");
+                .addClass("label-danger");
         };
 
         this.nodesOnDeck = function(count) { 

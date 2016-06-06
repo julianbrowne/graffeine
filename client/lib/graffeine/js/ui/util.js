@@ -99,10 +99,12 @@ Graffeine.ui.util = (function(G) {
         if($("#flash").length === 0)
             util.warning("warning: no flash for server message");
 
-        $("#flash").append(container);
+        $("#flash").prepend(container);
+
         setTimeout(function() { 
             container.fadeOut(fadeDuration, function() { });
-        }, fadeAfterMs)
+        }, fadeAfterMs);
+
     };
 
     function dynamicSelect(id, items) { 

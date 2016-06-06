@@ -21,6 +21,7 @@ Graffeine.ui.toolbar = (function(G) {
                 initGraph: "#init-graph",
                 clearGraph: "#init-graph-clear",
                 initStats: "#init-stats",
+                remove: "#graph-remove",
                 setttings: "#init-settings"
             },
             nodeMenu: { 
@@ -88,6 +89,11 @@ Graffeine.ui.toolbar = (function(G) {
 
         ui.util.event(data.selectors.graphMenu.initGraph, "click", function(e) { 
             G.command.send("graph:init", {});
+            G.command.gatherDBStats();
+        });
+
+        ui.util.event(data.selectors.graphMenu.remove, "click", function(e) { 
+            G.command.send("graph:remove", {});
             G.command.gatherDBStats();
         });
 

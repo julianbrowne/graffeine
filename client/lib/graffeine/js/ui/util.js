@@ -96,8 +96,9 @@ Graffeine.ui.util = (function(G) {
         container.append(closeButton);
         container.append("<strong>" + title + ": </strong>" + message);
 
-        if($("#flash").length === 0)
+        if($("#flash").length === 0) { 
             util.warning("warning: no flash for server message");
+        }
 
         $("#flash").prepend(container);
 

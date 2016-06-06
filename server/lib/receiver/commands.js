@@ -91,7 +91,7 @@ module.exports = (function() {
             },
             remove: function() { 
                 graph.remove(function(result, timer) { 
-                    send("graph","remove", { result: result, updatedAt: graffeine.timestamp() } );
+                    send("graph","remove", { result: result } );
                     send("server","timer", { data: timer } );
                 });
             },

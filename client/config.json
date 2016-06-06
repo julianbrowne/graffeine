@@ -11,8 +11,8 @@
         ]
     },
     "graphSettings": { 
-        "width": 800,
-        "height": 600,
+        "width": 1100,
+        "height": 800,
         "nodeLimit": 500,
         "dragletOffset": 20,
         "linkDistance": 250,

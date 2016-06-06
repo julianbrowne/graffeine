@@ -25,10 +25,9 @@ Graffeine.command = (function(G) {
     };
 
     function connectNodes(sourceNode, targetNode, name) { 
-        if(!sourceNode||!sourceNode.id||!targetNode||!targetNode.id||!name) { 
-            console.warn("connectNodes: can't join nodes %s to %s with %s", sourceNode, targetNode, name);
-            return;
-        }
+        G.util.log("connectNodes: source %s", JSON.stringify(sourceNode));
+        G.util.log("connectNodes: target %s", JSON.stringify(targetNode));
+        G.util.log("connectNodes: relation %s", name);
         send("paths:add", { source: sourceNode.id, target: targetNode.id, name: name });
     };
 
@@ -117,7 +116,7 @@ Graffeine.command = (function(G) {
 
         recv("nodes:add", function (data) { 
             data.node.forEach(function(nodeData) { 
-                graph.addNode(nodeData.data);
+                graph.addNode(nodeData);
                 graph.refresh();
             });
         }, true);

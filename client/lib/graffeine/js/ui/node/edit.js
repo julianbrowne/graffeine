@@ -52,6 +52,7 @@ Graffeine.ui.nodeEdit = (function(G) {
                     buttons: false,
                     labelColumns: 2,
                     inputColumns: 8,
+                    modal: true,
                     noForm: true
                 }) 
                 .on("medea.submit", function (e, objectData) { 
@@ -70,10 +71,16 @@ Graffeine.ui.nodeEdit = (function(G) {
         ui.util.event(data.selectors.content, "hide.bs.modal", function(e) { 
             $(data.selectors.sections.labels).empty();
             $(data.selectors.sections.paths).empty();
+            console.log($(data.selectors.sections.properties).length);
             $(data.selectors.sections.properties).empty();
+            console.log($(data.selectors.sections.properties).length);
             ui.util.enableActionButtons();
             ui.state.unsetMenuActive();
         });
+
+        /**
+         *  Save (commit) contents of Node Edit form
+        **/
 
         ui.util.event(data.selectors.buttons.save, "click", function(e) { 
             e.preventDefault();
@@ -81,6 +88,10 @@ Graffeine.ui.nodeEdit = (function(G) {
             G.ui.nodeEdit.hide();
             G.ui.state.unselectNode();
         });
+
+        /**
+         *  Add a new field to the Node Edit form
+        **/
 
         ui.util.event(data.selectors.buttons.add, "click", function(e) { 
             e.preventDefault();

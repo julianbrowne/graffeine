@@ -1,7 +1,7 @@
 var graffeineTestData = { 
 
     oneNode: '{\
-        "node": { \
+        "node": [{ \
             "data": { \
                 "name": "A"\
             },\
@@ -14,7 +14,7 @@ var graffeineTestData = {
             "type": "default",\
             "cssClass": "default",\
             "label": { "fill": "#000000" }\
-        }\
+        }]\
     }',
 
     twoNodes: '{ \

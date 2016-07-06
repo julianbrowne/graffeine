@@ -93,6 +93,7 @@ module.exports = (function() {
                 graph.remove(function(result, timer) { 
                     send("graph","remove", { result: result } );
                     send("server","timer", { data: timer } );
+                    send("graph", "nodes", { nodes: [], count: 0 });
                 });
             },
             stats: function(data) { 

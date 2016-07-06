@@ -52,7 +52,6 @@ Graffeine.ui.nodeEdit = (function(G) {
                     buttons: false,
                     labelColumns: 2,
                     inputColumns: 8,
-                    modal: true,
                     noForm: true
                 }) 
                 .on("medea.submit", function (e, objectData) { 
@@ -71,9 +70,7 @@ Graffeine.ui.nodeEdit = (function(G) {
         ui.util.event(data.selectors.content, "hide.bs.modal", function(e) { 
             $(data.selectors.sections.labels).empty();
             $(data.selectors.sections.paths).empty();
-            console.log($(data.selectors.sections.properties).length);
             $(data.selectors.sections.properties).empty();
-            console.log($(data.selectors.sections.properties).length);
             ui.util.enableActionButtons();
             ui.state.unsetMenuActive();
         });

@@ -13,7 +13,7 @@ module.exports = (function() {
     };
 
     function ping(callback) { 
-        var cypher = "MATCH n RETURN count(n)";
+        var cypher = "MATCH (n) RETURN count(n)";
         db.query(cypher, callback, "count(n)");
     };
 

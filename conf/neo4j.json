@@ -1,6 +1,8 @@
 {
     "neo4j": { 
         "host": "localhost",
-        "port": 7474
+        "port": 7474,
+        "user": "neo4j",
+        "pass": "neo4j"
     }
 }

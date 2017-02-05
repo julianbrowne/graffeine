@@ -9,7 +9,7 @@ fi
 
 NODE_SERVER_PORT=8004
 
-NEO4J_HOME="/usr/local/neo4j"
+NEO4J_HOME="/opt/neo4j"
 NEO4J_SERVER_PORT=7474
 
 GRAFF_HOME="`cd $( dirname "${0}" )/.. && dirs -l +0`"
@@ -26,7 +26,13 @@ then
     echo "Neo4j already running (pid: ${neopid})"
 else
     ${NEO4J_HOME}/bin/neo4j start
+    if [ $? != 0 ]
+    then
+    	echo "Neo4J failed to start"
+    	exit 1
+    fi
 fi
+
 
 # start node.js server
 

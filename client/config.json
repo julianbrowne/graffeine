@@ -1,0 +1,24 @@
+{ 
+    "root": "/lib/graffeine/",
+    "graphTargetDiv": "#graph",
+    "debug": false,
+    "node": { 
+        "radius": 30,
+        "nameFields": [ 
+            "name",
+            "qualifier",
+            "number"
+        ]
+    },
+    "graphSettings": { 
+        "width": 1100,
+        "height": 800,
+        "nodeLimit": 500,
+        "dragletOffset": 20,
+        "linkDistance": 250,
+        "charge": -1200
+    },
+    "core": { 
+        "host": "http://127.0.0.1:8004"
+    }
+}

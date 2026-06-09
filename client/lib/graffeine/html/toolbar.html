@@ -1,0 +1,88 @@
+
+<!--                                        -->
+<!-- use absolute paths for hrefs here      -->
+<!-- because it's included in test and docs -->
+<!--                                        -->
+
+<div id="toolbar-content">
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <ul class="nav navbar-nav navbar-left">
+                    <li class="dropdown">
+                        <span class="navbar-brand brand dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                            <span><img height="30px" src="/lib/graffeine/images/graffeine.png"></span>
+                            Graffeine
+                        </span>
+                        <ul class="dropdown-menu" role="menu">
+                            <li><a data-toggle="modal" data-target="#about-content">About Graffeine</a></li>
+                            <li><a href="/test/index.html">Tests</a></li>
+                            <li><a href="/docs">Documentation</a></li>
+                            <li><a href="/">Home</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+            <ul class="nav navbar-nav">
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                        Graph <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu" role="menu">
+                        <li id="init-graph" class="disable-when-nodes-on-deck"><a>Load</a></li>
+                        <li id="init-graph-clear" class="disable-when-graph-empty"><a>Clear</a></li>
+                        <li id="init-stats" class="disable-when-graph-empty"><a>Statistics</a></li>
+                        <li id="graph-remove" class=""><a>Delete</a></li>
+                        <li id="init-settings"><a>Settings</a></li>
+                    </ul>
+                </li>
+            </ul>
+            <ul class="nav navbar-nav">
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                        Node <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu" role="menu">
+                        <li class="disable-when-graph-empty"><a id="node-add">New...</a></li>
+                        <li class="disable-when-graph-empty"><a id="node-find">Find...</a></li>
+                        <li class="disable-when-graph-empty"><a id="node-orphans">Orphans</a></li>
+                    </ul>
+                </li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li>&nbsp;force:&nbsp;<button id="graph-force" type="button" class="btn navbar-btn btn-default disable-when-graph-empty force off">on</button>
+                </li>
+                <li>&nbsp;mode:&nbsp;<button id="graph-mode" type="button" class="btn navbar-btn btn-default disable-when-graph-empty">replace</button></li>
+                <li>&nbsp;&nbsp;&nbsp;<span class="label label-default db-indicator">WSS</span></li>
+                <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</li>
+            </ul>
+        </div>
+    </nav>
+</div>
+
+<div id="about-content" class="modal" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">About ..</h4>
+            </div>
+            <div id="about-body" class="modal-body" style="text-align: center;">
+                <h3>Graffeine</h3>
+                <p>Version 0.1.0</p>
+                <p>
+                    Github:
+                    <a href="https://github.com/julianbrowne/graffeine">
+                        https://github.com/julianbrowne/graffeine
+                    </a>
+                </p>
+                <p>&copy; Julian Browne 2016</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>

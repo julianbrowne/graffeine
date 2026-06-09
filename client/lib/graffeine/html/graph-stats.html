@@ -1,0 +1,59 @@
+<div id="graph-stats-content" class="modal" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Graph Stats</h4>
+            </div>
+            <div class="modal-body">
+                <table class="table">
+                    <thead>
+                        <tr><th>Neo4j Database</th><th></th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>|V|</td><td id="db-node-max" class="stats">-</td></tr>
+                        <tr><td>|E|</td><td id="db-rels-max" class="stats">-</td></tr>
+                        <tr><td>Relationships</td><td id="db-path-types-list" class="stats">-</td></tr>
+                    </tbody>
+                    <thead>
+                        <tr><th>graffeine display</th><th></th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>V</td><td id="graph-node-count" class="stats">-</td></tr>
+                        <tr><td>E</td><td id="graph-link-count" class="stats">-</td></tr>
+                        <tr><td>R</td><td id="graph-path-types-count" class="stats">-</td></tr>
+                        <tr><td>V<sub>max</sub></td><td id="graph-node-max" class="stats">-</td></tr>
+                        <tr><td>V<sub>0</sub></td><td id="graph-root" class="stats">-</td></tr>
+                    </tbody>
+                    <thead>
+                        <tr><th>node</th><th></th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>V<sub>n</sub></td><td id="node-selected-id" class="stats">-</td></tr>
+                        <tr><td>V<sub>deg</sub></td><td id="node-selected-degrees" class="stats">-</td></tr>
+                    </tbody>
+                    <thead>
+                        <tr><th>data</th><th></th></tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>types</td>
+                            <td id="node-types-list" class="stats">-</td>
+                        </tr>
+                        <tr>
+                            <td>labels</td>
+                            <td id="node-labels-list" class="stats">-</td>
+                        </tr>
+                        <tr>
+                            <td>relationships</td>
+                            <td id="path-types-list" class="stats">-</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="path-new-cancel" class="btn btn-default" data-dismiss="modal">OK</button>
+            </div>
+        </div>
+    </div>
+</div>

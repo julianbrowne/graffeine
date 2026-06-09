@@ -1,0 +1,3 @@
+[submodule "client/lib/medea"]
+	path = client/lib/medea
+	url = https://github.com/julianbrowne/medea

@@ -1,4 +1,0 @@
-
-HOME=$(dirname $0)/..
-
-eslint ${HOME}/lib

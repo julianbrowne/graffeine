@@ -1,0 +1,39 @@
+{
+    "name": "graffeine",
+    "version": "0.2.0",
+    "description": "Caffeinated Neo4J Graph Admin",
+    "homepage": "https://github.com/julianbrowne/graffeine",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/julianbrowne/graffeine.git"
+    },
+    "keywords": ["neo4j", "d3", "react", "admin", "graph"],
+    "author": "Julian Browne",
+    "scripts": {
+        "start": "node server.js",
+        "dev": "vite",
+        "build": "vite build",
+        "test": "node test/run.js"
+    },
+    "dependencies": {
+        "neo4j-driver": "^5.0.0",
+        "serve-static": "^1.15.0",
+        "finalhandler": "^1.2.0",
+        "socket.io": "^4.8.1",
+        "colors": "^1.4.0",
+        "postal": "^2.0.6",
+        "js-schema": "^0.6.4",
+        "react": "^18.3.1",
+        "react-dom": "^18.3.1",
+        "d3": "^7.9.0",
+        "socket.io-client": "^4.8.1",
+        "lucide-react": "^0.468.0"
+    },
+    "devDependencies": {
+        "jasmine": "^2.3.1",
+        "vite": "^6.0.0",
+        "@vitejs/plugin-react": "^4.3.0",
+        "tailwindcss": "^4.0.0",
+        "@tailwindcss/vite": "^4.0.0"
+    }
+}

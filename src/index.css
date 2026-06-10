@@ -1,0 +1,82 @@
+@import "tailwindcss";
+
+@theme {
+  --color-brand: #22d3ee;
+  --color-surface: #1e293b;
+  --color-surface-2: #0f172a;
+  --font-sans: 'Inter', 'system-ui', sans-serif;
+}
+
+/* ── Graph SVG ─────────────────────────────────────────── */
+
+.g-links path {
+  fill: none;
+  stroke: #475569;
+  stroke-width: 2;
+  transition: stroke 0.2s;
+}
+
+.g-links path:hover {
+  stroke: #22d3ee;
+}
+
+.g-link-labels text {
+  font-size: 10px;
+  fill: #64748b;
+  pointer-events: none;
+  user-select: none;
+}
+
+.g-nodes circle {
+  cursor: pointer;
+  transition: r 0.15s ease, stroke 0.15s ease;
+}
+
+.g-node-labels text {
+  font-size: 11px;
+  fill: #94a3b8;
+  pointer-events: none;
+  user-select: none;
+}
+
+.g-draglets circle {
+  cursor: crosshair;
+  transition: r 0.1s ease;
+}
+
+.g-draglets circle:hover {
+  r: 9;
+}
+
+/* ── Custom scrollbar ───────────────────────────────────── */
+
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #0f172a;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #334155;
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #475569;
+}
+
+/* ── Dropdown menus ─────────────────────────────────────── */
+
+.dropdown-enter {
+  opacity: 0;
+  transform: translateY(-4px);
+}
+
+.dropdown-enter-active {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 120ms ease, transform 120ms ease;
+}

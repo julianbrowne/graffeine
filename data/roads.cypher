@@ -68,7 +68,7 @@ CREATE
 
 WITH j1m3,j1x1,j1e2,j1x3,j1e4,j1x5,j1e6,j1x7,j1e8,j1x9,j1e10,j1x11,j1e12,j1x13,j1e14, j2m3,j2x1,j2e2,j2x3,j2e4,j2x5,j2e6,j2x7,j2e8, j11m25,j11x1,j11e2,j11x3,j11e4,j11x5,j11e6,j11x7,j11e8, j12m25,  j_hfr,j_hfrx1,j_hfre2,j_hfrx3,j_hfre4,j_hfrx5,j_hfre6,j_hfrx7,j_hfre8,j_hfrx9,j_hfre10,lh50,lh49,lh48,lh123,lh62,lh125
 
-CREATE UNIQUE
+CREATE
 //m3 j1
 (j1x1)-[:PART_OF]->(j1m3),
 (j1e2)-[:PART_OF]->(j1m3),
